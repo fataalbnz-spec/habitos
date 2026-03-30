@@ -933,6 +933,7 @@
     <button class="nav-tab" onclick="showPage('habitos',event)">🌱 Hábitos</button>
     <button class="nav-tab" onclick="showPage('graficas',event)">📊 Gráficas</button>
     <button class="nav-tab" onclick="showPage('calendario',event)">📅 Calendario</button>
+    <button class="nav-tab" onclick="showPage('tiempo',event)">⏱️ Mi Tiempo</button>
     <button class="nav-tab" onclick="showPage('suenos',event)">🌙 Metas & Sueños</button>
     <button class="nav-tab" onclick="showPage('diario',event)">📝 Diario</button>
     <button class="nav-tab" onclick="showPage('logros',event)">🏆 Logros</button>
@@ -2428,7 +2429,7 @@ function isTaskDueOnDate(t, dateStr) {
 function showPage(id, ev) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  const pageMap = { hoy:'hoy', tareas:'tareas', habitos:'habitos', graficas:'graficas', suenos:'suenos', diario:'diario', logros:'logros', calendario:'calendario' };
+  const pageMap = { hoy:'hoy', tareas:'tareas', habitos:'habitos', graficas:'graficas', suenos:'suenos', diario:'diario', logros:'logros', calendario:'calendario', tiempo:'tiempo' };
   document.getElementById('page-' + (pageMap[id]||'hoy')).classList.add('active');
   if(ev) ev.currentTarget.classList.add('active');
 
