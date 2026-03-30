@@ -839,6 +839,49 @@
   #ls-needs-config{display:none;background:#fff8e8;border:1px solid #f5ddb8;border-radius:10px;padding:12px 14px;font-size:.72rem;color:#8a6030;line-height:1.6;margin-top:12px;text-align:left;width:100%;max-width:340px}
   #ls-needs-config strong{color:#6a4020}
   #ls-needs-config code{background:#f5e8c8;border-radius:4px;padding:1px 5px;font-size:.7rem}
+
+  /* ══ MI TIEMPO ══ */
+  .sched-entry-card{background:var(--white);border-radius:var(--r-s);padding:12px 16px;margin-bottom:8px;box-shadow:0 2px 10px var(--shadow);display:flex;align-items:flex-start;gap:10px;border-left:4px solid var(--lavender)}
+  .sched-time-col{font-size:.78rem;font-weight:700;color:var(--text-l);white-space:nowrap;min-width:90px;margin-top:2px}
+  .sched-label{font-size:.9rem;font-weight:600;color:var(--text)}
+  .sched-dur{font-size:.72rem;color:var(--text-l);margin-top:2px}
+  .sched-cat-pill{display:inline-block;border-radius:50px;padding:2px 9px;font-size:.7rem;font-weight:600;margin-top:4px}
+  .time-summary-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .time-sum-chip{background:var(--warm);border-radius:10px;padding:8px 12px;text-align:center;font-size:.78rem;font-weight:600;min-width:80px;border:1.5px solid #ede8f0}
+  .time-sum-chip span{display:block;font-size:1.2rem;font-weight:700;color:var(--text)}
+  .routine-block{background:var(--white);border-radius:var(--r-s);padding:12px 16px;margin-bottom:8px;box-shadow:0 2px 10px var(--shadow);display:flex;align-items:center;gap:10px;border-left:4px solid var(--lav-d)}
+  .routine-day-tag{font-size:.72rem;font-weight:700;color:var(--text-l);min-width:70px}
+  .routine-act{font-size:.88rem;font-weight:600;color:var(--text);flex:1}
+  .routine-times-tag{font-size:.76rem;color:var(--text-l)}
+  .sleep-entry-card{background:var(--white);border-radius:var(--r-s);padding:12px 16px;margin-bottom:8px;box-shadow:0 2px 10px var(--shadow);display:flex;align-items:center;gap:10px;border-left:4px solid var(--sky-d)}
+  .sleep-hours-big{font-size:1.4rem;font-weight:700;color:var(--text);min-width:55px}
+  .sleep-detail{font-size:.76rem;color:var(--text-l)}
+  .sleep-quality-display{font-size:.9rem;letter-spacing:2px}
+  .sleep-avg-bar{background:var(--sky);border-radius:10px;padding:10px 16px;margin-bottom:14px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+  .sleep-avg-val{font-size:1.3rem;font-weight:700;color:#1a5080}
+  .sleep-avg-lbl{font-size:.76rem;color:#3a7a9a}
+  .cycle-entry-card{background:var(--white);border-radius:var(--r-s);padding:12px 16px;margin-bottom:8px;box-shadow:0 2px 10px var(--shadow);display:flex;align-items:center;gap:10px}
+  .cycle-start{border-left:4px solid #f0a0b8}
+  .cycle-end{border-left:4px solid #9fd4bb}
+  .cycle-symptom{border-left:4px solid #f9c89a}
+  .cycle-prediction-banner{background:linear-gradient(120deg,var(--rose),var(--lavender));border-radius:var(--r);padding:16px 20px;margin-bottom:16px;position:relative;overflow:hidden}
+  .cycle-prediction-banner::before{content:'🌸';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:3rem;opacity:.2}
+  .compliance-section{margin-top:20px}
+  .compliance-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--warm);font-size:.82rem}
+  .compliance-row:last-child{border-bottom:none}
+  .compliance-cat{min-width:110px;color:var(--text-l)}
+  .compliance-bars{flex:1}
+  .comp-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:3px;font-size:.72rem;color:var(--text-l)}
+  .comp-bar-track{flex:1;height:6px;background:#ede8f0;border-radius:50px;overflow:hidden}
+  .comp-bar-fill{height:100%;border-radius:50px}
+  .comp-plan{background:var(--lav-d);opacity:.7}
+  .comp-real{background:var(--mint-d)}
+  .ai-weekly-card{background:var(--white);border-radius:var(--r);padding:20px 22px;box-shadow:0 4px 24px var(--shadow);margin-bottom:18px;border-left:4px solid var(--lav-d)}
+  .habit-time-badge{display:inline-block;background:var(--peach);color:#a04020;border-radius:50px;padding:2px 8px;font-size:.7rem;font-weight:600;margin-top:3px}
+  body.dark-mode .sched-entry-card,body.dark-mode .routine-block,body.dark-mode .sleep-entry-card,body.dark-mode .cycle-entry-card{background:#2a2235}
+  body.dark-mode .ai-weekly-card{background:#241e2e}
+  body.dark-mode .sleep-avg-bar{background:#182838}
+  @keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 </style>
 </head>
 <body>
@@ -1026,6 +1069,25 @@
 <!-- ══════════ GRÁFICAS ══════════ -->
 <div class="page" id="page-graficas">
   <h2>📊 Estadísticas</h2>
+  <!-- AI WEEKLY REPORT -->
+  <div id="ai-weekly-card" style="background:var(--white);border-radius:var(--r);padding:20px 22px;box-shadow:0 4px 24px var(--shadow);margin-bottom:18px;border-left:4px solid var(--lav-d)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <h3 style="margin:0">🤖 Análisis semanal IA</h3>
+      <button class="btn btn-lav btn-sm" onclick="generateWeeklyReport(true)">🔄 Actualizar análisis</button>
+    </div>
+    <div id="ai-weekly-content" style="font-size:.88rem;color:var(--text-l);font-style:italic">Presiona "Actualizar análisis" para tu reporte semanal personalizado ✨</div>
+  </div>
+  <!-- SLEEP + TIME charts -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-bottom:20px">
+    <div class="card">
+      <h3>⏱️ Tiempo por categoría — esta semana</h3>
+      <div class="chart-wrap"><canvas id="chart-tiempo-cat" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>😴 Sueño — últimas 2 semanas</h3>
+      <div class="chart-wrap"><canvas id="chart-sleep-graficas" height="200"></canvas></div>
+    </div>
+  </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px">
     <div class="card">
       <h3>Hábitos esta semana</h3>
@@ -1089,6 +1151,219 @@
   </div>
   <div class="dream-grid" id="dreams-grid"></div>
 </div>
+
+
+<!-- ══════════ MI TIEMPO (NUEVO) ══════════ -->
+<div class="page" id="page-tiempo">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:6px">
+    <h2 style="margin-bottom:0">⏱️ Mi Tiempo</h2>
+  </div>
+  <div class="sub-tabs">
+    <button class="sub-tab active" onclick="setTiempoTab('registro',event)">📋 Registro del día</button>
+    <button class="sub-tab" onclick="setTiempoTab('rutina',event)">🗓️ Mi Rutina</button>
+    <button class="sub-tab" onclick="setTiempoTab('sueno',event)">😴 Sueño</button>
+    <button class="sub-tab" onclick="setTiempoTab('ciclo',event)">🌸 Ciclo menstrual</button>
+  </div>
+
+  <!-- REGISTRO DEL DÍA -->
+  <div id="tiempo-panel-registro">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
+      <button class="btn btn-rose" onclick="openSchedModal()">+ Registrar actividad</button>
+      <input type="date" id="sched-date-filter" style="width:auto;flex:none" onchange="renderSchedPanel()">
+    </div>
+    <div id="sched-summary-row" class="time-summary-row"></div>
+    <div id="sched-entries-list"></div>
+  </div>
+
+  <!-- MI RUTINA -->
+  <div id="tiempo-panel-rutina" style="display:none">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
+      <button class="btn btn-lav" onclick="openRoutineModal()">+ Agregar bloque a mi rutina</button>
+      <button class="btn btn-mint btn-sm" onclick="toggleComplianceSection()">📊 Planeado vs Real</button>
+    </div>
+    <div id="routine-list"></div>
+    <div id="compliance-section" class="compliance-section" style="display:none">
+      <h3>📊 Planeado vs Real — esta semana</h3>
+      <div id="compliance-list"></div>
+    </div>
+  </div>
+
+  <!-- SUEÑO -->
+  <div id="tiempo-panel-sueno" style="display:none">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
+      <button class="btn btn-lav btn-sm" onclick="openSleepModal()" style="font-size:.85rem">+ Registrar sueño de anoche</button>
+    </div>
+    <div id="sleep-avg-bar-el" class="sleep-avg-bar" style="display:none"></div>
+    <div class="card" style="padding:14px;margin-bottom:16px">
+      <h3 style="margin-bottom:10px">😴 Últimas 2 semanas</h3>
+      <div class="chart-wrap" style="height:160px"><canvas id="chart-sleep-main"></canvas></div>
+    </div>
+    <div id="sleep-list"></div>
+  </div>
+
+  <!-- CICLO MENSTRUAL -->
+  <div id="tiempo-panel-ciclo" style="display:none">
+    <div id="cycle-prediction-banner"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+      <button class="btn btn-rose" onclick="logCycleEvent('start')">🩸 Inicio del período</button>
+      <button class="btn btn-mint" onclick="logCycleEvent('end')">✅ Fin del período</button>
+      <button class="btn btn-peach" onclick="openSymptomModal()">💊 Síntoma / nota</button>
+    </div>
+    <div id="cycle-list"></div>
+  </div>
+</div>
+
+<!-- MODAL: ACTIVIDAD -->
+<div class="modal-bg" id="modal-sched">
+  <div class="modal">
+    <h3 id="modal-sched-title">📋 Registrar actividad</h3>
+    <div class="modal-row"><label>Actividad / Descripción</label>
+      <input type="text" id="se-label" placeholder="Ej: Stream, Ejercicio, Lectura…">
+    </div>
+    <div class="form-row">
+      <div class="form-col"><label>Fecha</label><input type="date" id="se-date"></div>
+      <div class="form-col"><label>Hora inicio</label><input type="time" id="se-start"></div>
+      <div class="form-col"><label>Hora fin</label><input type="time" id="se-end"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-col">
+        <label>Categoría</label>
+        <select id="se-cat">
+          <option value="trabajo">💼 Trabajo / Stream</option>
+          <option value="sueno">😴 Sueño</option>
+          <option value="ejercicio">🏃 Ejercicio</option>
+          <option value="lectura">📚 Lectura / Estudio</option>
+          <option value="comidas">🍽️ Comidas</option>
+          <option value="cuidado">🛁 Cuidado personal</option>
+          <option value="social">👥 Social</option>
+          <option value="ocio">🎮 Ocio / Descanso</option>
+          <option value="otro">⭐ Otro</option>
+        </select>
+      </div>
+      <div class="form-col" style="min-width:90px">
+        <label>Duración (min)</label>
+        <input type="number" id="se-dur" placeholder="Auto" min="1">
+        <div style="font-size:.68rem;color:var(--text-l);margin-top:2px">Se calcula si pones inicio y fin</div>
+      </div>
+    </div>
+    <div class="modal-row"><label>Notas (opcional)</label>
+      <input type="text" id="se-notes" placeholder="¿Cómo estuvo?">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-peach" onclick="closeSchedModal()">Cancelar</button>
+      <button class="btn btn-rose" onclick="saveSchedEntry()">Guardar 💾</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: RUTINA -->
+<div class="modal-bg" id="modal-routine">
+  <div class="modal">
+    <h3 id="modal-routine-title">🗓️ Bloque de rutina</h3>
+    <div class="modal-row"><label>Actividad</label>
+      <input type="text" id="rt-label" placeholder="Ej: Stream, Ejercicio, Desayuno…">
+    </div>
+    <div class="form-row">
+      <div class="form-col">
+        <label>Categoría</label>
+        <select id="rt-cat">
+          <option value="trabajo">💼 Trabajo / Stream</option>
+          <option value="sueno">😴 Sueño</option>
+          <option value="ejercicio">🏃 Ejercicio</option>
+          <option value="lectura">📚 Lectura / Estudio</option>
+          <option value="comidas">🍽️ Comidas</option>
+          <option value="cuidado">🛁 Cuidado personal</option>
+          <option value="social">👥 Social</option>
+          <option value="ocio">🎮 Ocio / Descanso</option>
+          <option value="otro">⭐ Otro</option>
+        </select>
+      </div>
+      <div class="form-col">
+        <label>Días</label>
+        <select id="rt-weekday">
+          <option value="all">Todos los días</option>
+          <option value="weekdays">Lun – Vie</option>
+          <option value="weekends">Sáb & Dom</option>
+          <option value="1">Lunes</option><option value="2">Martes</option>
+          <option value="3">Miércoles</option><option value="4">Jueves</option>
+          <option value="5">Viernes</option><option value="6">Sábado</option>
+          <option value="0">Domingo</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-col"><label>Hora inicio</label><input type="time" id="rt-start"></div>
+      <div class="form-col"><label>Hora fin</label><input type="time" id="rt-end"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-peach" onclick="closeRoutineModal()">Cancelar</button>
+      <button class="btn btn-lav" onclick="saveRoutineBlock()">Guardar 💾</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SUEÑO -->
+<div class="modal-bg" id="modal-sleep">
+  <div class="modal">
+    <h3>😴 Registrar sueño</h3>
+    <div class="modal-row"><label>Fecha (día que te despertaste)</label>
+      <input type="date" id="sl-date">
+    </div>
+    <div class="form-row">
+      <div class="form-col"><label>Me dormí a las</label><input type="time" id="sl-bed"></div>
+      <div class="form-col"><label>Me desperté a las</label><input type="time" id="sl-wake"></div>
+    </div>
+    <div class="modal-row">
+      <label>Calidad del sueño</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px" id="sleep-quality-btns">
+        <button type="button" class="day-pill sl-quality" data-q="1" onclick="setSleepQuality(1)">😴 Malo</button>
+        <button type="button" class="day-pill sl-quality" data-q="2" onclick="setSleepQuality(2)">😐 Regular</button>
+        <button type="button" class="day-pill sl-quality" data-q="3" onclick="setSleepQuality(3)">🙂 OK</button>
+        <button type="button" class="day-pill sl-quality" data-q="4" onclick="setSleepQuality(4)">😊 Bien</button>
+        <button type="button" class="day-pill sl-quality" data-q="5" onclick="setSleepQuality(5)">🤩 Excelente</button>
+      </div>
+    </div>
+    <div class="modal-row"><label>Notas (opcional)</label>
+      <input type="text" id="sl-notes" placeholder="Pesadillas, interrupciones, sueños…">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-peach" onclick="closeSleepModal()">Cancelar</button>
+      <button class="btn btn-sky" onclick="saveSleepEntry()">Guardar 💾</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SÍNTOMA CICLO -->
+<div class="modal-bg" id="modal-symptom">
+  <div class="modal">
+    <h3>💊 Registrar síntoma / nota del ciclo</h3>
+    <div class="modal-row"><label>Fecha</label><input type="date" id="sym-date"></div>
+    <div class="modal-row">
+      <label>Tipo</label>
+      <select id="sym-type">
+        <option value="Cólicos 😣">Cólicos / calorones 😣</option>
+        <option value="Fatiga 😴">Fatiga 😴</option>
+        <option value="Dolor de cabeza 🤕">Dolor de cabeza 🤕</option>
+        <option value="Inflamación 😮">Inflamación 😮</option>
+        <option value="Cambios de humor 😤">Cambios de humor 😤</option>
+        <option value="Acné / piel 😕">Acné / piel 😕</option>
+        <option value="Ansiedad 😰">Ansiedad 😰</option>
+        <option value="Antojo 🍫">Antojo 🍫</option>
+        <option value="Ovulación 🥚">Ovulación / moco cervical 🥚</option>
+        <option value="Otro 💊">Otro 💊</option>
+      </select>
+    </div>
+    <div class="modal-row"><label>Notas</label>
+      <input type="text" id="sym-notes" placeholder="Intensidad, qué hiciste, cómo te sentiste…">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-peach" onclick="closeSymptomModal()">Cancelar</button>
+      <button class="btn btn-rose" onclick="saveSymptom()">Guardar 💾</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI WEEKLY GRAFICAS SECTION (inserted via JS) -->
 
 <!-- ══════════ MODAL TAREA ══════════ -->
 <div class="modal-bg" id="modal-task">
@@ -1241,6 +1516,24 @@
       </div>
     </div>
 
+    <!-- ── Hábito basado en tiempo ── -->
+    <div class="recur-section" style="margin-bottom:0">
+      <div class="recur-section-title">⏱️ ¿Es un hábito de tiempo? (opcional)</div>
+      <div style="margin-bottom:8px">
+        <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:.85rem;font-weight:500;color:var(--text)">
+          <input type="checkbox" id="h-is-time" style="width:16px;height:16px;flex:none" onchange="toggleHabitTimeUI()">
+          Este hábito se mide en minutos (sincroniza con Mi Tiempo)
+        </label>
+      </div>
+      <div id="h-time-fields" style="display:none">
+        <div class="form-row">
+          <div class="form-col"><label>Meta de tiempo (min)</label><input type="number" id="h-duration-goal" placeholder="Ej: 20" min="1"></div>
+          <div class="form-col"><label>Palabra clave para auto-detectar</label><input type="text" id="h-sched-cat" placeholder="Ej: lectura, stream, ejercicio"></div>
+        </div>
+        <div style="font-size:.74rem;color:var(--text-l)">Cuando registres en Mi Tiempo una actividad con esta palabra, se sumará el tiempo al hábito automáticamente.</div>
+      </div>
+    </div>
+
     <div class="modal-footer">
       <button class="btn btn-peach" onclick="closeHabitModal()">Cancelar</button>
       <button class="btn btn-mint" onclick="saveHabit()">Guardar 💾</button>
@@ -1368,6 +1661,13 @@ let taskCatFilter  = '';
 let calYear  = new Date().getFullYear();
 let calMonth = new Date().getMonth();
 let aiHistory = [];
+let schedEntries  = JSON.parse(localStorage.getItem('vb_sched')     || '[]');
+let routinePlans  = JSON.parse(localStorage.getItem('vb_routine')   || '[]');
+let sleepLog      = JSON.parse(localStorage.getItem('vb_sleep')     || '[]');
+let cycleLog      = JSON.parse(localStorage.getItem('vb_cycle')     || '[]');
+let aiWeeklyCache = JSON.parse(localStorage.getItem('vb_ai_weekly') || 'null');
+let tiempoTab = 'registro';
+let editSchedId = null, editRoutineId = null, sleepQualitySelected = 3;
 
 // ══════════ PROFILE ══════════
 function openProfileModal() {
@@ -1440,7 +1740,7 @@ function scheduleNotifications() {
 
 // ══════════ EXPORT / IMPORT ══════════
 function exportData() {
-  const data = { tasks, habits, dreams, diary, moods, profile, logros: unlockedLogros, exportedAt: new Date().toISOString() };
+  const data = { tasks, habits, dreams, diary, moods, profile, logros: unlockedLogros, schedEntries, routinePlans, sleepLog, cycleLog, exportedAt: new Date().toISOString() };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url  = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1865,14 +2165,18 @@ async function driveDownload() {
   if (data.dreams)  { dreams  = data.dreams;  localStorage.setItem('vb_dreams',  JSON.stringify(dreams)); }
   if (data.diary)   { diary   = data.diary;   localStorage.setItem('vb_diary',   JSON.stringify(diary)); }
   if (data.moods)   { moods   = data.moods;   localStorage.setItem('vb_moods',   JSON.stringify(moods)); }
-  if (data.profile) { profile = data.profile; localStorage.setItem('vb_profile', JSON.stringify(profile)); }
-  if (data.logros)  { unlockedLogros = data.logros; localStorage.setItem('vb_logros', JSON.stringify(unlockedLogros)); }
+  if (data.profile)      { profile = data.profile; localStorage.setItem('vb_profile', JSON.stringify(profile)); }
+  if (data.logros)       { unlockedLogros = data.logros; localStorage.setItem('vb_logros', JSON.stringify(unlockedLogros)); }
+  if (data.schedEntries) { schedEntries = data.schedEntries; localStorage.setItem('vb_sched', JSON.stringify(schedEntries)); }
+  if (data.routinePlans) { routinePlans = data.routinePlans; localStorage.setItem('vb_routine', JSON.stringify(routinePlans)); }
+  if (data.sleepLog)     { sleepLog = data.sleepLog; localStorage.setItem('vb_sleep', JSON.stringify(sleepLog)); }
+  if (data.cycleLog)     { cycleLog = data.cycleLog; localStorage.setItem('vb_cycle', JSON.stringify(cycleLog)); }
 }
 
 async function driveUpload() {
   const payload = JSON.stringify({
     tasks, habits, dreams, diary, moods, profile,
-    logros: unlockedLogros,
+    logros: unlockedLogros, schedEntries, routinePlans, sleepLog, cycleLog,
     lastSync: new Date().toISOString()
   });
   const boundary = 'vb_boundary_' + Date.now();
@@ -1926,11 +2230,15 @@ async function scheduleDriveSync() {
 
 // ══════════ HELPERS ══════════
 const save = () => {
-  localStorage.setItem('vb_tasks',  JSON.stringify(tasks));
-  localStorage.setItem('vb_habits', JSON.stringify(habits));
-  localStorage.setItem('vb_dreams', JSON.stringify(dreams));
-  localStorage.setItem('vb_diary',  JSON.stringify(diary));
-  localStorage.setItem('vb_moods',  JSON.stringify(moods));
+  localStorage.setItem('vb_tasks',   JSON.stringify(tasks));
+  localStorage.setItem('vb_habits',  JSON.stringify(habits));
+  localStorage.setItem('vb_dreams',  JSON.stringify(dreams));
+  localStorage.setItem('vb_diary',   JSON.stringify(diary));
+  localStorage.setItem('vb_moods',   JSON.stringify(moods));
+  localStorage.setItem('vb_sched',   JSON.stringify(schedEntries));
+  localStorage.setItem('vb_routine', JSON.stringify(routinePlans));
+  localStorage.setItem('vb_sleep',   JSON.stringify(sleepLog));
+  localStorage.setItem('vb_cycle',   JSON.stringify(cycleLog));
   if (driveEnabled && driveToken) scheduleDriveSync();
 };
 
@@ -2128,6 +2436,7 @@ function showPage(id, ev) {
   if(id === 'tareas')     { renderTasks(); renderCatFilter(); }
   if(id === 'habitos')    renderHabits();
   if(id === 'graficas')   renderCharts();
+  if(id === 'tiempo')     { renderSchedPanel(); renderRoutineList(); }
   if(id === 'suenos')     renderDreams();
   if(id === 'diario')     renderDiary();
   if(id === 'logros')     renderLogros();
@@ -3291,6 +3600,752 @@ function addSavingsAmount(dreamId) {
 // ══════════ INIT ══════════
 initLoginScreen();
 // No renderHoy aquí — se llama después del login o skip
+</script>
+</body>
+</html>
+
+<script>
+// ══════════ MI TIEMPO — HELPERS ══════════
+const CAT_COLORS = {
+  trabajo:'#c3b8e8', sueno:'#9fd0f0', ejercicio:'#9fd4bb',
+  lectura:'#f9c89a', comidas:'#f9c8d4', cuidado:'#fde5cc',
+  social:'#c8edd8', ocio:'#ddd6f3', otro:'#ede8f0'
+};
+const CAT_LABELS = {
+  trabajo:'💼 Trabajo', sueno:'😴 Sueño', ejercicio:'🏃 Ejercicio',
+  lectura:'📚 Lectura', comidas:'🍽️ Comidas', cuidado:'🛁 Cuidado',
+  social:'👥 Social', ocio:'🎮 Ocio', otro:'⭐ Otro'
+};
+
+function calcDurMins(start, end) {
+  if (!start || !end) return null;
+  const [sh, sm] = start.split(':').map(Number);
+  const [eh, em] = end.split(':').map(Number);
+  let diff = (eh * 60 + em) - (sh * 60 + sm);
+  if (diff < 0) diff += 24 * 60; // overnight
+  return diff > 0 ? diff : null;
+}
+function fmtMins(mins) {
+  if (!mins) return '—';
+  const h = Math.floor(mins / 60), m = mins % 60;
+  return h ? `${h}h ${m > 0 ? m + 'min' : ''}`.trim() : `${m}min`;
+}
+function calcWeekSchedHours() {
+  const mon = startOfWeek();
+  const weekDays = Array.from({length:7}, (_,i) => { const d=new Date(mon); d.setDate(d.getDate()+i); return localDateStr(d); });
+  const result = {};
+  schedEntries.filter(e => weekDays.includes(e.date)).forEach(e => {
+    const cat = e.cat || 'otro';
+    result[cat] = (result[cat] || 0) + (e.duration || 0);
+  });
+  // convert to hours rounded
+  Object.keys(result).forEach(k => result[k] = Math.round(result[k] / 6) / 10);
+  return result;
+}
+
+// ══════════ TIEMPO TABS ══════════
+function setTiempoTab(tab, ev) {
+  tiempoTab = tab;
+  document.querySelectorAll('#page-tiempo .sub-tab').forEach(el => el.classList.remove('active'));
+  if (ev) ev.currentTarget.classList.add('active');
+  ['registro','rutina','sueno','ciclo'].forEach(t => {
+    const p = document.getElementById('tiempo-panel-' + t);
+    if (p) p.style.display = t === tab ? '' : 'none';
+  });
+  if (tab === 'registro') renderSchedPanel();
+  if (tab === 'rutina')   renderRoutineList();
+  if (tab === 'sueno')    renderSleepPanel();
+  if (tab === 'ciclo')    renderCyclePanel();
+}
+
+// ══════════ SCHEDULE ENTRIES ══════════
+function openSchedModal(id) {
+  editSchedId = id || null;
+  document.getElementById('modal-sched-title').textContent = id ? '✏️ Editar actividad' : '📋 Registrar actividad';
+  const today_val = document.getElementById('sched-date-filter').value || today();
+  if (id) {
+    const e = schedEntries.find(x => x.id === id);
+    document.getElementById('se-label').value = e.label;
+    document.getElementById('se-date').value  = e.date;
+    document.getElementById('se-start').value = e.start || '';
+    document.getElementById('se-end').value   = e.end || '';
+    document.getElementById('se-cat').value   = e.cat || 'otro';
+    document.getElementById('se-dur').value   = e.duration || '';
+    document.getElementById('se-notes').value = e.notes || '';
+  } else {
+    document.getElementById('se-label').value = '';
+    document.getElementById('se-date').value  = today_val;
+    document.getElementById('se-start').value = '';
+    document.getElementById('se-end').value   = '';
+    document.getElementById('se-cat').value   = 'trabajo';
+    document.getElementById('se-dur').value   = '';
+    document.getElementById('se-notes').value = '';
+  }
+  document.getElementById('modal-sched').classList.add('open');
+}
+function closeSchedModal() { document.getElementById('modal-sched').classList.remove('open'); }
+function saveSchedEntry() {
+  const label = document.getElementById('se-label').value.trim();
+  if (!label) { alert('Escribe el nombre de la actividad 🌸'); return; }
+  const start = document.getElementById('se-start').value;
+  const end   = document.getElementById('se-end').value;
+  const durInput = parseInt(document.getElementById('se-dur').value);
+  const duration = !isNaN(durInput) && durInput > 0 ? durInput : calcDurMins(start, end);
+  const obj = {
+    id:       editSchedId || uid(),
+    label,
+    date:     document.getElementById('se-date').value || today(),
+    start,
+    end,
+    cat:      document.getElementById('se-cat').value,
+    duration,
+    notes:    document.getElementById('se-notes').value.trim()
+  };
+  if (editSchedId) {
+    const idx = schedEntries.findIndex(x => x.id === editSchedId);
+    schedEntries[idx] = obj;
+  } else {
+    schedEntries.unshift(obj);
+  }
+  save();
+  closeSchedModal();
+  renderSchedPanel();
+  syncHabitsFromSched(obj); // auto-credit time habits
+}
+function deleteSchedEntry(id) {
+  if (confirm('¿Eliminar esta entrada?')) {
+    schedEntries = schedEntries.filter(x => x.id !== id);
+    save(); renderSchedPanel();
+  }
+}
+function renderSchedPanel() {
+  const dateEl = document.getElementById('sched-date-filter');
+  if (!dateEl.value) dateEl.value = today();
+  const dateFilter = dateEl.value;
+  const dayEntries = schedEntries.filter(e => e.date === dateFilter)
+    .sort((a, b) => (a.start || '99:99').localeCompare(b.start || '99:99'));
+
+  // Summary chips
+  const totalMins = dayEntries.reduce((acc, e) => acc + (e.duration || 0), 0);
+  const catTotals = {};
+  dayEntries.forEach(e => { catTotals[e.cat||'otro'] = (catTotals[e.cat||'otro']||0) + (e.duration||0); });
+  const summaryEl = document.getElementById('sched-summary-row');
+  let summaryHtml = `<div class="time-sum-chip"><span>${fmtMins(totalMins)}</span>Total registrado</div>`;
+  Object.entries(catTotals).sort(([,a],[,b])=>b-a).slice(0,4).forEach(([cat,mins]) => {
+    summaryHtml += `<div class="time-sum-chip" style="border-color:${CAT_COLORS[cat]||'#ede8f0'}"><span>${fmtMins(mins)}</span>${CAT_LABELS[cat]||cat}</div>`;
+  });
+  summaryEl.innerHTML = summaryHtml;
+
+  const listEl = document.getElementById('sched-entries-list');
+  if (!dayEntries.length) {
+    listEl.innerHTML = '<div class="empty"><div class="empty-icon">⏱️</div>Sin actividades registradas para este día.<br><span style="font-size:.8rem">Presiona "+ Registrar actividad" para empezar</span></div>';
+    return;
+  }
+  listEl.innerHTML = dayEntries.map(e => {
+    const catColor = CAT_COLORS[e.cat||'otro'] || '#ede8f0';
+    const catLabel = CAT_LABELS[e.cat||'otro'] || e.cat || 'Otro';
+    const timeStr = e.start && e.end ? `${e.start} – ${e.end}` : e.start ? `Desde ${e.start}` : '';
+    return `<div class="sched-entry-card" style="border-left-color:${catColor}">
+      <div class="sched-time-col">
+        ${timeStr ? `<div>${timeStr}</div>` : ''}
+        ${e.duration ? `<div style="color:var(--text);font-size:.82rem;font-weight:700">${fmtMins(e.duration)}</div>` : ''}
+      </div>
+      <div style="flex:1">
+        <div class="sched-label">${e.label}</div>
+        <div><span class="sched-cat-pill" style="background:${catColor};color:#333">${catLabel}</span></div>
+        ${e.notes ? `<div class="sched-dur" style="margin-top:4px">📝 ${e.notes}</div>` : ''}
+      </div>
+      <div style="display:flex;gap:4px;flex-shrink:0">
+        <button class="btn btn-lav btn-icon btn-sm" onclick="openSchedModal('${e.id}')">✏️</button>
+        <button class="btn btn-peach btn-icon btn-sm" onclick="deleteSchedEntry('${e.id}')">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════ HABIT-TIME SYNC ══════════
+function syncHabitsFromSched(entry) {
+  const label = (entry.label || '').toLowerCase();
+  const cat   = (entry.cat || '').toLowerCase();
+  habits.forEach(h => {
+    if (!h.isTimeBased || !h.schedKeyword) return;
+    const kw = (h.schedKeyword || '').toLowerCase();
+    if (!kw) return;
+    if (label.includes(kw) || cat.includes(kw)) {
+      // Add minutes to habit's time log for today
+      h.timeLog = h.timeLog || {};
+      h.timeLog[entry.date] = (h.timeLog[entry.date] || 0) + (entry.duration || 0);
+    }
+  });
+  save();
+}
+function getHabitTimePct(h, date) {
+  if (!h.isTimeBased) return null;
+  const logged = (h.timeLog || {})[date] || 0;
+  const goal   = h.durationGoal || 20;
+  return { logged, goal, pct: Math.min(100, Math.round((logged / goal) * 100)) };
+}
+
+// ══════════ ROUTINE ══════════
+function openRoutineModal(id) {
+  editRoutineId = id || null;
+  document.getElementById('modal-routine-title').textContent = id ? '✏️ Editar bloque' : '🗓️ Nuevo bloque de rutina';
+  if (id) {
+    const r = routinePlans.find(x => x.id === id);
+    document.getElementById('rt-label').value   = r.label;
+    document.getElementById('rt-cat').value     = r.cat || 'trabajo';
+    document.getElementById('rt-weekday').value = r.weekday || 'all';
+    document.getElementById('rt-start').value   = r.start || '';
+    document.getElementById('rt-end').value     = r.end || '';
+  } else {
+    ['rt-label','rt-start','rt-end'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('rt-cat').value     = 'trabajo';
+    document.getElementById('rt-weekday').value = 'all';
+  }
+  document.getElementById('modal-routine').classList.add('open');
+}
+function closeRoutineModal() { document.getElementById('modal-routine').classList.remove('open'); }
+function saveRoutineBlock() {
+  const label = document.getElementById('rt-label').value.trim();
+  if (!label) { alert('Escribe el nombre de la actividad 🌸'); return; }
+  const obj = {
+    id:      editRoutineId || uid(),
+    label,
+    cat:     document.getElementById('rt-cat').value,
+    weekday: document.getElementById('rt-weekday').value,
+    start:   document.getElementById('rt-start').value,
+    end:     document.getElementById('rt-end').value,
+    duration: calcDurMins(document.getElementById('rt-start').value, document.getElementById('rt-end').value)
+  };
+  if (editRoutineId) {
+    const idx = routinePlans.findIndex(x => x.id === editRoutineId);
+    routinePlans[idx] = obj;
+  } else {
+    routinePlans.push(obj);
+  }
+  save(); closeRoutineModal(); renderRoutineList();
+}
+function deleteRoutineBlock(id) {
+  if (confirm('¿Eliminar este bloque de rutina?')) {
+    routinePlans = routinePlans.filter(x => x.id !== id);
+    save(); renderRoutineList();
+  }
+}
+function renderRoutineList() {
+  const el = document.getElementById('routine-list');
+  if (!el) return;
+  if (!routinePlans.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">🗓️</div>Aún no tienes una rutina definida.<br><span style="font-size:.8rem">Agrega bloques para planear tu día ideal</span></div>';
+    return;
+  }
+  const dayMap = { all:'Todos','weekdays':'Lun–Vie','weekends':'Sáb & Dom','1':'Lun','2':'Mar','3':'Mié','4':'Jue','5':'Vie','6':'Sáb','0':'Dom' };
+  const sorted = [...routinePlans].sort((a,b) => (a.start||'99:99').localeCompare(b.start||'99:99'));
+  el.innerHTML = sorted.map(r => {
+    const catColor = CAT_COLORS[r.cat||'otro'] || '#ede8f0';
+    const timeStr = r.start && r.end ? `${r.start} – ${r.end}` : r.start || '—';
+    return `<div class="routine-block" style="border-left-color:${catColor}">
+      <div class="routine-day-tag">${dayMap[r.weekday]||r.weekday}</div>
+      <div style="flex:1">
+        <div class="routine-act">${r.label}</div>
+        <div class="routine-times-tag">${timeStr} ${r.duration ? '· ' + fmtMins(r.duration) : ''}</div>
+      </div>
+      <span class="sched-cat-pill" style="background:${catColor};color:#333;font-size:.7rem">${CAT_LABELS[r.cat||'otro']}</span>
+      <div style="display:flex;gap:4px">
+        <button class="btn btn-lav btn-icon btn-sm" onclick="openRoutineModal('${r.id}')">✏️</button>
+        <button class="btn btn-peach btn-icon btn-sm" onclick="deleteRoutineBlock('${r.id}')">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function toggleComplianceSection() {
+  const sec = document.getElementById('compliance-section');
+  if (sec.style.display === 'none') { sec.style.display = ''; renderTiempoCompliance(); }
+  else sec.style.display = 'none';
+}
+function renderTiempoCompliance() {
+  const el = document.getElementById('compliance-list');
+  if (!el) return;
+  // Compare planned hours vs actual this week per category
+  const mon = startOfWeek();
+  const weekDays = Array.from({length:7}, (_,i) => { const d=new Date(mon); d.setDate(d.getDate()+i); return localDateStr(d); });
+  const planned = {}, real = {};
+  routinePlans.forEach(r => {
+    const cat = r.cat || 'otro';
+    const dur = r.duration || 0;
+    let days = 7;
+    if (r.weekday === 'weekdays') days = 5;
+    else if (r.weekday === 'weekends') days = 2;
+    else if (!isNaN(Number(r.weekday))) days = 1;
+    planned[cat] = (planned[cat] || 0) + dur * days;
+  });
+  schedEntries.filter(e => weekDays.includes(e.date)).forEach(e => {
+    const cat = e.cat || 'otro';
+    real[cat] = (real[cat] || 0) + (e.duration || 0);
+  });
+  const allCats = [...new Set([...Object.keys(planned), ...Object.keys(real)])];
+  if (!allCats.length) { el.innerHTML = '<p style="color:var(--text-l);font-size:.85rem">Sin datos suficientes aún. Agrega tu rutina y registra actividades.</p>'; return; }
+  el.innerHTML = allCats.map(cat => {
+    const p = planned[cat] || 0, r = real[cat] || 0;
+    const maxVal = Math.max(p, r, 60);
+    const pPct = Math.round((p/maxVal)*100), rPct = Math.round((r/maxVal)*100);
+    const diff = r - p;
+    const diffStr = diff === 0 ? '✅ En punto' : diff > 0 ? `+${fmtMins(diff)} extra` : `${fmtMins(Math.abs(diff))} faltante`;
+    return `<div class="compliance-row">
+      <div class="compliance-cat">${CAT_LABELS[cat]||cat}</div>
+      <div class="compliance-bars">
+        <div class="comp-bar-row"><span style="min-width:55px">Planeado</span><div class="comp-bar-track"><div class="comp-bar-fill comp-plan" style="width:${pPct}%"></div></div><span style="min-width:50px;text-align:right">${fmtMins(p)}</span></div>
+        <div class="comp-bar-row"><span style="min-width:55px">Real</span><div class="comp-bar-track"><div class="comp-bar-fill comp-real" style="width:${rPct}%"></div></div><span style="min-width:50px;text-align:right">${fmtMins(r)}</span></div>
+        <div style="font-size:.7rem;color:${diff>=0?'#2a6040':'#c02020'};margin-top:1px">${diffStr}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════ SLEEP ══════════
+function openSleepModal() {
+  sleepQualitySelected = 3;
+  document.getElementById('sl-date').value  = today();
+  document.getElementById('sl-bed').value   = '';
+  document.getElementById('sl-wake').value  = '';
+  document.getElementById('sl-notes').value = '';
+  document.querySelectorAll('.sl-quality').forEach(b => b.classList.remove('active'));
+  const def = document.querySelector('.sl-quality[data-q="3"]');
+  if (def) def.classList.add('active');
+  document.getElementById('modal-sleep').classList.add('open');
+}
+function closeSleepModal() { document.getElementById('modal-sleep').classList.remove('open'); }
+function setSleepQuality(q) {
+  sleepQualitySelected = q;
+  document.querySelectorAll('.sl-quality').forEach(b => b.classList.toggle('active', parseInt(b.dataset.q) === q));
+}
+function saveSleepEntry() {
+  const date  = document.getElementById('sl-date').value;
+  const bed   = document.getElementById('sl-bed').value;
+  const wake  = document.getElementById('sl-wake').value;
+  const notes = document.getElementById('sl-notes').value.trim();
+  if (!date) { alert('Pon la fecha 🌸'); return; }
+  const dur = calcDurMins(bed, wake);
+  const hours = dur ? Math.round(dur / 6) / 10 : null;
+  // Remove existing entry for same date
+  sleepLog = sleepLog.filter(s => s.date !== date);
+  sleepLog.unshift({ id: uid(), date, bed, wake, hours, quality: sleepQualitySelected, notes });
+  sleepLog.sort((a,b) => b.date.localeCompare(a.date));
+  save(); closeSleepModal(); renderSleepPanel(); checkLogros();
+}
+function deleteSleepEntry(id) {
+  if (confirm('¿Eliminar este registro de sueño?')) {
+    sleepLog = sleepLog.filter(s => s.id !== id);
+    save(); renderSleepPanel();
+  }
+}
+function renderSleepPanel() {
+  // Average bar
+  const recent = sleepLog.slice(0, 14);
+  const avgBar = document.getElementById('sleep-avg-bar-el');
+  if (recent.length > 0 && avgBar) {
+    const avg = (recent.reduce((a,s)=>a+(s.hours||0),0)/recent.length).toFixed(1);
+    const avgQ = (recent.reduce((a,s)=>a+(s.quality||3),0)/recent.length).toFixed(1);
+    avgBar.style.display = '';
+    avgBar.innerHTML = `
+      <div style="font-size:1.6rem;font-weight:700;color:#1a5080">${avg}h</div>
+      <div><div style="font-size:.72rem;color:#3a7a9a;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Promedio sueño</div><div style="font-size:.72rem;color:#3a7a9a">últimas ${recent.length} noches</div></div>
+      <div style="margin-left:auto;text-align:right">
+        <div style="font-size:.72rem;color:#3a7a9a;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Calidad promedio</div>
+        <div style="font-size:.9rem;font-weight:700;color:#1a5080">${avgQ}/5</div>
+      </div>`;
+  } else if (avgBar) avgBar.style.display = 'none';
+
+  // Mini chart
+  renderSleepChart();
+
+  // List
+  const el = document.getElementById('sleep-list');
+  if (!el) return;
+  if (!sleepLog.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">😴</div>Aún no hay registros de sueño.<br><span style="font-size:.8rem">Empieza registrando cómo dormiste anoche</span></div>';
+    return;
+  }
+  const qualEmoji = ['','😴','😐','🙂','😊','🤩'];
+  el.innerHTML = sleepLog.slice(0, 14).map(s => {
+    const timeStr = s.bed && s.wake ? `${s.bed} → ${s.wake}` : s.bed ? `Dormí: ${s.bed}` : '—';
+    return `<div class="sleep-entry-card">
+      <div style="text-align:center;min-width:55px">
+        <div style="font-size:1.4rem;font-weight:700;color:var(--sky-d)">${s.hours != null ? s.hours+'h' : '—'}</div>
+        <div style="font-size:.9rem">${qualEmoji[s.quality||3]}</div>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:.88rem;font-weight:600;color:var(--text)">${fmtDate(s.date)}</div>
+        <div class="sleep-detail">${timeStr}</div>
+        ${s.notes ? `<div class="sleep-detail" style="margin-top:2px">📝 ${s.notes}</div>` : ''}
+      </div>
+      <button class="btn btn-peach btn-icon btn-sm" onclick="deleteSleepEntry('${s.id}')">🗑️</button>
+    </div>`;
+  }).join('');
+}
+function renderSleepChart(canvasId = 'chart-sleep-main') {
+  destroyChart('slc_'+canvasId);
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return;
+  const last14 = [], labels14 = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const ds = localDateStr(d);
+    const entry = sleepLog.find(s => s.date === ds);
+    last14.push(entry ? entry.hours : null);
+    labels14.push(i === 0 ? 'Hoy' : ['D','L','M','M','J','V','S'][d.getDay()]);
+  }
+  chartInstances['slc_'+canvasId] = new Chart(ctx.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: labels14,
+      datasets: [{
+        label: 'Horas de sueño', data: last14,
+        backgroundColor: last14.map(v => v == null ? '#ede8f0' : v >= 7 ? '#9fd0f0' : v >= 6 ? '#c3b8e8' : '#f9c8d4'),
+        borderRadius: 6, barThickness: 16
+      }, {
+        label: 'Meta (7h)', data: Array(14).fill(7),
+        type: 'line', borderColor: '#9fd4bb', borderDash: [4,4],
+        borderWidth: 1.5, pointRadius: 0, fill: false
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { min: 0, max: 12, ticks: { stepSize: 2, callback: v => v+'h' } }, x: { grid: { display: false } } },
+      responsive: true
+    }
+  });
+}
+
+// ══════════ CICLO MENSTRUAL ══════════
+function logCycleEvent(type) {
+  const d = prompt(`Fecha de ${type === 'start' ? 'inicio' : 'fin'} del período (YYYY-MM-DD)`, today());
+  if (!d || !/^\d{4}-\d{2}-\d{2}$/.test(d)) { if (d !== null) alert('Formato inválido. Usa YYYY-MM-DD'); return; }
+  cycleLog.unshift({ id: uid(), date: d, type, notes: '' });
+  cycleLog.sort((a,b) => b.date.localeCompare(a.date));
+  save(); renderCyclePanel(); checkLogros();
+}
+function openSymptomModal() {
+  document.getElementById('sym-date').value  = today();
+  document.getElementById('sym-notes').value = '';
+  document.getElementById('modal-symptom').classList.add('open');
+}
+function closeSymptomModal() { document.getElementById('modal-symptom').classList.remove('open'); }
+function saveSymptom() {
+  const date    = document.getElementById('sym-date').value;
+  const symptom = document.getElementById('sym-type').value;
+  const notes   = document.getElementById('sym-notes').value.trim();
+  if (!date) { alert('Pon la fecha 🌸'); return; }
+  cycleLog.unshift({ id: uid(), date, type: 'symptom', symptom, notes });
+  cycleLog.sort((a,b) => b.date.localeCompare(a.date));
+  save(); closeSymptomModal(); renderCyclePanel();
+}
+function deleteCycleEntry(id) {
+  if (confirm('¿Eliminar esta entrada?')) {
+    cycleLog = cycleLog.filter(x => x.id !== id);
+    save(); renderCyclePanel();
+  }
+}
+function predictNextPeriod() {
+  const starts = cycleLog.filter(e => e.type === 'start').map(e => e.date).sort();
+  if (starts.length < 2) return null;
+  const diffs = [];
+  for (let i = 1; i < starts.length; i++) {
+    const d1 = new Date(starts[i-1]+'T00:00:00'), d2 = new Date(starts[i]+'T00:00:00');
+    const days = Math.round((d2-d1)/86400000);
+    if (days > 15 && days < 50) diffs.push(days);
+  }
+  if (!diffs.length) return null;
+  const avgCycle = Math.round(diffs.reduce((a,b)=>a+b,0)/diffs.length);
+  const lastStart = new Date(starts[starts.length-1]+'T00:00:00');
+  const nextDate = new Date(lastStart); nextDate.setDate(nextDate.getDate() + avgCycle);
+  const daysUntil = Math.round((nextDate - new Date()) / 86400000);
+  return { nextDate: localDateStr(nextDate), avgCycle, daysUntil, lastStart: starts[starts.length-1] };
+}
+function renderCyclePanel() {
+  const pred = predictNextPeriod();
+  const banner = document.getElementById('cycle-prediction-banner');
+  if (pred && banner) {
+    const daysUntil = pred.daysUntil;
+    const urgency = daysUntil <= 3 ? '🔴' : daysUntil <= 7 ? '🟡' : '🟢';
+    const msg = daysUntil < 0 ? `Tu período debió llegar hace ${Math.abs(daysUntil)} días` :
+                daysUntil === 0 ? '¡Tu período podría llegar hoy!' :
+                `Tu próximo período se espera en ${daysUntil} día${daysUntil!==1?'s':''}`;
+    banner.innerHTML = `<div class="cycle-prediction-banner">
+      <div style="font-size:.72rem;font-weight:600;color:#5a3060;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">🔮 Predicción del ciclo</div>
+      <div style="font-size:1rem;font-weight:700;color:#5a3060;margin-bottom:2px">${urgency} ${msg}</div>
+      <div style="font-size:.78rem;color:#7a5080">Aprox. ${fmtDate(pred.nextDate)} · Ciclo promedio: ${pred.avgCycle} días</div>
+    </div>`;
+  } else if (banner) {
+    banner.innerHTML = cycleLog.filter(e=>e.type==='start').length >= 1
+      ? '<div class="card" style="padding:12px 16px;margin-bottom:12px;font-size:.85rem;color:var(--text-l)">Necesitas al menos 2 fechas de inicio para calcular predicciones 🌸</div>'
+      : '<div class="card" style="padding:12px 16px;margin-bottom:12px;font-size:.85rem;color:var(--text-l)">Registra tus períodos para obtener predicciones y recomendaciones personalizadas 🌸</div>';
+  }
+
+  const el = document.getElementById('cycle-list');
+  if (!el) return;
+  if (!cycleLog.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">🌸</div>Aún no hay registros de ciclo.<br><span style="font-size:.8rem">Registra tu período e irás viendo predicciones</span></div>';
+    return;
+  }
+  const typeIcon = { start:'🩸', end:'✅', symptom:'💊' };
+  const typeLabel = { start:'Inicio del período', end:'Fin del período', symptom:'Síntoma' };
+  el.innerHTML = cycleLog.slice(0, 20).map(e => {
+    const cls = e.type === 'start' ? 'cycle-start' : e.type === 'end' ? 'cycle-end' : 'cycle-symptom';
+    return `<div class="cycle-entry-card ${cls}">
+      <div style="font-size:1.3rem">${typeIcon[e.type]||'📍'}</div>
+      <div style="flex:1">
+        <div style="font-size:.88rem;font-weight:600;color:var(--text)">${typeLabel[e.type]||e.type}</div>
+        <div style="font-size:.74rem;color:var(--text-l)">${fmtDate(e.date)}${e.symptom?' · '+e.symptom:''}${e.notes?' · '+e.notes:''}</div>
+      </div>
+      <button class="btn btn-peach btn-icon btn-sm" onclick="deleteCycleEntry('${e.id}')">🗑️</button>
+    </div>`;
+  }).join('');
+}
+
+// ══════════ AI WEEKLY REPORT ══════════
+async function generateWeeklyReport(force = false) {
+  const now = new Date();
+  const weekKey = `${now.getFullYear()}-W${Math.ceil((now - new Date(now.getFullYear(),0,1)) / (7*86400000))}`;
+  if (!force && aiWeeklyCache && aiWeeklyCache.weekKey === weekKey) {
+    renderWeeklyReport(aiWeeklyCache.text); return;
+  }
+  const el = document.getElementById('ai-weekly-content');
+  el.innerHTML = '<span style="color:var(--text-l);font-style:italic">✨ Generando análisis semanal personalizado…</span>';
+
+  const cyclePredict = predictNextPeriod();
+  const recent7sleep = sleepLog.slice(0, 7);
+  const avgSleep = recent7sleep.length ? (recent7sleep.reduce((a,s)=>a+(s.hours||0),0)/recent7sleep.length).toFixed(1) : 'sin datos';
+  const habitStats = habits.map(h => {
+    const mon = startOfWeek();
+    const weekDays = Array.from({length:7},(_,i)=>{const d=new Date(mon);d.setDate(d.getDate()+i);return localDateStr(d)});
+    const done = (h.log||[]).filter(d=>weekDays.includes(d)).length;
+    return `${h.emoji||''} ${h.name}: ${done}/7 días`;
+  }).join(', ') || 'sin hábitos';
+  const moodVals = Object.entries(moods).sort(([a],[b])=>b.localeCompare(a)).slice(0,7).map(([,v])=>v);
+  const avgMood = moodVals.length ? (moodVals.reduce((a,b)=>a+b,0)/moodVals.length).toFixed(1) : 'sin datos';
+  const weekHours = calcWeekSchedHours();
+  const weekHoursText = Object.entries(weekHours).map(([k,v])=>`${CAT_LABELS[k]||k}: ${v}h`).join(', ') || 'sin registros';
+  const cycleText = cyclePredict
+    ? `Próximo período estimado: ${fmtDate(cyclePredict.nextDate)} (en ${cyclePredict.daysUntil} días). Ciclo promedio: ${cyclePredict.avgCycle} días.`
+    : 'Sin suficientes datos de ciclo para predicción.';
+  const lastSymptoms = cycleLog.filter(e=>e.type==='symptom').slice(0,3).map(e=>`${e.date}: ${e.symptom}`).join(', ') || 'ninguno';
+
+  const prompt = `Genera un análisis semanal de bienestar para ${profile.name||'la usuaria'} con estos datos reales:
+
+SUEÑO: Promedio ${avgSleep}h/noche (meta recomendada 7-9h)
+HÁBITOS ESTA SEMANA: ${habitStats}
+ÁNIMO PROMEDIO: ${avgMood}/5
+TIEMPO REGISTRADO: ${weekHoursText}
+CICLO MENSTRUAL: ${cycleText}
+SÍNTOMAS RECIENTES: ${lastSymptoms}
+
+Estructura tu respuesta EXACTAMENTE así (usa estos emojis como encabezados):
+
+📊 RESUMEN DE LA SEMANA
+[2-3 oraciones destacando logros y puntos de mejora más importantes]
+
+💡 3 RECOMENDACIONES PARA LA PRÓXIMA SEMANA
+1. [Recomendación accionable y específica basada en los datos]
+2. [Recomendación accionable y específica basada en los datos]
+3. [Recomendación accionable y específica basada en los datos]
+
+🔮 PREDICCIONES Y RECORDATORIOS
+[Incluye SIEMPRE la predicción del ciclo menstrual si hay datos: "En función a tus datos, alrededor del [fecha] te llegará el período. Recuerda [recomendación específica para ese momento]". Si hay síntomas frecuentes, menciónalos. Agrega 1-2 predicciones más basadas en patrones de sueño/hábitos.]
+
+Tono: cálido, empoderador, como una amiga experta. Español. Máximo 280 palabras.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const text = data.content?.map(c=>c.text||'').join('') || 'No se pudo generar el análisis.';
+    aiWeeklyCache = { weekKey, text, generatedAt: new Date().toISOString() };
+    localStorage.setItem('vb_ai_weekly', JSON.stringify(aiWeeklyCache));
+    renderWeeklyReport(text);
+  } catch(err) {
+    el.innerHTML = '<span style="color:var(--text-l)">Sin conexión. Verifica tu internet e intenta de nuevo.</span>';
+  }
+}
+function renderWeeklyReport(text) {
+  const el = document.getElementById('ai-weekly-content');
+  if (!el) return;
+  el.innerHTML = `<div style="font-size:.88rem;line-height:1.75;color:var(--text);white-space:pre-wrap">${text.replace(/\n/g,'<br>')}</div>`;
+  if (aiWeeklyCache?.generatedAt) {
+    const d = new Date(aiWeeklyCache.generatedAt);
+    el.innerHTML += `<div style="font-size:.7rem;color:var(--text-l);margin-top:12px;border-top:1px solid var(--warm);padding-top:8px">Generado: ${d.toLocaleDateString('es-ES')} · ${d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})}</div>`;
+  }
+}
+
+// ══════════ CHARTS — TIEMPO ══════════
+function renderTiempoChart() {
+  destroyChart('tcat');
+  const ctx = document.getElementById('chart-tiempo-cat');
+  if (!ctx) return;
+  const hours = calcWeekSchedHours();
+  if (!Object.keys(hours).length) return;
+  chartInstances['tcat'] = new Chart(ctx.getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(hours).map(k => CAT_LABELS[k]||k),
+      datasets: [{ data: Object.values(hours), backgroundColor: Object.keys(hours).map(k=>CAT_COLORS[k]||'#ede8f0'), borderWidth: 0, hoverOffset: 6 }]
+    },
+    options: { plugins: { legend: { labels: { font: { family: 'DM Sans', size: 11 }, boxWidth: 12 } } }, cutout: '55%', responsive: true }
+  });
+}
+function renderSleepChartGraficas() {
+  renderSleepChart('chart-sleep-graficas');
+}
+
+// ══════════ UPDATE BUILD AI CONTEXT (override) ══════════
+const _origBuildAIContext = buildAIContext;
+// We override buildAIContext inline here
+window.buildAIContext = function() {
+  const tod = today();
+  const todayTasks = tasks.filter(x=>isTaskDueToday(x)&&!isTaskDoneToday(x));
+  const doneTasks  = tasks.filter(x=>isTaskDoneToday(x));
+  const bestHabit  = habits.reduce((b,h)=>calcHabitStreak(h)>calcHabitStreak(b||{log:[]})? h:b, null);
+  const recentMoods = Object.entries(moods).sort(([a],[b])=>b.localeCompare(a)).slice(0,7).map(([,v])=>MOOD_LABELS[v]).join(', ');
+  const lastDiaries = diary.slice(0,3).map(e=>e.text.slice(0,80)).join(' | ');
+  const recent7sleep = sleepLog.slice(0,7);
+  const avgSleep = recent7sleep.length ? (recent7sleep.reduce((a,s)=>a+(s.hours||0),0)/recent7sleep.length).toFixed(1) : 'sin datos';
+  const sleepStr = recent7sleep.map(s=>`${s.date}:${s.hours}h(cal${s.quality}/5)`).join(', ');
+  const cyclePredict = predictNextPeriod();
+  const cycleInfo = cyclePredict ? `Próximo período est. ${fmtDate(cyclePredict.nextDate)} en ${cyclePredict.daysUntil}d. Ciclo prom: ${cyclePredict.avgCycle}d.` : 'Ciclo: sin datos suficientes.';
+  const lastSymptoms = cycleLog.filter(e=>e.type==='symptom').slice(0,3).map(e=>`${e.date} ${e.symptom}`).join(', ') || 'ninguno';
+  const weekHours = calcWeekSchedHours();
+  const weekHoursStr = Object.entries(weekHours).map(([k,v])=>`${CAT_LABELS[k]||k}:${v}h`).join(', ') || 'sin registros';
+  return `Eres el asistente personal de Vida Bloom, una app de bienestar femenino. Siempre en español, tono cálido y empoderador. Eres como una amiga de confianza, inteligente y experta en salud holística.
+
+DATOS DE ${profile.name||'la usuaria'}:
+- Tareas hoy: ${todayTasks.length} pendientes, ${doneTasks.length} completadas
+- Hábitos: ${habits.length} total, mejor racha: ${bestHabit?`${bestHabit.name} ${calcHabitStreak(bestHabit)}d`:'ninguna'}
+- Sueño promedio últimos 7 días: ${avgSleep}h | ${sleepStr||'sin datos'}
+- Tiempo registrado esta semana: ${weekHoursStr}
+- Ánimo reciente (7d): ${recentMoods||'no registrado'}
+- ${cycleInfo}
+- Síntomas ciclo recientes: ${lastSymptoms}
+- Metas activas: ${dreams.length}
+- Últimas notas del diario: ${lastDiaries||'ninguna'}
+
+Responde en español. Sé concisa (máx 5 oraciones). Siempre algo útil y accionable. Si el tema es el ciclo, sé empática y basa recomendaciones en los datos.`;
+};
+
+// ══════════ UPDATE renderCharts ══════════
+const _origRenderCharts = renderCharts;
+window.renderCharts = function() {
+  _origRenderCharts();
+  renderTiempoChart();
+  renderSleepChartGraficas();
+  // Load weekly cache if exists
+  if (aiWeeklyCache) renderWeeklyReport(aiWeeklyCache.text);
+};
+
+// ══════════ UPDATE HABITS — show time progress ══════════
+const _origRenderHabits = renderHabits;
+window.renderHabits = function() {
+  _origRenderHabits();
+  // Inject time badges into habit cards
+  habits.forEach((h, idx) => {
+    if (!h.isTimeBased) return;
+    const tp = getHabitTimePct(h, today());
+    if (!tp) return;
+    const card = document.querySelector(`.habit-card:nth-child(${idx+1})`);
+    if (!card) return;
+    const existing = card.querySelector('.habit-time-badge');
+    if (existing) existing.remove();
+    const badge = document.createElement('div');
+    badge.className = 'habit-time-badge';
+    badge.textContent = `⏱️ ${tp.logged}min / ${tp.goal}min (${tp.pct}%)`;
+    const streak = card.querySelector('.habit-streak');
+    if (streak) streak.after(badge);
+  });
+};
+
+// ══════════ UPDATE saveHabit to save time fields ══════════
+const _origSaveHabit = saveHabit;
+window.saveHabit = function() {
+  const name = document.getElementById('h-name').value.trim();
+  if (!name) { alert('Nombra tu hábito 🌿'); return; }
+  const recurrence = document.getElementById('h-recurrence').value;
+  const recurrenceDays = recurrence === 'weekly' ? getSelectedHabitDays() : [];
+  const timesPerWeek = recurrence === 'xperweek' ? parseInt(document.getElementById('h-times-per-week').value) : null;
+  const colorIdx = parseInt(document.getElementById('h-color').value);
+  const isTimeBased = document.getElementById('h-is-time').checked;
+  const durationGoal = isTimeBased ? parseInt(document.getElementById('h-duration-goal').value) || 20 : null;
+  const schedKeyword = isTimeBased ? document.getElementById('h-sched-cat').value.trim().toLowerCase() : null;
+
+  if (editHabitId) {
+    const idx = habits.findIndex(x=>x.id===editHabitId);
+    habits[idx] = { ...habits[idx], name, emoji: document.getElementById('h-emoji').value.trim(), recurrence, recurrenceDays, timesPerWeek, colorIdx, isTimeBased, durationGoal, schedKeyword };
+  } else {
+    habits.push({ id: uid(), name, emoji: document.getElementById('h-emoji').value.trim(), recurrence, recurrenceDays, timesPerWeek, colorIdx, isTimeBased, durationGoal, schedKeyword, log: [], timeLog: {} });
+  }
+  save(); closeHabitModal(); renderHabits();
+};
+
+function toggleHabitTimeUI() {
+  const show = document.getElementById('h-is-time').checked;
+  document.getElementById('h-time-fields').style.display = show ? '' : 'none';
+}
+
+// Populate habit modal with time fields when editing
+const _origOpenHabitModal = openHabitModal;
+window.openHabitModal = function(id) {
+  _origOpenHabitModal(id);
+  document.getElementById('h-is-time').checked = false;
+  document.getElementById('h-time-fields').style.display = 'none';
+  document.getElementById('h-duration-goal').value = '';
+  document.getElementById('h-sched-cat').value = '';
+  if (id) {
+    const h = habits.find(x=>x.id===id);
+    if (h && h.isTimeBased) {
+      document.getElementById('h-is-time').checked = true;
+      document.getElementById('h-time-fields').style.display = '';
+      document.getElementById('h-duration-goal').value = h.durationGoal || 20;
+      document.getElementById('h-sched-cat').value = h.schedKeyword || '';
+    }
+  }
+};
+
+// ══════════ ADD HABIT TIME FIELDS TO MODAL HTML ══════════
+// (Done in HTML above)
+
+// ══════════ LOGROS — ADD SLEEP AND CYCLE CHECKS ══════════
+ALL_LOGROS.push(
+  { id:'first_sleep', icon:'😴', name:'Dulces sueños', desc:'Registra tu primera noche de sueño', check: () => sleepLog.length > 0 },
+  { id:'sleep_week',  icon:'🌙', name:'Semana descansada', desc:'Registra 7 noches de sueño', check: () => sleepLog.length >= 7 },
+  { id:'first_cycle', icon:'🌸', name:'Conócete a ti misma', desc:'Registra tu primer período', check: () => cycleLog.some(e=>e.type==='start') },
+  { id:'cycle_pred',  icon:'🔮', name:'Predecible', desc:'Obtén tu primera predicción de ciclo', check: () => predictNextPeriod() !== null },
+  { id:'full_day',    icon:'⏱️', name:'Día completo', desc:'Registra 5+ horas en Mi Tiempo en un día', check: () => {
+    const byDate = {};
+    schedEntries.forEach(e=>{ byDate[e.date]=(byDate[e.date]||0)+(e.duration||0); });
+    return Object.values(byDate).some(v=>v>=300);
+  }}
+);
+
+// ══════════ AI SUGGESTIONS UPDATE ══════════
+document.addEventListener('DOMContentLoaded', () => {
+  const suggsEl = document.querySelector('.ai-suggestions');
+  if (suggsEl) suggsEl.innerHTML = `
+    <button class="ai-suggestion" onclick="aiSuggest('resume mi semana en todos los aspectos')">📊 Resumen semanal</button>
+    <button class="ai-suggestion" onclick="aiSuggest('analiza mis patrones de sueño y dame recomendaciones')">😴 Mi sueño</button>
+    <button class="ai-suggestion" onclick="aiSuggest('dime cuándo me llega el período y qué esperar')">🌸 Mi ciclo</button>
+    <button class="ai-suggestion" onclick="aiSuggest('analiza cómo distribuyo mi tiempo y qué mejorar')">⏱️ Mi tiempo</button>
+  `;
+});
+
+// Init fecha filter for sched panel
+document.addEventListener('DOMContentLoaded', () => {
+  const df = document.getElementById('sched-date-filter');
+  if (df) df.value = today();
+  // Close all new modals on bg click
+  ['modal-sched','modal-routine','modal-sleep','modal-symptom'].forEach(mid => {
+    const m = document.getElementById(mid);
+    if (m) m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open'); });
+  });
+});
 </script>
 </body>
 </html>
