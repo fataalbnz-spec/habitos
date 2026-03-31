@@ -882,9 +882,144 @@
   body.dark-mode .ai-weekly-card{background:#241e2e}
   body.dark-mode .sleep-avg-bar{background:#182838}
   @keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+  /* ── FEATURE 1: CHECK-IN DIARIO ── */
+  .checkin-overlay{position:fixed;inset:0;z-index:600;background:linear-gradient(160deg,var(--lavender),var(--rose),var(--mint));display:flex;align-items:center;justify-content:center;padding:24px}
+  .checkin-box{background:var(--white);border-radius:28px;padding:32px 28px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(180,100,180,.25);text-align:center}
+  .checkin-step{display:none}.checkin-step.active{display:block}
+  .checkin-emoji{font-size:3rem;margin-bottom:10px}
+  .checkin-question{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600;color:var(--text);margin-bottom:20px;line-height:1.4}
+  .checkin-options{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
+  .checkin-opt{background:var(--cream);border:2px solid var(--warm);border-radius:14px;padding:10px 16px;cursor:pointer;font-size:.88rem;font-weight:500;color:var(--text);transition:all .18s;flex:1;min-width:70px}
+  .checkin-opt:hover,.checkin-opt.selected{border-color:var(--lav-d);background:var(--lavender);color:var(--text)}
+  .checkin-progress{display:flex;gap:6px;justify-content:center;margin-bottom:20px}
+  .checkin-dot{width:8px;height:8px;border-radius:50%;background:var(--warm);transition:background .3s}
+  .checkin-dot.done{background:var(--lav-d)}
+  .checkin-skip{font-size:.75rem;color:var(--text-l);cursor:pointer;text-decoration:underline;margin-top:6px;display:block}
+  body.dark-mode .checkin-box{background:#1e1828}
+  body.dark-mode .checkin-opt{background:#2a2235;border-color:#3a2e4a;color:#e8d8f0}
+  body.dark-mode .checkin-opt.selected{background:#3a2e4a;border-color:var(--lav-d)}
+
+  /* ── FEATURE 2: CORRELACIONES ── */
+  .corr-insight-card{background:var(--white);border-radius:16px;padding:16px 18px;margin-bottom:10px;box-shadow:0 3px 14px var(--shadow);border-left:4px solid var(--lav-d);display:flex;gap:12px;align-items:flex-start}
+  .corr-insight-icon{font-size:1.4rem;flex-shrink:0}
+  .corr-insight-text{font-size:.85rem;color:var(--text);line-height:1.55}
+  .corr-insight-label{font-size:.7rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+  body.dark-mode .corr-insight-card{background:#241e2e}
+
+  /* ── FEATURE 3: NOTA MENTAL RÁPIDA ── */
+  .quick-note-fab{position:fixed;bottom:90px;right:20px;z-index:400;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--peach),#f9c8a8);border:none;cursor:pointer;font-size:1.3rem;box-shadow:0 4px 16px rgba(220,140,80,.35);display:flex;align-items:center;justify-content:center;transition:transform .2s}
+  .quick-note-fab:hover{transform:scale(1.1)}
+  .quick-note-panel{position:fixed;bottom:150px;right:16px;z-index:400;background:var(--white);border-radius:20px;padding:18px;width:300px;box-shadow:0 8px 32px rgba(180,100,180,.2);display:none;flex-direction:column;gap:10px}
+  .quick-note-panel.open{display:flex}
+  .quick-note-header{display:flex;justify-content:space-between;align-items:center}
+  .quick-note-title{font-size:.82rem;font-weight:600;color:var(--text)}
+  .quick-note-close{background:none;border:none;font-size:1rem;cursor:pointer;color:var(--text-l)}
+  .quick-note-ta{width:100%;min-height:80px;border:1.5px solid var(--warm);border-radius:12px;padding:10px;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--text);background:var(--cream);resize:none;outline:none}
+  .quick-note-ta:focus{border-color:var(--lav-d)}
+  .quick-note-list{max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+  .quick-note-item{background:var(--cream);border-radius:10px;padding:8px 10px;font-size:.78rem;color:var(--text);display:flex;gap:8px;align-items:flex-start}
+  .quick-note-item-date{font-size:.68rem;color:var(--text-l);white-space:nowrap;margin-top:1px}
+  body.dark-mode .quick-note-panel{background:#1e1828}
+  body.dark-mode .quick-note-ta{background:#2a2235;color:#e8d8f0;border-color:#3a2e4a}
+  body.dark-mode .quick-note-item{background:#2a2235;color:#e8d8f0}
+
+  /* ── FEATURE 4: VISTA NUTRICIÓN SEMANA/MES ── */
+  .nut-view-tabs{display:flex;gap:6px;margin-bottom:16px;background:var(--cream);border-radius:12px;padding:4px}
+  .nut-view-tab{flex:1;border:none;background:transparent;border-radius:9px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;color:var(--text-l);cursor:pointer;transition:all .18s}
+  .nut-view-tab.active{background:var(--white);color:var(--text);box-shadow:0 2px 8px var(--shadow)}
+  .nut-day-col{background:var(--white);border-radius:14px;padding:12px 10px;min-width:90px;box-shadow:0 2px 10px var(--shadow);flex-shrink:0}
+  .nut-day-col.is-today{border:2px solid var(--lav-d)}
+  .nut-day-header{font-size:.7rem;font-weight:700;color:var(--text-l);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;text-align:center}
+  .nut-day-water{font-size:.75rem;text-align:center;margin-bottom:5px;color:#4a90c4}
+  .nut-day-meal-pill{font-size:.68rem;background:var(--lavender);border-radius:6px;padding:2px 5px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .nut-month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .nut-month-cell{background:var(--cream);border-radius:8px;padding:5px;min-height:52px;font-size:.7rem}
+  .nut-month-cell.has-data{background:var(--white);box-shadow:0 1px 6px var(--shadow)}
+  .nut-month-cell.is-today{border:2px solid var(--lav-d)}
+  .nut-month-daynum{font-size:.68rem;font-weight:700;color:var(--text-l);margin-bottom:2px}
+  .nut-month-water-bar{height:4px;border-radius:2px;background:var(--sky);margin-bottom:3px}
+  .nut-month-dot{width:6px;height:6px;border-radius:50%;background:var(--mint-d);display:inline-block;margin:1px}
+  body.dark-mode .nut-day-col,.nut-month-cell.has-data{background:#241e2e}
+
+  /* ── FEATURE 5: MODO ENFOQUE ── */
+  .enfoque-banner{background:linear-gradient(135deg,#1a0a2e,#2d1f4e);border-radius:20px;padding:20px 22px;margin-bottom:18px;color:#fff;position:relative;overflow:hidden}
+  .enfoque-banner::before{content:'🎯';position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:4rem;opacity:.08}
+  .enfoque-banner-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#c3b8e8;margin-bottom:10px}
+  .enfoque-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+  .enfoque-item:last-child{margin-bottom:0}
+  .enfoque-badge{background:rgba(255,255,255,.12);border-radius:8px;padding:3px 9px;font-size:.67rem;font-weight:600;color:#e8d8f8;white-space:nowrap;flex-shrink:0;margin-top:1px}
+  .enfoque-text{font-size:.88rem;color:#f0e8ff;line-height:1.4}
+  .enfoque-loading{font-size:.85rem;color:#c3b8e8;font-style:italic}
+  .enfoque-refresh{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:5px 12px;font-size:.72rem;color:#e8d8f8;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+  .enfoque-refresh:hover{background:rgba(255,255,255,.2)}
 </style>
 </head>
 <body>
+
+<!-- ══ CHECK-IN DIARIO ══ -->
+<div class="checkin-overlay" id="checkin-overlay" style="display:none">
+  <div class="checkin-box">
+    <div class="checkin-progress" id="checkin-dots">
+      <div class="checkin-dot" id="cdot-0"></div>
+      <div class="checkin-dot" id="cdot-1"></div>
+      <div class="checkin-dot" id="cdot-2"></div>
+    </div>
+
+    <!-- Paso 1: Energía -->
+    <div class="checkin-step active" id="cs-0">
+      <div class="checkin-emoji">⚡</div>
+      <div class="checkin-question">¿Cómo está tu energía ahora mismo?</div>
+      <div class="checkin-options">
+        <div class="checkin-opt" data-step="0" data-val="muy_alta" onclick="selectCheckin(0,'muy_alta',this)">🚀 Muy alta</div>
+        <div class="checkin-opt" data-step="0" data-val="buena" onclick="selectCheckin(0,'buena',this)">😊 Buena</div>
+        <div class="checkin-opt" data-step="0" data-val="normal" onclick="selectCheckin(0,'normal',this)">😐 Normal</div>
+        <div class="checkin-opt" data-step="0" data-val="baja" onclick="selectCheckin(0,'baja',this)">😔 Baja</div>
+        <div class="checkin-opt" data-step="0" data-val="agotada" onclick="selectCheckin(0,'agotada',this)">😴 Agotada</div>
+      </div>
+    </div>
+
+    <!-- Paso 2: Ánimo -->
+    <div class="checkin-step" id="cs-1">
+      <div class="checkin-emoji">💭</div>
+      <div class="checkin-question">¿Cómo está tu ánimo hoy?</div>
+      <div class="checkin-options">
+        <div class="checkin-opt" data-step="1" data-val="5" onclick="selectCheckin(1,'5',this)">🤩 ¡Increíble!</div>
+        <div class="checkin-opt" data-step="1" data-val="4" onclick="selectCheckin(1,'4',this)">😊 Bien</div>
+        <div class="checkin-opt" data-step="1" data-val="3" onclick="selectCheckin(1,'3',this)">😐 Normal</div>
+        <div class="checkin-opt" data-step="1" data-val="2" onclick="selectCheckin(1,'2',this)">😔 No tan bien</div>
+        <div class="checkin-opt" data-step="1" data-val="1" onclick="selectCheckin(1,'1',this)">😢 Difícil</div>
+      </div>
+    </div>
+
+    <!-- Paso 3: Sueño rápido -->
+    <div class="checkin-step" id="cs-2">
+      <div class="checkin-emoji">😴</div>
+      <div class="checkin-question">¿Cómo dormiste anoche?</div>
+      <div class="checkin-options">
+        <div class="checkin-opt" data-step="2" data-val="muy_bien" onclick="selectCheckin(2,'muy_bien',this)">🌟 Muy bien</div>
+        <div class="checkin-opt" data-step="2" data-val="bien" onclick="selectCheckin(2,'bien',this)">🙂 Bien</div>
+        <div class="checkin-opt" data-step="2" data-val="regular" onclick="selectCheckin(2,'regular',this)">😐 Regular</div>
+        <div class="checkin-opt" data-step="2" data-val="mal" onclick="selectCheckin(2,'mal',this)">😔 Mal</div>
+        <div class="checkin-opt" data-step="2" data-val="muy_mal" onclick="selectCheckin(2,'muy_mal',this)">😩 Muy mal</div>
+      </div>
+    </div>
+
+    <span class="checkin-skip" onclick="skipCheckin()">Omitir por hoy →</span>
+  </div>
+</div>
+
+<!-- ══ NOTA MENTAL RÁPIDA FAB ══ -->
+<button class="quick-note-fab" onclick="toggleQuickNote()" title="Nota rápida 📝">📝</button>
+<div class="quick-note-panel" id="quick-note-panel">
+  <div class="quick-note-header">
+    <span class="quick-note-title">📝 Nota rápida</span>
+    <button class="quick-note-close" onclick="toggleQuickNote()">✕</button>
+  </div>
+  <textarea class="quick-note-ta" id="quick-note-ta" placeholder="Suelta lo que tengas en la mente… sin filtros 🌸" onkeydown="if(event.key==='Enter'&&event.ctrlKey)saveQuickNote()"></textarea>
+  <button class="btn btn-rose btn-sm" onclick="saveQuickNote()" style="align-self:flex-end">Guardar (Ctrl+↵)</button>
+  <div class="quick-note-list" id="quick-note-list"></div>
+</div>
 
 <!-- ══ PANTALLA DE LOGIN ══ -->
 <div id="login-screen">
@@ -935,7 +1070,7 @@
     <button class="nav-tab" onclick="showPage('calendario',event)">📅 Calendario</button>
     <button class="nav-tab" onclick="showPage('tiempo',event)">⏱️ Mi Tiempo</button>
     <button class="nav-tab" onclick="showPage('suenos',event)">🌙 Metas & Sueños</button>
-    <button class="nav-tab" onclick="showPage('diario',event)">📝 Diario</button>
+    <button class="nav-tab" onclick="showPage('nutricion',event)">🥗 Nutrición</button>
     <button class="nav-tab" onclick="showPage('logros',event)">🏆 Logros</button>
   </div>
 </nav>
@@ -947,6 +1082,15 @@
   <div class="quote-banner" id="quote-banner"></div>
 
   <h2 id="hoy-titulo">Buenos días 🌸</h2>
+
+  <!-- ▸ MODO ENFOQUE DEL DÍA ◂ -->
+  <div class="enfoque-banner" id="enfoque-banner">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div class="enfoque-banner-title">🎯 Tu enfoque de hoy</div>
+      <button class="enfoque-refresh" onclick="generateEnfoque(true)">↺ Actualizar</button>
+    </div>
+    <div id="enfoque-content" class="enfoque-loading">Cargando tu enfoque del día… ✨</div>
+  </div>
 
   <!-- ▸ BLOQUE SUPERIOR STICKY: Esta semana + Stats ◂ -->
   <div class="hoy-sticky" id="hoy-sticky-block">
@@ -987,37 +1131,146 @@
   </div>
 </div>
 
-<!-- ══════════ DIARIO ══════════ -->
-<div class="page" id="page-diario">
+<!-- ══════════ NUTRICIÓN ══════════ -->
+<div class="page" id="page-nutricion">
   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px">
-    <h2 style="margin-bottom:0">📝 Mi Diario</h2>
+    <h2 style="margin-bottom:0">🥗 Mi Nutrición</h2>
+    <button class="btn btn-mint btn-sm" onclick="openNutGoalModal()">🎯 Objetivos del mes</button>
   </div>
 
-  <!-- Write today -->
-  <div class="card diary-write-card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+  <!-- OBJETIVOS DEL MES -->
+  <div id="nut-goals-banner" style="display:none" class="card" style="border-left:4px solid var(--mint-d);margin-bottom:18px;background:linear-gradient(135deg,var(--mint),#fff)">
+  </div>
+
+  <!-- AGUA DEL DÍA -->
+  <div class="card" style="margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
       <div>
-        <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600" id="diary-today-label">Hoy</div>
-        <div style="font-size:.78rem;color:var(--text-l)">¿Cómo estuvo tu día?</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600">💧 Agua de hoy</div>
+        <div style="font-size:.75rem;color:var(--text-l)">Meta: <span id="nut-water-goal-lbl">8</span> vasos</div>
       </div>
-      <div class="diary-mood-row" id="diary-mood-picker">
-        <span class="mood-btn" data-mood="5" onclick="pickDiaryMood(5)" title="¡Increíble!">🤩</span>
-        <span class="mood-btn" data-mood="4" onclick="pickDiaryMood(4)" title="Bien">😊</span>
-        <span class="mood-btn" data-mood="3" onclick="pickDiaryMood(3)" title="Normal">😐</span>
-        <span class="mood-btn" data-mood="2" onclick="pickDiaryMood(2)" title="No tan bien">😔</span>
-        <span class="mood-btn" data-mood="1" onclick="pickDiaryMood(1)" title="Difícil">😢</span>
-      </div>
+      <div id="nut-water-count" style="font-size:2rem;font-weight:700;color:#4a90c4">0</div>
     </div>
-    <textarea id="diary-text" placeholder="Escribe lo que quieras… sin filtros, sin estructura. Este es tu espacio 🌸" style="min-height:130px;width:100%"></textarea>
-    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px">
-      <button class="btn btn-peach btn-sm" onclick="clearDiaryDraft()">Limpiar</button>
-      <button class="btn btn-rose" onclick="saveDiaryEntry()">Guardar entrada 💾</button>
+    <div id="nut-water-glasses" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn btn-sm" style="background:var(--sky);color:#1a5080;border:none" onclick="addWater()">+ 1 vaso</button>
+      <button class="btn btn-sm" style="background:var(--peach);color:#904020;border:none" onclick="removeWater()">− 1 vaso</button>
+      <div style="margin-left:auto;font-size:.78rem;color:var(--text-l)" id="nut-water-pct"></div>
     </div>
   </div>
 
-  <!-- Past entries -->
-  <h3 style="margin-bottom:14px">Entradas anteriores</h3>
-  <div id="diary-entries-list"></div>
+  <!-- REGISTRO DE COMIDAS HOY -->
+  <div class="card" style="margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600">🍽️ Comidas de hoy</div>
+      <button class="btn btn-rose btn-sm" onclick="openMealModal()">+ Registrar</button>
+    </div>
+    <div id="nut-meals-today"></div>
+  </div>
+
+  <!-- RECOMENDACIÓN IA -->
+  <div class="card" style="border-left:4px solid var(--lav-d);margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600">🤖 Recomendación IA</div>
+      <button class="btn btn-lav btn-sm" onclick="getNutAIRec()">✨ Recomendar próxima comida</button>
+    </div>
+    <div id="nut-ai-rec" style="font-size:.87rem;color:var(--text-l);font-style:italic">Presiona el botón para obtener una recomendación personalizada según tus objetivos y lo que ya comiste hoy 🌸</div>
+  </div>
+
+  <!-- VISTAS SEMANA / MES / HISTORIAL -->
+  <div class="nut-view-tabs">
+    <button class="nut-view-tab active" onclick="setNutView('hoy',event)">📋 Hoy</button>
+    <button class="nut-view-tab" onclick="setNutView('semana',event)">📅 Semana</button>
+    <button class="nut-view-tab" onclick="setNutView('mes',event)">🗓️ Mes</button>
+  </div>
+  <div id="nut-history-list"></div>
+  <div id="nut-week-view" style="display:none"></div>
+  <div id="nut-month-view" style="display:none"></div>
+</div>
+
+<!-- MODAL OBJETIVOS NUTRICIONALES -->
+<div class="modal" id="modal-nut-goals">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">🎯 Objetivos del mes</div>
+      <button class="modal-close" onclick="closeNutGoalModal()">✕</button>
+    </div>
+    <div class="modal-row">
+      <label>¿Cuál es tu objetivo principal este mes?</label>
+      <select id="ng-goal">
+        <option value="bajar_peso">Bajar de peso</option>
+        <option value="mantener">Mantener peso</option>
+        <option value="ganar_masa">Ganar masa muscular</option>
+        <option value="mejorar_energia">Mejorar energía</option>
+        <option value="comer_saludable">Comer más saludable en general</option>
+        <option value="reducir_azucar">Reducir azúcar/procesados</option>
+      </select>
+    </div>
+    <div class="modal-row">
+      <label>Restricciones o preferencias alimentarias</label>
+      <input type="text" id="ng-restrictions" placeholder="Ej: sin gluten, vegetariana, sin lácteos…">
+    </div>
+    <div class="modal-row">
+      <label>Meta de calorías diarias (opcional)</label>
+      <input type="number" id="ng-calories" placeholder="Ej: 1800" min="800" max="5000">
+    </div>
+    <div class="modal-row">
+      <label>Meta de vasos de agua al día</label>
+      <input type="number" id="ng-water" value="8" min="4" max="20">
+    </div>
+    <div class="modal-row">
+      <label>Notas adicionales para el asistente</label>
+      <textarea id="ng-notes" placeholder="Ej: quiero evitar comida frita, prefiero proteínas vegetales…" style="min-height:70px;width:100%"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-peach" onclick="closeNutGoalModal()">Cancelar</button>
+      <button class="btn btn-rose" onclick="saveNutGoals()">Guardar objetivos 💾</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REGISTRAR COMIDA -->
+<div class="modal" id="modal-meal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">🍽️ Registrar comida</div>
+      <button class="modal-close" onclick="closeMealModal()">✕</button>
+    </div>
+    <div class="modal-row">
+      <label>Tipo de comida</label>
+      <select id="meal-type">
+        <option value="desayuno">🌅 Desayuno</option>
+        <option value="media_manana">🍎 Media mañana</option>
+        <option value="almuerzo">☀️ Almuerzo</option>
+        <option value="merienda">🍌 Merienda</option>
+        <option value="cena">🌙 Cena</option>
+        <option value="snack">🍫 Snack</option>
+      </select>
+    </div>
+    <div class="modal-row">
+      <label>¿Qué comiste?</label>
+      <textarea id="meal-desc" placeholder="Ej: Arroz integral con pollo a la plancha y ensalada de espinaca…" style="min-height:80px;width:100%"></textarea>
+    </div>
+    <div class="modal-row">
+      <label>Calorías aproximadas (opcional)</label>
+      <input type="number" id="meal-cal" placeholder="Ej: 450" min="0" max="3000">
+    </div>
+    <div class="modal-row">
+      <label>¿Cómo te sentiste después?</label>
+      <select id="meal-feeling">
+        <option value="">Sin registrar</option>
+        <option value="muy_bien">😊 Muy bien / con energía</option>
+        <option value="bien">🙂 Bien</option>
+        <option value="pesado">😐 Un poco pesado/a</option>
+        <option value="mal">😔 Mal / sin energía</option>
+        <option value="antojo">🍬 Con antojos después</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-peach" onclick="closeMealModal()">Cancelar</button>
+      <button class="btn btn-rose" onclick="saveMeal()">Guardar 💾</button>
+    </div>
+  </div>
 </div>
 
 <!-- ══════════ LOGROS ══════════ -->
@@ -1107,8 +1360,12 @@
       <div id="streaks-list"></div>
     </div>
     <div class="card">
-      <h3>✨ Correlaciones & Insights</h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+        <h3 style="margin:0">🔗 Correlaciones & Insights</h3>
+        <button class="btn btn-lav btn-sm" onclick="renderSmartCorrelations()">↺ Analizar</button>
+      </div>
       <div id="correlations-list"></div>
+      <div id="smart-correlations-list" style="margin-top:10px"></div>
     </div>
     <div class="card">
       <h3>😊 Estado de ánimo — últimos 30 días</h3>
@@ -1669,6 +1926,11 @@ let cycleLog      = JSON.parse(localStorage.getItem('vb_cycle')     || '[]');
 let aiWeeklyCache = JSON.parse(localStorage.getItem('vb_ai_weekly') || 'null');
 let tiempoTab = 'registro';
 let editSchedId = null, editRoutineId = null, sleepQualitySelected = 3;
+// Nuevas features
+let quickNotes    = JSON.parse(localStorage.getItem('vb_quick_notes') || '[]');
+let checkinData   = JSON.parse(localStorage.getItem('vb_checkin')    || '{}'); // {date:{energy,mood,sleep}}
+let enfocueCache  = JSON.parse(localStorage.getItem('vb_enfoque')    || 'null');
+let nutViewTab    = 'hoy';
 
 // ══════════ PROFILE ══════════
 function openProfileModal() {
@@ -2439,7 +2701,7 @@ function showPage(id, ev) {
   if(id === 'graficas')   renderCharts();
   if(id === 'tiempo')     { renderSchedPanel(); renderRoutineList(); }
   if(id === 'suenos')     renderDreams();
-  if(id === 'diario')     renderDiary();
+  if(id === 'nutricion')  renderNutricion();
   if(id === 'logros')     renderLogros();
   if(id === 'calendario') renderCalendar();
 }
@@ -3421,72 +3683,228 @@ function saveMood(val) {
   checkLogros();
 }
 
-// ══════════ DIARIO ══════════
-function renderDiary() {
+// ══════════ NUTRICIÓN ══════════
+let nutGoals  = JSON.parse(localStorage.getItem('vb_nut_goals') || 'null');
+let nutMeals  = JSON.parse(localStorage.getItem('vb_nut_meals') || '[]');
+let nutWater  = JSON.parse(localStorage.getItem('vb_nut_water') || '{}');
+
+const MEAL_LABELS = { desayuno:'🌅 Desayuno', media_manana:'🍎 Media mañana', almuerzo:'☀️ Almuerzo', merienda:'🍌 Merienda', cena:'🌙 Cena', snack:'🍫 Snack' };
+const FEELING_LABELS = { muy_bien:'😊 Muy bien', bien:'🙂 Bien', pesado:'😐 Pesado', mal:'😔 Mal', antojo:'🍬 Con antojos' };
+
+function openNutGoalModal() {
+  if(nutGoals) {
+    document.getElementById('ng-goal').value = nutGoals.goal || 'comer_saludable';
+    document.getElementById('ng-restrictions').value = nutGoals.restrictions || '';
+    document.getElementById('ng-calories').value = nutGoals.calories || '';
+    document.getElementById('ng-water').value = nutGoals.waterGoal || 8;
+    document.getElementById('ng-notes').value = nutGoals.notes || '';
+  }
+  document.getElementById('modal-nut-goals').classList.add('open');
+}
+function closeNutGoalModal() { document.getElementById('modal-nut-goals').classList.remove('open'); }
+function saveNutGoals() {
+  nutGoals = {
+    goal: document.getElementById('ng-goal').value,
+    restrictions: document.getElementById('ng-restrictions').value.trim(),
+    calories: parseInt(document.getElementById('ng-calories').value) || null,
+    waterGoal: parseInt(document.getElementById('ng-water').value) || 8,
+    notes: document.getElementById('ng-notes').value.trim(),
+    savedAt: new Date().toISOString()
+  };
+  localStorage.setItem('vb_nut_goals', JSON.stringify(nutGoals));
+  closeNutGoalModal();
+  renderNutricion();
+  showToast('🎯 Objetivos guardados 💾');
+}
+
+function openMealModal() {
+  document.getElementById('meal-type').value = 'almuerzo';
+  document.getElementById('meal-desc').value = '';
+  document.getElementById('meal-cal').value = '';
+  document.getElementById('meal-feeling').value = '';
+  document.getElementById('modal-meal').classList.add('open');
+}
+function closeMealModal() { document.getElementById('modal-meal').classList.remove('open'); }
+function saveMeal() {
+  const desc = document.getElementById('meal-desc').value.trim();
+  if(!desc) { alert('Describe lo que comiste 🌸'); return; }
+  const meal = {
+    id: uid(), date: today(),
+    type: document.getElementById('meal-type').value,
+    desc,
+    cal: parseInt(document.getElementById('meal-cal').value) || null,
+    feeling: document.getElementById('meal-feeling').value || null,
+    time: new Date().toLocaleTimeString('es-CO', { hour:'2-digit', minute:'2-digit' })
+  };
+  nutMeals.unshift(meal);
+  localStorage.setItem('vb_nut_meals', JSON.stringify(nutMeals));
+  closeMealModal();
+  renderNutricion();
+  showToast('🍽️ Comida registrada');
+}
+function deleteMeal(id) {
+  nutMeals = nutMeals.filter(m => m.id !== id);
+  localStorage.setItem('vb_nut_meals', JSON.stringify(nutMeals));
+  renderNutricion();
+}
+
+function addWater() {
   const tod = today();
-  const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  const d = new Date();
-  document.getElementById('diary-today-label').textContent =
-    `${d.getDate()} de ${months[d.getMonth()]}`;
+  nutWater[tod] = (nutWater[tod] || 0) + 1;
+  localStorage.setItem('vb_nut_water', JSON.stringify(nutWater));
+  renderNutricion();
+}
+function removeWater() {
+  const tod = today();
+  if(!nutWater[tod]) return;
+  nutWater[tod] = Math.max(0, nutWater[tod] - 1);
+  localStorage.setItem('vb_nut_water', JSON.stringify(nutWater));
+  renderNutricion();
+}
 
-  // Restore today's draft if exists
-  const todayEntry = diary.find(e => e.date === tod);
-  if(todayEntry) {
-    document.getElementById('diary-text').value = todayEntry.text;
-    if(todayEntry.mood) {
-      diaryMoodToday = todayEntry.mood;
-      document.querySelectorAll('.mood-btn').forEach(b =>
-        b.classList.toggle('active', parseInt(b.dataset.mood) === todayEntry.mood));
-    }
-  }
+function renderNutricion() {
+  const tod = today();
+  const waterGoal = nutGoals?.waterGoal || 8;
+  const waterToday = nutWater[tod] || 0;
 
-  // Past entries (excluding today if saved)
-  const past = diary.filter(e => e.date !== tod).sort((a,b) => b.date.localeCompare(a.date));
-  const el = document.getElementById('diary-entries-list');
-  if(!past.length) {
-    el.innerHTML = '<div class="empty"><div class="empty-icon">📖</div>Aún no hay entradas anteriores. ¡Este es tu espacio! 🌸</div>';
-    return;
-  }
-  el.innerHTML = past.map(e => {
-    const [y,m,day] = e.date.split('-');
-    const dateLabel = `${day}/${m}/${y}`;
-    return `<div class="diary-entry-item">
-      <div class="diary-entry-header">
-        <span class="diary-entry-date">${e.mood ? MOOD_EMOJIS[e.mood]+' ' : ''}${dateLabel}</span>
-        <button class="diary-entry-del" onclick="deleteDiaryEntry('${e.id}')">Eliminar</button>
+  // Goals banner
+  const banner = document.getElementById('nut-goals-banner');
+  if(nutGoals) {
+    banner.style.display = '';
+    const goalLabels = { bajar_peso:'Bajar de peso ⬇️', mantener:'Mantener peso ⚖️', ganar_masa:'Ganar masa muscular 💪', mejorar_energia:'Mejorar energía ⚡', comer_saludable:'Comer más saludable 🥦', reducir_azucar:'Reducir azúcar/procesados 🚫' };
+    banner.innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:14px 18px;background:linear-gradient(135deg,var(--mint),#eafff4);border-radius:var(--r);border-left:4px solid var(--mint-d)">
+      <div style="font-size:1.4rem">🎯</div>
+      <div style="flex:1">
+        <div style="font-size:.72rem;font-weight:600;color:#2a6040;text-transform:uppercase;letter-spacing:.07em">Objetivo del mes</div>
+        <div style="font-size:.95rem;font-weight:700;color:#2a4030">${goalLabels[nutGoals.goal]||nutGoals.goal}</div>
+        ${nutGoals.restrictions ? `<div style="font-size:.75rem;color:#3a7050">🚫 ${nutGoals.restrictions}</div>` : ''}
+        ${nutGoals.calories ? `<div style="font-size:.75rem;color:#3a7050">🔥 Meta: ${nutGoals.calories} kcal/día</div>` : ''}
+        ${nutGoals.notes ? `<div style="font-size:.75rem;color:#3a7050;margin-top:2px">📝 ${nutGoals.notes}</div>` : ''}
       </div>
-      <div class="diary-entry-text">${e.text}</div>
+      <button class="btn btn-sm" style="background:var(--mint-d);color:#fff;border:none" onclick="openNutGoalModal()">Editar</button>
     </div>`;
-  }).join('');
+  } else {
+    banner.style.display = '';
+    banner.innerHTML = `<div style="padding:14px 18px;background:linear-gradient(135deg,#fff9e8,#fffde4);border-radius:var(--r);border-left:4px solid #f0c860;font-size:.88rem;color:#806020">
+      💡 <strong>Define tus objetivos del mes</strong> para que el asistente pueda darte recomendaciones personalizadas.
+      <button class="btn btn-sm" style="margin-left:10px;background:#f0c860;color:#6a4000;border:none" onclick="openNutGoalModal()">Definir objetivos</button>
+    </div>`;
+  }
+
+  // Water
+  document.getElementById('nut-water-goal-lbl').textContent = waterGoal;
+  document.getElementById('nut-water-count').textContent = waterToday;
+  const pct = Math.round((waterToday/waterGoal)*100);
+  document.getElementById('nut-water-pct').textContent = waterToday >= waterGoal ? '✅ ¡Meta cumplida!' : `${pct}% de tu meta`;
+  const glassesEl = document.getElementById('nut-water-glasses');
+  let glassHtml = '';
+  for(let i=0; i<waterGoal; i++) {
+    glassHtml += `<div style="font-size:1.3rem;cursor:pointer;opacity:${i<waterToday?'1':'.25'}" onclick="${i<waterToday?'removeWater':'addWater'}()" title="${i<waterToday?'Quitar':'Agregar'} 1 vaso">💧</div>`;
+  }
+  glassesEl.innerHTML = glassHtml;
+
+  // Today's meals
+  const todayMeals = nutMeals.filter(m => m.date === tod);
+  const mealsEl = document.getElementById('nut-meals-today');
+  if(!todayMeals.length) {
+    mealsEl.innerHTML = '<div style="color:var(--text-l);font-size:.85rem;padding:8px 0">Sin comidas registradas hoy. ¡Empieza registrando tu desayuno! 🌅</div>';
+  } else {
+    const totalCal = todayMeals.reduce((acc,m) => acc + (m.cal||0), 0);
+    mealsEl.innerHTML = todayMeals.map(m => `
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--warm)">
+        <div style="font-size:1.2rem;flex-shrink:0">${(MEAL_LABELS[m.type]||'🍽️').split(' ')[0]}</div>
+        <div style="flex:1">
+          <div style="font-size:.72rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.05em">${MEAL_LABELS[m.type]||m.type} · ${m.time}</div>
+          <div style="font-size:.88rem;color:var(--text);margin-top:2px">${m.desc}</div>
+          <div style="font-size:.74rem;color:var(--text-l);margin-top:3px;display:flex;gap:10px;flex-wrap:wrap">
+            ${m.cal ? `<span>🔥 ${m.cal} kcal</span>` : ''}
+            ${m.feeling ? `<span>${FEELING_LABELS[m.feeling]||m.feeling}</span>` : ''}
+          </div>
+        </div>
+        <button class="btn btn-peach btn-icon btn-sm" onclick="deleteMeal('${m.id}')">🗑️</button>
+      </div>`).join('') +
+      (totalCal > 0 ? `<div style="text-align:right;font-size:.8rem;color:var(--text-l);padding-top:8px">Total hoy: <strong>${totalCal} kcal</strong>${nutGoals?.calories ? ` / ${nutGoals.calories} meta` : ''}</div>` : '');
+  }
+
+  // History (last 7 days excluding today)
+  const histEl = document.getElementById('nut-history-list');
+  const past7 = [];
+  for(let i=1; i<=7; i++) {
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const ds = localDateStr(d);
+    const dayMeals = nutMeals.filter(m => m.date === ds);
+    const dayWater = nutWater[ds] || 0;
+    if(dayMeals.length || dayWater > 0) past7.push({ ds, dayMeals, dayWater });
+  }
+  if(!past7.length) {
+    histEl.innerHTML = '<div class="empty"><div class="empty-icon">🥗</div>Sin historial aún. Empieza registrando tus comidas hoy 🌸</div>';
+  } else {
+    const months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    histEl.innerHTML = past7.map(({ ds, dayMeals, dayWater }) => {
+      const [y,mo,d] = ds.split('-');
+      const dateLabel = `${d} ${months[parseInt(mo)-1]}`;
+      const dayTotal = dayMeals.reduce((a,m)=>a+(m.cal||0),0);
+      return `<div class="card" style="margin-bottom:10px;padding:12px 16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="font-weight:600;font-size:.88rem">${dateLabel}</div>
+          <div style="font-size:.75rem;color:var(--text-l);display:flex;gap:10px">
+            ${dayTotal>0?`<span>🔥 ${dayTotal} kcal</span>`:''}
+            <span>💧 ${dayWater}/${waterGoal}</span>
+          </div>
+        </div>
+        ${dayMeals.map(m => `<div style="font-size:.8rem;color:var(--text-l);padding:2px 0">${(MEAL_LABELS[m.type]||'🍽️').split(' ')[0]} <strong>${MEAL_LABELS[m.type]?.replace(/[^\w\s]/gi,'').trim()||m.type}</strong> — ${m.desc.slice(0,60)}${m.desc.length>60?'…':''}</div>`).join('')}
+      </div>`;
+    }).join('');
+  }
 }
 
-function saveDiaryEntry() {
-  const text = document.getElementById('diary-text').value.trim();
-  if(!text) { alert('Escribe algo primero 🌸'); return; }
+async function getNutAIRec() {
+  const el = document.getElementById('nut-ai-rec');
+  el.innerHTML = '<span style="color:var(--text-l);font-style:italic">✨ Analizando tu día y objetivos…</span>';
   const tod = today();
-  // Replace today's entry if exists
-  diary = diary.filter(e => e.date !== tod);
-  diary.unshift({ id: uid(), date: tod, text, mood: diaryMoodToday || null });
-  if(diaryMoodToday) { moods[tod] = diaryMoodToday; }
-  save();
-  renderDiary();
-  checkLogros();
-  document.getElementById('diary-text').value = '';
-  diaryMoodToday = 0;
-  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
-  alert('¡Entrada guardada! 💾🌸');
-}
+  const todayMeals = nutMeals.filter(m => m.date === tod);
+  const waterToday = nutWater[tod] || 0;
+  const waterGoal = nutGoals?.waterGoal || 8;
+  const goalLabels = { bajar_peso:'bajar de peso', mantener:'mantener peso', ganar_masa:'ganar masa muscular', mejorar_energia:'mejorar energía', comer_saludable:'comer más saludable', reducir_azucar:'reducir azúcar y procesados' };
 
-function clearDiaryDraft() {
-  document.getElementById('diary-text').value = '';
-  diaryMoodToday = 0;
-  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
-}
+  const mealsSummary = todayMeals.length
+    ? todayMeals.map(m => `${MEAL_LABELS[m.type]||m.type}: ${m.desc}${m.cal?' ('+m.cal+' kcal)':''}${m.feeling?' — sintió: '+m.feeling:''}`).join('\n')
+    : 'No ha comido nada aún hoy';
+  const totalCal = todayMeals.reduce((a,m)=>a+(m.cal||0),0);
+  const hour = new Date().getHours();
+  const timeOfDay = hour < 11 ? 'mañana' : hour < 14 ? 'mediodía' : hour < 18 ? 'tarde' : 'noche';
 
-function deleteDiaryEntry(id) {
-  if(confirm('¿Eliminar esta entrada? 📖')) {
-    diary = diary.filter(e => e.id !== id);
-    save(); renderDiary();
+  const prompt = `Eres una nutricionista amigable y experta. Analiza los datos de esta persona y da una recomendación práctica y cálida para su próxima comida.
+
+DATOS DEL DÍA (${tod} — ${timeOfDay}):
+- Comidas de hoy:\n${mealsSummary}
+- Calorías totales hoy: ${totalCal || 'no registradas'}
+- Agua tomada: ${waterToday} de ${waterGoal} vasos
+
+OBJETIVOS:
+- Meta principal: ${nutGoals ? goalLabels[nutGoals.goal]||nutGoals.goal : 'no definidos'}
+- Restricciones: ${nutGoals?.restrictions || 'ninguna'}
+- Meta calórica diaria: ${nutGoals?.calories || 'no definida'}
+- Notas personales: ${nutGoals?.notes || 'ninguna'}
+
+Da una recomendación concreta y motivadora de qué comer en la próxima comida. Incluye:
+1. Qué tipo de comida es la más adecuada ahora (desayuno/almuerzo/cena/snack)
+2. 2-3 opciones específicas y realistas
+3. Un tip rápido relacionado con su objetivo
+4. Si le falta agua, recuérdalo brevemente
+
+Tono: cálido, práctico, empoderador. En español. Máximo 200 palabras.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role:'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const text = data.content?.map(c=>c.text||'').join('') || 'No se pudo generar la recomendación.';
+    el.innerHTML = `<div style="font-size:.87rem;line-height:1.75;color:var(--text);white-space:pre-wrap">${text.replace(/\n/g,'<br>')}</div>`;
+  } catch(err) {
+    el.innerHTML = '<span style="color:var(--text-l)">Sin conexión. Verifica tu internet e intenta de nuevo 🌸</span>';
   }
 }
 
@@ -3601,11 +4019,7 @@ function addSavingsAmount(dreamId) {
 // ══════════ INIT ══════════
 initLoginScreen();
 // No renderHoy aquí — se llama después del login o skip
-</script>
-</body>
-</html>
 
-<script>
 // ══════════ MI TIEMPO — HELPERS ══════════
 const CAT_COLORS = {
   trabajo:'#c3b8e8', sueno:'#9fd0f0', ejercicio:'#9fd4bb',
@@ -4130,6 +4544,15 @@ async function generateWeeklyReport(force = false) {
     ? `Próximo período estimado: ${fmtDate(cyclePredict.nextDate)} (en ${cyclePredict.daysUntil} días). Ciclo promedio: ${cyclePredict.avgCycle} días.`
     : 'Sin suficientes datos de ciclo para predicción.';
   const lastSymptoms = cycleLog.filter(e=>e.type==='symptom').slice(0,3).map(e=>`${e.date}: ${e.symptom}`).join(', ') || 'ninguno';
+  // Nutrition weekly summary
+  const nutGoalLabels = { bajar_peso:'bajar de peso', mantener:'mantener peso', ganar_masa:'ganar masa muscular', mejorar_energia:'mejorar energía', comer_saludable:'comer más saludable', reducir_azucar:'reducir azúcar/procesados' };
+  const nutGoalWeekStr = nutGoals ? `Objetivo: ${nutGoalLabels[nutGoals.goal]||nutGoals.goal}. Restricciones: ${nutGoals.restrictions||'ninguna'}. Meta cal/día: ${nutGoals.calories||'no definida'}.` : 'Sin objetivos definidos.';
+  const mon = startOfWeek();
+  const weekDaysArr = Array.from({length:7},(_,i)=>{const d=new Date(mon);d.setDate(d.getDate()+i);return localDateStr(d);});
+  const weekMeals = nutMeals.filter(m=>weekDaysArr.includes(m.date));
+  const daysWithMeals = new Set(weekMeals.map(m=>m.date)).size;
+  const weekWaterAvg = weekDaysArr.reduce((acc,d)=>acc+(nutWater[d]||0),0) / 7;
+  const nutWeekStr = `Días con comidas registradas: ${daysWithMeals}/7. Promedio de agua: ${weekWaterAvg.toFixed(1)} vasos/día (meta: ${nutGoals?.waterGoal||8}).`;
 
   const prompt = `Genera un análisis semanal de bienestar para ${profile.name||'la usuaria'} con estos datos reales:
 
@@ -4139,6 +4562,7 @@ HÁBITOS ESTA SEMANA: ${habitStats}
 TIEMPO REGISTRADO: ${weekHoursText}
 CICLO MENSTRUAL: ${cycleText}
 SÍNTOMAS RECIENTES: ${lastSymptoms}
+NUTRICIÓN: ${nutGoalWeekStr} ${nutWeekStr}
 
 Estructura tu respuesta EXACTAMENTE así (usa estos emojis como encabezados):
 
@@ -4148,12 +4572,12 @@ Estructura tu respuesta EXACTAMENTE así (usa estos emojis como encabezados):
 💡 3 RECOMENDACIONES PARA LA PRÓXIMA SEMANA
 1. [Recomendación accionable y específica basada en los datos]
 2. [Recomendación accionable y específica basada en los datos]
-3. [Recomendación accionable y específica basada en los datos]
+3. [Recomendación accionable y específica basada en los datos — incluye una de nutrición si hay datos]
 
 🔮 PREDICCIONES Y RECORDATORIOS
-[Incluye SIEMPRE la predicción del ciclo menstrual si hay datos: "En función a tus datos, alrededor del [fecha] te llegará el período. Recuerda [recomendación específica para ese momento]". Si hay síntomas frecuentes, menciónalos. Agrega 1-2 predicciones más basadas en patrones de sueño/hábitos.]
+[Incluye SIEMPRE la predicción del ciclo menstrual si hay datos: "En función a tus datos, alrededor del [fecha] te llegará el período. Recuerda [recomendación específica para ese momento]". Si hay síntomas frecuentes, menciónalos. Agrega 1-2 predicciones más basadas en patrones de sueño/hábitos/nutrición.]
 
-Tono: cálido, empoderador, como una amiga experta. Español. Máximo 280 palabras.`;
+Tono: cálido, empoderador, como una amiga experta. Español. Máximo 300 palabras.`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -4208,7 +4632,6 @@ window.buildAIContext = function() {
   const doneTasks  = tasks.filter(x=>isTaskDoneToday(x));
   const bestHabit  = habits.reduce((b,h)=>calcHabitStreak(h)>calcHabitStreak(b||{log:[]})? h:b, null);
   const recentMoods = Object.entries(moods).sort(([a],[b])=>b.localeCompare(a)).slice(0,7).map(([,v])=>MOOD_LABELS[v]).join(', ');
-  const lastDiaries = diary.slice(0,3).map(e=>e.text.slice(0,80)).join(' | ');
   const recent7sleep = sleepLog.slice(0,7);
   const avgSleep = recent7sleep.length ? (recent7sleep.reduce((a,s)=>a+(s.hours||0),0)/recent7sleep.length).toFixed(1) : 'sin datos';
   const sleepStr = recent7sleep.map(s=>`${s.date}:${s.hours}h(cal${s.quality}/5)`).join(', ');
@@ -4217,6 +4640,13 @@ window.buildAIContext = function() {
   const lastSymptoms = cycleLog.filter(e=>e.type==='symptom').slice(0,3).map(e=>`${e.date} ${e.symptom}`).join(', ') || 'ninguno';
   const weekHours = calcWeekSchedHours();
   const weekHoursStr = Object.entries(weekHours).map(([k,v])=>`${CAT_LABELS[k]||k}:${v}h`).join(', ') || 'sin registros';
+  // Nutrition context
+  const goalLabels = { bajar_peso:'bajar de peso', mantener:'mantener peso', ganar_masa:'ganar masa muscular', mejorar_energia:'mejorar energía', comer_saludable:'comer más saludable', reducir_azucar:'reducir azúcar/procesados' };
+  const nutGoalStr = nutGoals ? `Objetivo: ${goalLabels[nutGoals.goal]||nutGoals.goal}. Restricciones: ${nutGoals.restrictions||'ninguna'}. Meta cal/día: ${nutGoals.calories||'no definida'}.` : 'Objetivos nutricionales: no definidos.';
+  const todayMeals = nutMeals.filter(m=>m.date===tod);
+  const nutTodayStr = todayMeals.length ? todayMeals.map(m=>`${m.type}: ${m.desc.slice(0,60)}`).join(', ') : 'sin comidas registradas hoy';
+  const waterToday = nutWater[tod] || 0;
+  const waterGoal = nutGoals?.waterGoal || 8;
   return `Eres el asistente personal de Vida Bloom, una app de bienestar femenino. Siempre en español, tono cálido y empoderador. Eres como una amiga de confianza, inteligente y experta en salud holística.
 
 DATOS DE ${profile.name||'la usuaria'}:
@@ -4228,9 +4658,9 @@ DATOS DE ${profile.name||'la usuaria'}:
 - ${cycleInfo}
 - Síntomas ciclo recientes: ${lastSymptoms}
 - Metas activas: ${dreams.length}
-- Últimas notas del diario: ${lastDiaries||'ninguna'}
+- NUTRICIÓN — ${nutGoalStr} Comidas de hoy: ${nutTodayStr}. Agua: ${waterToday}/${waterGoal} vasos.
 
-Responde en español. Sé concisa (máx 5 oraciones). Siempre algo útil y accionable. Si el tema es el ciclo, sé empática y basa recomendaciones en los datos.`;
+Responde en español. Sé concisa (máx 5 oraciones). Siempre algo útil y accionable. Si el tema es el ciclo o nutrición, sé empática y basa recomendaciones en los datos.`;
 };
 
 // ══════════ UPDATE renderCharts ══════════
@@ -4239,8 +4669,8 @@ window.renderCharts = function() {
   _origRenderCharts();
   renderTiempoChart();
   renderSleepChartGraficas();
-  // Load weekly cache if exists
   if (aiWeeklyCache) renderWeeklyReport(aiWeeklyCache.text);
+  setTimeout(renderSmartCorrelations, 300);
 };
 
 // ══════════ UPDATE HABITS — show time progress ══════════
@@ -4333,16 +4763,443 @@ document.addEventListener('DOMContentLoaded', () => {
     <button class="ai-suggestion" onclick="aiSuggest('resume mi semana en todos los aspectos')">📊 Resumen semanal</button>
     <button class="ai-suggestion" onclick="aiSuggest('analiza mis patrones de sueño y dame recomendaciones')">😴 Mi sueño</button>
     <button class="ai-suggestion" onclick="aiSuggest('dime cuándo me llega el período y qué esperar')">🌸 Mi ciclo</button>
-    <button class="ai-suggestion" onclick="aiSuggest('analiza cómo distribuyo mi tiempo y qué mejorar')">⏱️ Mi tiempo</button>
+    <button class="ai-suggestion" onclick="aiSuggest('analiza mi alimentación de hoy y recomiéndame qué comer después')">🥗 Mi nutrición</button>
   `;
 });
 
-// Init fecha filter for sched panel
+// ══════════════════════════════════════════════
+// FEATURE 1 — CHECK-IN DIARIO (30 segundos)
+// ══════════════════════════════════════════════
+let checkinStep = 0;
+const checkinAnswers = {};
+
+function showCheckin() {
+  const tod = today();
+  if (checkinData[tod]) return; // Ya hizo check-in hoy
+  checkinStep = 0;
+  document.querySelectorAll('.checkin-step').forEach((s,i) => s.classList.toggle('active', i===0));
+  document.querySelectorAll('.checkin-dot').forEach(d => d.classList.remove('done'));
+  document.querySelectorAll('.checkin-opt').forEach(o => o.classList.remove('selected'));
+  document.getElementById('checkin-overlay').style.display = 'flex';
+}
+
+function selectCheckin(step, val, el) {
+  document.querySelectorAll(`[data-step="${step}"]`).forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  checkinAnswers[step] = val;
+  document.getElementById(`cdot-${step}`).classList.add('done');
+  setTimeout(() => advanceCheckin(step), 350);
+}
+
+function advanceCheckin(step) {
+  const next = step + 1;
+  if (next >= 3) {
+    finishCheckin();
+  } else {
+    document.getElementById(`cs-${step}`).classList.remove('active');
+    document.getElementById(`cs-${next}`).classList.add('active');
+    checkinStep = next;
+  }
+}
+
+function finishCheckin() {
+  const tod = today();
+  const data = {
+    energy: checkinAnswers[0] || null,
+    mood:   checkinAnswers[1] || null,
+    sleep:  checkinAnswers[2] || null,
+    time:   new Date().toLocaleTimeString('es-CO', {hour:'2-digit',minute:'2-digit'})
+  };
+  checkinData[tod] = data;
+  localStorage.setItem('vb_checkin', JSON.stringify(checkinData));
+  // Si registró ánimo, sincronizar con moods
+  if (data.mood) {
+    moods[tod] = parseInt(data.mood);
+    localStorage.setItem('vb_moods', JSON.stringify(moods));
+  }
+  document.getElementById('checkin-overlay').style.display = 'none';
+  showToast('✅ ¡Check-in guardado! Buen día 🌸');
+  renderHoy();
+  // Auto-generar enfoque del día después del check-in
+  generateEnfoque(false);
+}
+
+function skipCheckin() {
+  const tod = today();
+  checkinData[tod] = { skipped: true };
+  localStorage.setItem('vb_checkin', JSON.stringify(checkinData));
+  document.getElementById('checkin-overlay').style.display = 'none';
+  generateEnfoque(false);
+}
+
+// ══════════════════════════════════════════════
+// FEATURE 2 — CORRELACIONES INTELIGENTES
+// ══════════════════════════════════════════════
+function renderSmartCorrelations() {
+  const el = document.getElementById('smart-correlations-list');
+  if (!el) return;
+  const insights = [];
+
+  // 1. Días con buen sueño → ánimo más alto
+  const moodBySlept = { good:[], poor:[] };
+  sleepLog.forEach(s => {
+    const m = moods[s.date];
+    if (!m) return;
+    if ((s.hours||0) >= 7) moodBySlept.good.push(m);
+    else moodBySlept.poor.push(m);
+  });
+  if (moodBySlept.good.length >= 3 && moodBySlept.poor.length >= 3) {
+    const avgGood = (moodBySlept.good.reduce((a,b)=>a+b,0)/moodBySlept.good.length).toFixed(1);
+    const avgPoor = (moodBySlept.poor.reduce((a,b)=>a+b,0)/moodBySlept.poor.length).toFixed(1);
+    const diff = (avgGood - avgPoor).toFixed(1);
+    if (diff > 0.3) insights.push({ icon:'😴', label:'Sueño → Ánimo', text:`Cuando duermes 7+ horas, tu ánimo sube en promedio <strong>${diff} puntos</strong> (${avgGood}/5 vs ${avgPoor}/5 con menos sueño). ¡El descanso importa mucho!` });
+  }
+
+  // 2. Días con más hábitos → ánimo
+  const moodByHabits = { many:[], few:[] };
+  const allDaysWithMood = Object.keys(moods);
+  allDaysWithMood.forEach(d => {
+    const cnt = habits.filter(h=>(h.log||[]).includes(d)).length;
+    const half = habits.length / 2;
+    if (cnt >= half) moodByHabits.many.push(moods[d]);
+    else moodByHabits.few.push(moods[d]);
+  });
+  if (moodByHabits.many.length >= 3 && moodByHabits.few.length >= 3) {
+    const avgMany = (moodByHabits.many.reduce((a,b)=>a+b,0)/moodByHabits.many.length).toFixed(1);
+    const avgFew  = (moodByHabits.few.reduce((a,b)=>a+b,0)/moodByHabits.few.length).toFixed(1);
+    if (avgMany > avgFew) insights.push({ icon:'🌿', label:'Hábitos → Ánimo', text:`Los días que completas la mitad o más de tus hábitos, tu ánimo promedio es <strong>${avgMany}/5</strong> frente a <strong>${avgFew}/5</strong> cuando completas menos. ¡Los hábitos funcionan! ✨` });
+  }
+
+  // 3. Día de la semana con peor ánimo
+  const moodByDow = {0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
+  allDaysWithMood.forEach(d => {
+    const dow = new Date(d+'T00:00:00').getDay();
+    moodByDow[dow].push(moods[d]);
+  });
+  const dowAvgs = Object.entries(moodByDow).filter(([,v])=>v.length>=2)
+    .map(([k,v])=>({dow:parseInt(k), avg:v.reduce((a,b)=>a+b,0)/v.length}));
+  if (dowAvgs.length >= 4) {
+    const worst = dowAvgs.sort((a,b)=>a.avg-b.avg)[0];
+    const best  = dowAvgs.sort((a,b)=>b.avg-a.avg)[0];
+    const dayNames = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+    if (worst.dow !== best.dow) insights.push({ icon:'📅', label:'Día más difícil', text:`Tu ánimo tiende a bajar más los <strong>${dayNames[worst.dow]}</strong> (promedio ${worst.avg.toFixed(1)}/5) y está mejor los <strong>${dayNames[best.dow]}</strong> (${best.avg.toFixed(1)}/5). Planifica ese día con más autocuidado 🌸` });
+  }
+
+  // 4. Agua vs energía check-in
+  const energyLevels = { alta:[], baja:[] };
+  Object.entries(checkinData).forEach(([d, ci]) => {
+    if (!ci || ci.skipped) return;
+    const w = nutWater[d] || 0;
+    const wGoal = nutGoals?.waterGoal || 8;
+    if (ci.energy === 'muy_alta' || ci.energy === 'buena') energyLevels.alta.push(w);
+    else if (ci.energy === 'baja' || ci.energy === 'agotada') energyLevels.baja.push(w);
+  });
+  if (energyLevels.alta.length >= 3 && energyLevels.baja.length >= 3) {
+    const avgAlta = (energyLevels.alta.reduce((a,b)=>a+b,0)/energyLevels.alta.length).toFixed(1);
+    const avgBaja = (energyLevels.baja.reduce((a,b)=>a+b,0)/energyLevels.baja.length).toFixed(1);
+    if (avgAlta > avgBaja + 0.5) insights.push({ icon:'💧', label:'Agua → Energía', text:`En los días que reportas buena energía, tomaste en promedio <strong>${avgAlta} vasos</strong> de agua, versus <strong>${avgBaja}</strong> en días de baja energía. La hidratación hace diferencia 💧` });
+  }
+
+  // 5. Racha más larga vs ánimo
+  const bestStrHabit = habits.reduce((best,h) => {
+    const streak = calcStreak(h.log||[]);
+    return streak > (best?.streak||0) ? {name:h.name, emoji:h.emoji||'🌿', streak} : best;
+  }, null);
+  if (bestStrHabit && bestStrHabit.streak >= 5) {
+    insights.push({ icon:'🔥', label:'Tu superpoder', text:`Tu hábito más consistente es <strong>${bestStrHabit.emoji} ${bestStrHabit.name}</strong> con ${bestStrHabit.streak} días seguidos. ¡Esa constancia está construyendo la mejor versión de ti! 💪` });
+  }
+
+  if (!insights.length) {
+    el.innerHTML = '<p style="font-size:.83rem;color:var(--text-l)">Sigue usando la app unos días más para descubrir patrones en tus datos 🌱</p>';
+    return;
+  }
+  el.innerHTML = insights.map(i => `
+    <div class="corr-insight-card">
+      <div class="corr-insight-icon">${i.icon}</div>
+      <div>
+        <div class="corr-insight-label">${i.label}</div>
+        <div class="corr-insight-text">${i.text}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════
+// FEATURE 3 — NOTA MENTAL RÁPIDA
+// ══════════════════════════════════════════════
+function toggleQuickNote() {
+  const panel = document.getElementById('quick-note-panel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    renderQuickNotes();
+    document.getElementById('quick-note-ta').focus();
+  }
+}
+
+function saveQuickNote() {
+  const ta = document.getElementById('quick-note-ta');
+  const text = ta.value.trim();
+  if (!text) return;
+  quickNotes.unshift({
+    id: uid(), text,
+    date: today(),
+    time: new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})
+  });
+  if (quickNotes.length > 50) quickNotes.pop(); // Máx 50 notas
+  localStorage.setItem('vb_quick_notes', JSON.stringify(quickNotes));
+  ta.value = '';
+  renderQuickNotes();
+  showToast('📝 Nota guardada 🌸');
+}
+
+function deleteQuickNote(id) {
+  quickNotes = quickNotes.filter(n => n.id !== id);
+  localStorage.setItem('vb_quick_notes', JSON.stringify(quickNotes));
+  renderQuickNotes();
+}
+
+function renderQuickNotes() {
+  const el = document.getElementById('quick-note-list');
+  if (!el) return;
+  if (!quickNotes.length) {
+    el.innerHTML = '<div style="font-size:.75rem;color:var(--text-l);text-align:center;padding:8px">Tus notas rápidas aparecerán aquí 🌸</div>';
+    return;
+  }
+  el.innerHTML = quickNotes.slice(0,10).map(n => `
+    <div class="quick-note-item">
+      <div style="flex:1">
+        <div class="quick-note-item-date">${n.date} · ${n.time}</div>
+        <div>${n.text}</div>
+      </div>
+      <button onclick="deleteQuickNote('${n.id}')" style="background:none;border:none;cursor:pointer;color:var(--text-l);font-size:.8rem;flex-shrink:0">🗑</button>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════
+// FEATURE 4 — VISTAS SEMANA / MES — NUTRICIÓN
+// ══════════════════════════════════════════════
+function setNutView(view, event) {
+  nutViewTab = view;
+  document.querySelectorAll('.nut-view-tab').forEach(t => t.classList.remove('active'));
+  if (event) event.target.classList.add('active');
+  document.getElementById('nut-history-list').style.display  = view==='hoy'    ? '' : 'none';
+  document.getElementById('nut-week-view').style.display     = view==='semana' ? '' : 'none';
+  document.getElementById('nut-month-view').style.display    = view==='mes'    ? '' : 'none';
+  if (view === 'semana') renderNutWeekView();
+  if (view === 'mes')    renderNutMonthView();
+}
+
+function renderNutWeekView() {
+  const el = document.getElementById('nut-week-view');
+  if (!el) return;
+  const waterGoal = nutGoals?.waterGoal || 8;
+  const dayNames  = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+  const mon = startOfWeek();
+  const days = Array.from({length:7},(_,i)=>{const d=new Date(mon);d.setDate(d.getDate()+i);return localDateStr(d);});
+  const tod = today();
+
+  // Stats resumen
+  const weekMeals = nutMeals.filter(m => days.includes(m.date));
+  const totalCal  = weekMeals.reduce((a,m)=>a+(m.cal||0),0);
+  const daysLogged = new Set(weekMeals.map(m=>m.date)).size;
+  const waterDays  = days.filter(d=>(nutWater[d]||0)>=waterGoal).length;
+
+  let html = `
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+      <div class="hoy-stat-card"><div class="hoy-stat-ico">🍽️</div><div class="hoy-stat-val">${daysLogged}</div><div class="hoy-stat-lbl">Días registrados</div></div>
+      <div class="hoy-stat-card"><div class="hoy-stat-ico">🔥</div><div class="hoy-stat-val">${totalCal||'–'}</div><div class="hoy-stat-lbl">Kcal semana</div></div>
+      <div class="hoy-stat-card"><div class="hoy-stat-ico">💧</div><div class="hoy-stat-val">${waterDays}/7</div><div class="hoy-stat-lbl">Días meta agua</div></div>
+    </div>
+    <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px">`;
+
+  days.forEach((d,i) => {
+    const dayMeals = nutMeals.filter(m=>m.date===d);
+    const water    = nutWater[d] || 0;
+    const isToday  = d === tod;
+    const [,mo,dy] = d.split('-');
+    html += `<div class="nut-day-col${isToday?' is-today':''}">
+      <div class="nut-day-header">${dayNames[i]}<br><span style="font-size:.65rem;font-weight:400">${parseInt(dy)}/${parseInt(mo)}</span></div>
+      <div class="nut-day-water">💧 ${water}/${waterGoal}</div>
+      ${dayMeals.length ? dayMeals.map(m=>`<div class="nut-day-meal-pill" title="${m.desc}">${(MEAL_LABELS[m.type]||'🍽️').split(' ')[0]} ${m.desc.slice(0,12)}…</div>`).join('') : '<div style="font-size:.7rem;color:var(--text-l);text-align:center">–</div>'}
+      ${dayMeals.reduce((a,m)=>a+(m.cal||0),0)>0 ? `<div style="font-size:.68rem;color:var(--text-l);text-align:center;margin-top:4px">🔥${dayMeals.reduce((a,m)=>a+(m.cal||0),0)}</div>` : ''}
+    </div>`;
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function renderNutMonthView() {
+  const el = document.getElementById('nut-month-view');
+  if (!el) return;
+  const waterGoal  = nutGoals?.waterGoal || 8;
+  const now        = new Date();
+  const year       = now.getFullYear();
+  const month      = now.getMonth();
+  const firstDay   = new Date(year, month, 1);
+  const lastDay    = new Date(year, month+1, 0);
+  const tod        = today();
+  const months     = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  let startDow     = firstDay.getDay()-1; if(startDow<0) startDow=6;
+
+  // Monthly stats
+  const monthKey   = `${year}-${String(month+1).padStart(2,'0')}`;
+  const monthMeals = nutMeals.filter(m=>m.date.startsWith(monthKey));
+  const totalCal   = monthMeals.reduce((a,m)=>a+(m.cal||0),0);
+  const daysLogged = new Set(monthMeals.map(m=>m.date)).size;
+  const daysTarget = Array.from({length:lastDay.getDate()},(_,i)=>
+    `${monthKey}-${String(i+1).padStart(2,'0')}`).filter(d=>d<=tod);
+  const waterMetDays = daysTarget.filter(d=>(nutWater[d]||0)>=waterGoal).length;
+
+  let html = `
+    <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600;margin-bottom:12px">${months[month]} ${year}</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+      <div class="hoy-stat-card"><div class="hoy-stat-ico">🍽️</div><div class="hoy-stat-val">${daysLogged}</div><div class="hoy-stat-lbl">Días registrados</div></div>
+      <div class="hoy-stat-card"><div class="hoy-stat-ico">🔥</div><div class="hoy-stat-val">${totalCal||'–'}</div><div class="hoy-stat-lbl">Kcal mes</div></div>
+      <div class="hoy-stat-card"><div class="hoy-stat-ico">💧</div><div class="hoy-stat-val">${waterMetDays}d</div><div class="hoy-stat-lbl">Días meta agua</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:6px">
+      ${['L','M','X','J','V','S','D'].map(d=>`<div style="text-align:center;font-size:.65rem;font-weight:700;color:var(--text-l);padding:3px">${d}</div>`).join('')}
+    </div>
+    <div class="nut-month-grid">`;
+
+  for(let i=0;i<startDow;i++) html += '<div></div>';
+  for(let day=1; day<=lastDay.getDate(); day++) {
+    const ds = `${monthKey}-${String(day).padStart(2,'0')}`;
+    const isToday = ds === tod;
+    const isFuture = ds > tod;
+    const dayMeals = nutMeals.filter(m=>m.date===ds);
+    const water    = nutWater[ds] || 0;
+    const waterPct = Math.min(100, Math.round((water/waterGoal)*100));
+    const hasData  = dayMeals.length > 0 || water > 0;
+    html += `<div class="nut-month-cell${hasData?' has-data':''}${isToday?' is-today':''}">
+      <div class="nut-month-daynum">${day}</div>
+      ${!isFuture && hasData ? `<div class="nut-month-water-bar" style="width:${waterPct}%"></div>` : ''}
+      ${dayMeals.slice(0,3).map(()=>`<span class="nut-month-dot"></span>`).join('')}
+    </div>`;
+  }
+  html += '</div>';
+  html += `<div style="display:flex;gap:16px;margin-top:10px;font-size:.72rem;color:var(--text-l);flex-wrap:wrap">
+    <span><span class="nut-month-dot" style="width:8px;height:8px;background:var(--mint-d);border-radius:50%;display:inline-block"></span> Comida registrada</span>
+    <span><span style="display:inline-block;width:20px;height:4px;background:var(--sky);border-radius:2px;vertical-align:middle"></span> Progreso agua</span>
+  </div>`;
+  el.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+// FEATURE 5 — MODO ENFOQUE DEL DÍA
+// ══════════════════════════════════════════════
+async function generateEnfoque(force = false) {
+  const tod = today();
+  const el  = document.getElementById('enfoque-content');
+  if (!el) return;
+
+  // Usar caché si es del mismo día y no forzamos
+  if (!force && enfocueCache && enfocueCache.date === tod) {
+    renderEnfoque(enfocueCache.data); return;
+  }
+  el.innerHTML = '<div class="enfoque-loading">✨ Preparando tu enfoque del día…</div>';
+
+  // Contexto para la IA
+  const checkinHoy = checkinData[tod];
+  const energyStr  = checkinHoy?.energy ? `Energía: ${checkinHoy.energy}` : 'energía no registrada';
+  const sleepStr2  = checkinHoy?.sleep  ? `Sueño anoche: ${checkinHoy.sleep}` : 'sueño no registrado';
+  const pendTasks  = tasks.filter(t=>isTaskDueToday(t)&&!isTaskDoneToday(t));
+  const taskList   = pendTasks.slice(0,5).map(t=>`${t.name} (${t.priority||'media'})`).join(', ') || 'ninguna';
+  const habitList  = habits.filter(h=>!((h.log||[]).includes(tod))).slice(0,4).map(h=>`${h.emoji||''} ${h.name}`).join(', ') || 'todos completados';
+  const avgMood7   = Object.entries(moods).sort(([a],[b])=>b.localeCompare(a)).slice(0,7).map(([,v])=>v);
+  const moodAvg    = avgMood7.length ? (avgMood7.reduce((a,b)=>a+b,0)/avgMood7.length).toFixed(1) : '3';
+  const nutGoalStr = nutGoals ? `Objetivo nutricional: ${nutGoals.goal}` : '';
+
+  const prompt = `Eres el asistente de Vida Bloom. Genera el "Enfoque del día" para ${profile.name||'esta persona'}.
+
+DATOS DE HOY (${tod}):
+- ${energyStr} | ${sleepStr2}
+- Tareas pendientes hoy: ${taskList}
+- Hábitos por completar: ${habitList}
+- Ánimo promedio últimos 7 días: ${moodAvg}/5
+- ${nutGoalStr}
+
+Responde SOLO con un JSON válido con exactamente esta estructura (sin texto extra, sin markdown):
+{
+  "tarea": "la tarea más importante que debería hacer hoy (1 sola, específica)",
+  "habito": "el hábito clave a priorizar hoy (1 solo)",
+  "intencion": "una intención o afirmación poderosa para el día (1 frase corta y motivadora)"
+}
+
+Basa tus elecciones en los datos reales. Tono cálido y empoderador. Español.`;
+
+  try {
+    const res  = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:300, messages:[{role:'user',content:prompt}] })
+    });
+    const data = await res.json();
+    let raw    = data.content?.map(c=>c.text||'').join('') || '{}';
+    raw        = raw.replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(raw);
+    enfocueCache = { date: tod, data: parsed };
+    localStorage.setItem('vb_enfoque', JSON.stringify(enfocueCache));
+    renderEnfoque(parsed);
+  } catch(err) {
+    el.innerHTML = '<div class="enfoque-loading">Escribe algo en el asistente IA para activar tu enfoque 🌸</div>';
+  }
+}
+
+function renderEnfoque(data) {
+  const el = document.getElementById('enfoque-content');
+  if (!el || !data) return;
+  el.innerHTML = `
+    <div class="enfoque-item">
+      <span class="enfoque-badge">📌 Tarea</span>
+      <span class="enfoque-text">${data.tarea || '–'}</span>
+    </div>
+    <div class="enfoque-item">
+      <span class="enfoque-badge">🌿 Hábito</span>
+      <span class="enfoque-text">${data.habito || '–'}</span>
+    </div>
+    <div class="enfoque-item">
+      <span class="enfoque-badge">💫 Intención</span>
+      <span class="enfoque-text">${data.intencion || '–'}</span>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════
+// INIT — lanzar check-in y enfoque al cargar
+// ══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  // Mostrar check-in si no se ha hecho hoy (con delay para que cargue la app)
+  setTimeout(() => {
+    const loginScreen = document.getElementById('login-screen');
+    if (!loginScreen || loginScreen.style.display === 'none' || !loginScreen.parentNode) {
+      showCheckin();
+    }
+  }, 800);
+
+  // Renderizar notas rápidas al abrir el panel
+  renderQuickNotes();
+
+  // Cargar enfoque del día si existe en caché
+  const tod = today();
+  if (enfocueCache && enfocueCache.date === tod) {
+    renderEnfoque(enfocueCache.data);
+  } else {
+    const el = document.getElementById('enfoque-content');
+    if (el) el.innerHTML = '<div class="enfoque-loading">Completa el check-in diario para activar tu enfoque ✨</div>';
+  }
+});
+
+// Hook para lanzar check-in después del login
+const _origSkipLogin = window.skipLogin || skipLogin;
+window.skipLoginOriginal = _origSkipLogin;
+window.skipLogin = function() {
+  _origSkipLogin();
+  setTimeout(showCheckin, 600);
+};
+
+// Init fecha filter for sched panel + nuevos modales
 document.addEventListener('DOMContentLoaded', () => {
   const df = document.getElementById('sched-date-filter');
   if (df) df.value = today();
-  // Close all new modals on bg click
-  ['modal-sched','modal-routine','modal-sleep','modal-symptom'].forEach(mid => {
+  ['modal-sched','modal-routine','modal-sleep','modal-symptom','modal-nut-goals','modal-meal'].forEach(mid => {
     const m = document.getElementById(mid);
     if (m) m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open'); });
   });
