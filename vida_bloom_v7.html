@@ -947,9 +947,7 @@
     <button class="nav-tab" onclick="showPage('habitos',event)">🌱 Hábitos</button>
     <button class="nav-tab" onclick="showPage('graficas',event)">📊 Gráficas</button>
     <button class="nav-tab" onclick="showPage('calendario',event)">📅 Calendario</button>
-    <button class="nav-tab" onclick="showPage('tiempo',event)">⏱️ Mi Tiempo</button>
     <button class="nav-tab" onclick="showPage('suenos',event)">🌙 Metas & Sueños</button>
-    <button class="nav-tab" onclick="showPage('diario',event)">📝 Diario</button>
     <button class="nav-tab" onclick="showPage('logros',event)">🏆 Logros</button>
     <button class="nav-tab" onclick="showPage('informes',event)">📊 Informes</button>
   </div>
@@ -981,6 +979,7 @@
     <button class="hoy-tab" onclick="setHoyTab('habitos',event)">🌿 Hábitos de hoy</button>
     <button class="hoy-tab" onclick="setHoyTab('mood',event)">😊 Ánimo de hoy</button>
     <button class="hoy-tab" onclick="setHoyTab('ingresos',event)">💰 Ingresos de hoy</button>
+    <button class="hoy-tab" onclick="setHoyTab('menstruacion',event)">🩸 Período</button>
   </div>
 
   <!-- Panel Tareas -->
@@ -1002,6 +1001,16 @@
     <div class="card" style="margin-bottom:0" id="mood-today-card"></div>
   </div>
 
+  <!-- Panel Menstruación -->
+  <div id="hoy-panel-menstruacion" style="display:none">
+    <div id="hoy-mens-status"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+      <button class="btn btn-rose" onclick="openMensModal('start')">🩸 Inicio del período</button>
+      <button class="btn btn-mint" onclick="openMensModal('end')">✅ Fin del período</button>
+    </div>
+    <div id="hoy-mens-list"></div>
+  </div>
+
   <!-- Panel Ingresos -->
   <div id="hoy-panel-ingresos" style="display:none">
     <div class="card" style="margin-bottom:12px">
@@ -1021,39 +1030,6 @@
       <div id="income-week-list"></div>
     </div>
   </div>
-</div>
-
-<!-- ══════════ DIARIO ══════════ -->
-<div class="page" id="page-diario">
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px">
-    <h2 style="margin-bottom:0">📝 Mi Diario</h2>
-  </div>
-
-  <!-- Write today -->
-  <div class="card diary-write-card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <div>
-        <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600" id="diary-today-label">Hoy</div>
-        <div style="font-size:.78rem;color:var(--text-l)">¿Cómo estuvo tu día?</div>
-      </div>
-      <div class="diary-mood-row" id="diary-mood-picker">
-        <span class="mood-btn" data-mood="5" onclick="pickDiaryMood(5)" title="¡Increíble!">🤩</span>
-        <span class="mood-btn" data-mood="4" onclick="pickDiaryMood(4)" title="Bien">😊</span>
-        <span class="mood-btn" data-mood="3" onclick="pickDiaryMood(3)" title="Normal">😐</span>
-        <span class="mood-btn" data-mood="2" onclick="pickDiaryMood(2)" title="No tan bien">😔</span>
-        <span class="mood-btn" data-mood="1" onclick="pickDiaryMood(1)" title="Difícil">😢</span>
-      </div>
-    </div>
-    <textarea id="diary-text" placeholder="Escribe lo que quieras… sin filtros, sin estructura. Este es tu espacio 🌸" style="min-height:130px;width:100%"></textarea>
-    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px">
-      <button class="btn btn-peach btn-sm" onclick="clearDiaryDraft()">Limpiar</button>
-      <button class="btn btn-rose" onclick="saveDiaryEntry()">Guardar entrada 💾</button>
-    </div>
-  </div>
-
-  <!-- Past entries -->
-  <h3 style="margin-bottom:14px">Entradas anteriores</h3>
-  <div id="diary-entries-list"></div>
 </div>
 
 <!-- ══════════ LOGROS ══════════ -->
@@ -1174,9 +1150,13 @@
     <div class="cal-grid" id="cal-body"></div>
   </div>
   <div class="card" id="cal-day-detail" style="display:none">
-    <h3 id="cal-day-title"></h3>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h3 id="cal-day-title" style="margin:0"></h3>
+      <button class="btn btn-rose btn-sm" onclick="openCalNoteModal()">＋ Agregar nota</button>
+    </div>
     <div id="cal-day-tasks"></div>
     <div id="cal-day-habits" style="margin-top:10px"></div>
+    <div id="cal-day-notes" style="margin-top:10px"></div>
   </div>
 </div>
 
@@ -1189,78 +1169,6 @@
   <div class="dream-grid" id="dreams-grid"></div>
 </div>
 
-
-<!-- ══════════ MI TIEMPO (NUEVO) ══════════ -->
-<div class="page" id="page-tiempo">
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:6px">
-    <h2 style="margin-bottom:0">⏱️ Mi Tiempo</h2>
-  </div>
-  <div class="sub-tabs">
-    <button class="sub-tab active" onclick="setTiempoTab('registro',event)">📋 Registro del día</button>
-    <button class="sub-tab" onclick="setTiempoTab('rutina',event)">🗓️ Mi Rutina</button>
-    <button class="sub-tab" onclick="setTiempoTab('sueno',event)">😴 Sueño</button>
-    <button class="sub-tab" onclick="setTiempoTab('ciclo',event)">🌸 Ciclo menstrual</button>
-  </div>
-
-  <!-- REGISTRO DEL DÍA -->
-  <div id="tiempo-panel-registro">
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
-      <button class="btn btn-rose" onclick="openSchedModal()">+ Registrar actividad</button>
-      <input type="date" id="sched-date-filter" style="width:auto;flex:none" onchange="renderSchedPanel()">
-    </div>
-    <!-- CÍRCULO 24H -->
-    <div class="clock-wrap">
-      <div class="clock-svg-wrap">
-        <svg id="clock-svg" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg"></svg>
-        <div class="clock-center-info">
-          <div class="clock-center-total" id="clock-total">0h</div>
-          <div class="clock-center-lbl">registradas</div>
-          <div class="clock-center-free" id="clock-free">24h libres</div>
-        </div>
-      </div>
-      <div class="clock-legend" id="clock-legend"></div>
-    </div>
-    <div id="sched-summary-row" class="time-summary-row"></div>
-    <div id="sched-entries-list"></div>
-  </div>
-
-  <!-- MI RUTINA -->
-  <div id="tiempo-panel-rutina" style="display:none">
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
-      <button class="btn btn-lav" onclick="openRoutineModal()">+ Agregar bloque a mi rutina</button>
-      <button class="btn btn-mint btn-sm" onclick="toggleComplianceSection()">📊 Planeado vs Real</button>
-    </div>
-    <div id="routine-list"></div>
-    <div id="compliance-section" class="compliance-section" style="display:none">
-      <h3>📊 Planeado vs Real — esta semana</h3>
-      <div id="compliance-list"></div>
-    </div>
-  </div>
-
-  <!-- SUEÑO -->
-  <div id="tiempo-panel-sueno" style="display:none">
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
-      <button class="btn btn-lav btn-sm" onclick="openSleepModal()" style="font-size:.85rem">+ Registrar sueño de anoche</button>
-    </div>
-    <div id="sleep-avg-bar-el" class="sleep-avg-bar" style="display:none"></div>
-    <div class="card" style="padding:14px;margin-bottom:16px">
-      <h3 style="margin-bottom:10px">😴 Últimas 2 semanas</h3>
-      <div class="chart-wrap" style="height:160px"><canvas id="chart-sleep-main"></canvas></div>
-    </div>
-    <div id="sleep-list"></div>
-  </div>
-
-  <!-- CICLO MENSTRUAL -->
-  <div id="tiempo-panel-ciclo" style="display:none">
-    <div id="cycle-prediction-banner"></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
-      <button class="btn btn-rose" onclick="logCycleEvent('start')">🩸 Inicio del período</button>
-      <button class="btn btn-mint" onclick="logCycleEvent('end')">✅ Fin del período</button>
-      <button class="btn btn-peach" onclick="openSymptomModal()">💊 Síntoma / nota</button>
-    </div>
-    <div id="cycle-list"></div>
-  </div>
-</div>
 
 <!-- MODAL: ACTIVIDAD -->
 <div class="modal-bg" id="modal-sched">
@@ -1414,6 +1322,61 @@
 
 <!-- AI WEEKLY GRAFICAS SECTION (inserted via JS) -->
 
+<!-- MODAL: NOTA DE CALENDARIO -->
+<div class="modal-bg" id="modal-cal-note">
+  <div class="modal">
+    <h3>📅 Agregar nota / tarea</h3>
+    <div class="modal-row">
+      <label>¿Qué hay que hacer o recordar?</label>
+      <input type="text" id="cal-note-text" placeholder="Ej: Cita médica, llamar a mamá, pagar factura…" onkeydown="if(event.key==='Enter')saveCalNote()">
+    </div>
+    <div class="form-row">
+      <div class="form-col">
+        <label>Hora <span style="font-size:.76rem;color:var(--text-l)">(opcional)</span></label>
+        <input type="time" id="cal-note-time">
+      </div>
+      <div class="form-col">
+        <label>Prioridad</label>
+        <select id="cal-note-pri">
+          <option value="media" selected>🟡 Media</option>
+          <option value="alta">🔴 Alta</option>
+          <option value="baja">🟢 Baja</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-row">
+      <label>Nota extra <span style="font-size:.76rem;color:var(--text-l)">(opcional)</span></label>
+      <textarea id="cal-note-extra" placeholder="Detalles, recordatorios…" style="min-height:70px"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-peach" onclick="closeCalNoteModal()">Cancelar</button>
+      <button class="btn btn-rose" onclick="saveCalNote()">Guardar como tarea 💾</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-bg" id="modal-mens">
+  <div class="modal">
+    <h3 id="modal-mens-title">🩸 Registrar período</h3>
+    <div class="modal-row">
+      <label>Fecha</label>
+      <input type="date" id="mens-date">
+    </div>
+    <div id="mens-duracion-row" class="modal-row" style="display:none">
+      <label>¿Cuántos días duró? <span style="font-size:.78rem;color:var(--text-l)">(opcional)</span></label>
+      <input type="number" id="mens-duracion" min="1" max="15" placeholder="Ej: 5">
+    </div>
+    <div class="modal-row">
+      <label>Notas <span style="font-size:.78rem;color:var(--text-l)">(opcional)</span></label>
+      <input type="text" id="mens-notes" placeholder="Flujo, síntomas, cómo te sentiste…">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-peach" onclick="closeMensModal()">Cancelar</button>
+      <button class="btn btn-rose" id="mens-save-btn" onclick="saveMensEntry()">Guardar 💾</button>
+    </div>
+  </div>
+</div>
 <!-- ══════════ MODAL TAREA ══════════ -->
 <div class="modal-bg" id="modal-task">
   <div class="modal">
@@ -1924,6 +1887,7 @@ function renderCalendar() {
     const doneTasks = dayTasks.filter(t => !t.recurrence||t.recurrence==='none' ? t.done : (t.doneLog||[]).includes(ds));
     const doneHabits = habits.filter(h=>(h.log||[]).includes(ds)).length;
     const hasDiaryEntry = diary.some(e=>e.date===ds);
+    const hasCalNote    = tasks.some(t=>t.date===ds && t.fromCalendar);
     const allDone = dayTasks.length>0 && doneTasks.length===dayTasks.length && doneHabits===habits.length;
     const hasTasks = dayTasks.length>0 || habits.length>0;
     const moodEmoji = moods[ds] ? MOOD_EMOJIS[moods[ds]] : '';
@@ -1932,6 +1896,7 @@ function renderCalendar() {
     if(dayTasks.length>0) dotsHtml += `<div class="cal-dot" style="background:var(--rose-d)" title="${dayTasks.length} tarea(s)"></div>`;
     if(doneHabits>0) dotsHtml += `<div class="cal-dot" style="background:var(--mint-d)" title="${doneHabits} hábito(s)"></div>`;
     if(hasDiaryEntry) dotsHtml += `<div class="cal-dot" style="background:var(--lav-d)" title="Entrada en el diario"></div>`;
+    if(hasCalNote)    dotsHtml += `<div class="cal-dot" style="background:var(--peach-d,#e8903a)" title="Nota del día"></div>`;
 
     html += `<div class="cal-cell${isToday?' today':''}${hasTasks?' has-tasks':''}${allDone?' all-done-day':''}"
       onclick="showCalDay('${ds}')">
@@ -1943,7 +1908,9 @@ function renderCalendar() {
   document.getElementById('cal-body').innerHTML = html;
   document.getElementById('cal-day-detail').style.display = 'none';
 }
+let calSelectedDay = '';
 function showCalDay(ds) {
+  calSelectedDay = ds;
   const [y,m,d] = ds.split('-');
   const dayTasksEl = document.getElementById('cal-day-tasks');
   const dayHabitsEl = document.getElementById('cal-day-habits');
@@ -1974,6 +1941,7 @@ function showCalDay(ds) {
       <div style="color:var(--text-l);line-height:1.5">${diaryEntry.text.slice(0,120)}${diaryEntry.text.length>120?'…':''}</div>
     </div>`;
   }
+  renderCalDayNotes(ds);
   document.getElementById('cal-day-detail').style.display = '';
 }
 
@@ -2588,12 +2556,14 @@ function setHoyTab(tab, ev) {
   hoyTab = tab;
   document.querySelectorAll('.hoy-tab').forEach(el => el.classList.remove('active'));
   if(ev) ev.currentTarget.classList.add('active');
-  document.getElementById('hoy-panel-tareas').style.display   = tab === 'tareas'   ? '' : 'none';
-  document.getElementById('hoy-panel-habitos').style.display  = tab === 'habitos'  ? '' : 'none';
-  document.getElementById('hoy-panel-mood').style.display     = tab === 'mood'     ? '' : 'none';
-  document.getElementById('hoy-panel-ingresos').style.display = tab === 'ingresos' ? '' : 'none';
-  if(tab === 'mood')     renderMoodPanel();
-  if(tab === 'ingresos') renderIncomePanel();
+  document.getElementById('hoy-panel-tareas').style.display        = tab === 'tareas'       ? '' : 'none';
+  document.getElementById('hoy-panel-habitos').style.display       = tab === 'habitos'      ? '' : 'none';
+  document.getElementById('hoy-panel-mood').style.display          = tab === 'mood'         ? '' : 'none';
+  document.getElementById('hoy-panel-ingresos').style.display      = tab === 'ingresos'     ? '' : 'none';
+  document.getElementById('hoy-panel-menstruacion').style.display  = tab === 'menstruacion' ? '' : 'none';
+  if(tab === 'mood')          renderMoodPanel();
+  if(tab === 'ingresos')      renderIncomePanel();
+  if(tab === 'menstruacion')  renderMensPanel();
 }
 
 function renderHoy() {
@@ -2629,7 +2599,8 @@ function renderHoy() {
 
   // Tareas de hoy
   const listEl = document.getElementById('hoy-tareas-list');
-  const tTasks = tasks.filter(x => isTaskDueToday(x));
+  const tTasks = tasks.filter(x => isTaskDueToday(x))
+    .sort((a,b) => (a.time||'99:99').localeCompare(b.time||'99:99'));
   if(!tTasks.length) {
     listEl.innerHTML = '<div class="empty"><div class="empty-icon">☀️</div>Sin tareas para hoy</div>';
   } else {
@@ -2715,13 +2686,15 @@ function renderTasks() {
     return true; // todas
   });
 
-  // Ordenar: urgentes primero, luego por fecha
+  // Ordenar: urgentes primero, luego por fecha y hora
   filtered.sort((a,b) => {
     const aDone = isTaskDoneToday(a);
     const bDone = isTaskDoneToday(b);
     if(aDone !== bDone) return aDone ? 1 : -1;
     if(!a.date) return 1; if(!b.date) return -1;
-    return a.date.localeCompare(b.date);
+    const dateCmp = a.date.localeCompare(b.date);
+    if(dateCmp !== 0) return dateCmp;
+    return (a.time||'99:99').localeCompare(b.time||'99:99');
   });
 
   const el = document.getElementById('tasks-list');
@@ -3951,7 +3924,9 @@ function renderInformeMensual() {
   const prevName = months[prevIdx];
   el.innerHTML = compareHtml
     + informeHTML(thisData, `🗓️ ${curName.charAt(0).toUpperCase()+curName.slice(1)} ${now.getFullYear()}`, thisMonthDays)
-    + informeHTML(lastData, `🗓️ ${prevName.charAt(0).toUpperCase()+prevName.slice(1)}`, lastMonthDays);
+    + cycleBlockHTML(thisMonthDays).replace(/^(.+)$/, '<div class="card" style="margin-bottom:12px">$1</div>')
+    + informeHTML(lastData, `🗓️ ${prevName.charAt(0).toUpperCase()+prevName.slice(1)}`, lastMonthDays)
+    + cycleBlockHTML(lastMonthDays).replace(/^(.+)$/, '<div class="card" style="margin-bottom:12px">$1</div>');
 }
 
 // ══════════ INIT ══════════
@@ -4848,12 +4823,223 @@ document.addEventListener('DOMContentLoaded', () => {
   `;
 });
 
-// Init fecha filter for sched panel
+// ══════════ NOTAS DE CALENDARIO ══════════
+function openCalNoteModal() {
+  if (!calSelectedDay) return;
+  document.getElementById('cal-note-text').value = '';
+  document.getElementById('cal-note-time').value = '';
+  document.getElementById('cal-note-extra').value = '';
+  document.getElementById('cal-note-pri').value = 'media';
+  document.getElementById('modal-cal-note').classList.add('open');
+  setTimeout(() => document.getElementById('cal-note-text').focus(), 100);
+}
+function closeCalNoteModal() {
+  document.getElementById('modal-cal-note').classList.remove('open');
+}
+function saveCalNote() {
+  const name = document.getElementById('cal-note-text').value.trim();
+  if (!name) { document.getElementById('cal-note-text').focus(); return; }
+  const time  = document.getElementById('cal-note-time').value;
+  const note  = document.getElementById('cal-note-extra').value.trim();
+  const pri   = document.getElementById('cal-note-pri').value;
+  const task  = {
+    id: uid(), name, date: calSelectedDay,
+    time: time || null,
+    note: note || '',
+    priority: pri,
+    done: false, recurrence: 'none',
+    fromCalendar: true
+  };
+  tasks.unshift(task);
+  save();
+  closeCalNoteModal();
+  // Refrescar detalle del día y calendario
+  showCalDay(calSelectedDay);
+  renderCalendar();
+  // Restaurar la celda seleccionada como activa
+  setTimeout(() => {
+    const cell = [...document.querySelectorAll('#cal-body .cal-cell')].find(el => {
+      return el.getAttribute('onclick') === `showCalDay('${calSelectedDay}')`;
+    });
+    if (cell) cell.click();
+  }, 50);
+}
+function renderCalDayNotes(ds) {
+  const el = document.getElementById('cal-day-notes');
+  if (!el) return;
+  // Notas creadas desde el calendario para ese día
+  const calTasks = tasks.filter(t => t.date === ds && t.fromCalendar);
+  if (!calTasks.length) { el.innerHTML = ''; return; }
+  el.innerHTML = `<div style="font-size:.78rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">📌 Notas del día</div>`
+    + calTasks.map(t => {
+      const timeStr = t.time ? `<span style="font-size:.74rem;color:var(--text-l);margin-right:4px">${to12h ? to12h(t.time) : t.time}</span>` : '';
+      const priColor = {alta:'var(--rose-d)', media:'#e8c53a', baja:'var(--mint-d)'}[t.priority] || '#aaa';
+      return `<div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--cream);border-radius:12px;margin-bottom:8px;border-left:3px solid ${priColor}">
+        <div style="flex:1">
+          <div style="font-size:.88rem;font-weight:600;color:var(--text)">${timeStr}${t.name}</div>
+          ${t.note ? `<div style="font-size:.78rem;color:var(--text-l);margin-top:3px">${t.note}</div>` : ''}
+        </div>
+        <button class="btn btn-peach btn-icon btn-sm" onclick="deleteCalNote('${t.id}')" title="Eliminar">🗑️</button>
+      </div>`;
+    }).join('');
+}
+function deleteCalNote(id) {
+  if (confirm('¿Eliminar esta nota? También se eliminará de Tareas.')) {
+    tasks = tasks.filter(t => t.id !== id);
+    save();
+    showCalDay(calSelectedDay);
+    renderCalendar();
+    setTimeout(() => showCalDay(calSelectedDay), 60);
+  }
+}
+
+// ══════════ MENSTRUACIÓN (HOY) ══════════
+let mensModalType = 'start';
+
+function openMensModal(type) {
+  mensModalType = type;
+  const isStart = type === 'start';
+  document.getElementById('modal-mens-title').textContent = isStart ? '🩸 Inicio del período' : '✅ Fin del período';
+  document.getElementById('mens-date').value = today();
+  document.getElementById('mens-notes').value = '';
+  document.getElementById('mens-duracion').value = '';
+  document.getElementById('mens-save-btn').textContent = isStart ? '💾 Guardar inicio' : '💾 Guardar fin';
+  // Solo mostrar duración al registrar fin
+  document.getElementById('mens-duracion-row').style.display = isStart ? 'none' : '';
+  document.getElementById('modal-mens').classList.add('open');
+}
+function closeMensModal() { document.getElementById('modal-mens').classList.remove('open'); }
+
+function saveMensEntry() {
+  const date  = document.getElementById('mens-date').value;
+  const notes = document.getElementById('mens-notes').value.trim();
+  if (!date) { alert('Por favor elige una fecha 🌸'); return; }
+  const entry = { id: uid(), date, type: mensModalType, notes };
+  if (mensModalType === 'end') {
+    const dur = parseInt(document.getElementById('mens-duracion').value);
+    if (dur > 0) entry.duracion = dur;
+    // Auto-calcular duración si hay un inicio reciente sin fin
+    if (!entry.duracion) {
+      const lastStart = cycleLog.find(e => e.type === 'start');
+      if (lastStart) {
+        const ms = new Date(date) - new Date(lastStart.date);
+        const days = Math.round(ms / 86400000);
+        if (days > 0 && days <= 15) entry.duracion = days;
+      }
+    }
+  }
+  cycleLog.unshift(entry);
+  cycleLog.sort((a,b) => b.date.localeCompare(a.date));
+  save(); closeMensModal(); renderMensPanel(); checkLogros();
+}
+
+function deleteMensEntry(id) {
+  if (confirm('¿Eliminar este registro? 🌸')) {
+    cycleLog = cycleLog.filter(x => x.id !== id);
+    save(); renderMensPanel();
+  }
+}
+
+function renderMensPanel() {
+  // Banner de estado actual
+  const statusEl = document.getElementById('hoy-mens-status');
+  const listEl   = document.getElementById('hoy-mens-list');
+  if (!statusEl || !listEl) return;
+
+  const lastStart = cycleLog.find(e => e.type === 'start');
+  const lastEnd   = cycleLog.find(e => e.type === 'end');
+
+  // Determinar si hay período activo
+  let bannerHtml = '';
+  if (lastStart) {
+    const startDate = new Date(lastStart.date + 'T12:00:00');
+    const endDate   = lastEnd ? new Date(lastEnd.date + 'T12:00:00') : null;
+    const todayDate = new Date(today() + 'T12:00:00');
+    const isActive  = !endDate || startDate > endDate;
+    const daysSince = Math.round((todayDate - startDate) / 86400000);
+
+    if (isActive) {
+      bannerHtml = `<div style="background:linear-gradient(135deg,#fde8ef,#fdf0f5);border-radius:14px;padding:16px 18px;margin-bottom:16px;border-left:4px solid var(--rose-d)">
+        <div style="font-size:.72rem;font-weight:600;color:#b04060;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">🩸 Período activo</div>
+        <div style="font-size:1.05rem;font-weight:700;color:#7a2040">Día ${daysSince + 1} del período</div>
+        <div style="font-size:.8rem;color:#b04060;margin-top:2px">Comenzó el ${fmtDate(lastStart.date)}</div>
+      </div>`;
+    } else if (endDate) {
+      const duracion = lastEnd.duracion || Math.round((endDate - startDate) / 86400000);
+      const daysSinceEnd = Math.round((todayDate - endDate) / 86400000);
+      bannerHtml = `<div style="background:linear-gradient(135deg,#eef8f2,#f0faf5);border-radius:14px;padding:16px 18px;margin-bottom:16px;border-left:4px solid var(--mint-d)">
+        <div style="font-size:.72rem;font-weight:600;color:#2a6040;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">✅ Sin período activo</div>
+        <div style="font-size:1.05rem;font-weight:700;color:#2a6040">Último período: ${duracion} día${duracion!==1?'s':''}</div>
+        <div style="font-size:.8rem;color:#3a7a60;margin-top:2px">Terminó hace ${daysSinceEnd} día${daysSinceEnd!==1?'s':''} (${fmtDate(lastEnd.date)})</div>
+      </div>`;
+    }
+  } else {
+    bannerHtml = `<div style="background:var(--cream);border-radius:14px;padding:16px 18px;margin-bottom:16px;font-size:.88rem;color:var(--text-l)">
+      Registra tu período para ver estadísticas y predicciones 🌸
+    </div>`;
+  }
+  statusEl.innerHTML = bannerHtml;
+
+  // Lista de registros del mes actual
+  const monthKey = today().slice(0,7);
+  const monthEntries = cycleLog.filter(e => e.date.startsWith(monthKey) && (e.type === 'start' || e.type === 'end'));
+
+  if (!monthEntries.length) {
+    listEl.innerHTML = '<div style="font-size:.85rem;color:var(--text-l);margin-top:4px">Sin registros este mes. Usa los botones de arriba para registrar 🩸</div>';
+    return;
+  }
+  listEl.innerHTML = `
+    <div style="font-size:.72rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Registros de este mes</div>
+    ${monthEntries.map(e => {
+      const isStart = e.type === 'start';
+      const icon  = isStart ? '🩸' : '✅';
+      const label = isStart ? 'Inicio del período' : 'Fin del período';
+      const dur   = e.duracion ? ` · ${e.duracion} días de duración` : '';
+      return `<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--cream);border-radius:12px;margin-bottom:8px;border-left:3px solid ${isStart?'var(--rose-d)':'var(--mint-d)'}">
+        <div style="font-size:1.4rem">${icon}</div>
+        <div style="flex:1">
+          <div style="font-size:.88rem;font-weight:600;color:var(--text)">${label}</div>
+          <div style="font-size:.76rem;color:var(--text-l)">${fmtDate(e.date)}${dur}${e.notes?' · '+e.notes:''}</div>
+        </div>
+        <button class="btn btn-peach btn-icon btn-sm" onclick="deleteMensEntry('${e.id}')">🗑️</button>
+      </div>`;
+    }).join('')}`;
+}
+
+// Helper: bloque HTML de períodos para un rango de fechas
+function cycleBlockHTML(dateRange) {
+  const rangeStart = dateRange[0];
+  const rangeEnd   = dateRange[dateRange.length - 1];
+  // Incluir starts dentro del rango, o que hayan empezado antes y terminado dentro/después
+  const starts = cycleLog.filter(e => e.type === 'start' && e.date <= rangeEnd && e.date >= rangeStart);
+  if (!starts.length) return '';
+  let html = `<div style="font-size:.72rem;color:var(--text-l);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin:14px 0 8px">🩸 Períodos en este período</div>`;
+  starts.forEach(s => {
+    const matchEnd = cycleLog.find(e => e.type === 'end' && e.date >= s.date);
+    const dur = matchEnd && matchEnd.duracion
+      ? `${matchEnd.duracion} días`
+      : matchEnd
+        ? `${Math.round((new Date(matchEnd.date+'T12:00:00') - new Date(s.date+'T12:00:00')) / 86400000) + 1} días`
+        : 'En curso 🩸';
+    const endTxt = matchEnd ? `Fin: ${fmtDate(matchEnd.date)} · ` : '';
+    html += `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:linear-gradient(135deg,#fde8ef,#fdf0f5);border-radius:10px;margin-bottom:8px;font-size:.84rem">
+      <span style="font-size:1.2rem;margin-top:1px">🩸</span>
+      <div>
+        <div style="font-weight:600;color:#7a2040">Inicio: ${fmtDate(s.date)}</div>
+        <div style="color:#b04060;margin-top:2px">${endTxt}Duración: ${dur}</div>
+        ${s.notes ? `<div style="color:var(--text-l);margin-top:2px">${s.notes}</div>` : ''}
+      </div>
+    </div>`;
+  });
+  return html;
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
   const df = document.getElementById('sched-date-filter');
   if (df) df.value = today();
   // Close all new modals on bg click
-  ['modal-sched','modal-routine','modal-sleep','modal-symptom'].forEach(mid => {
+  ['modal-sched','modal-routine','modal-sleep','modal-symptom','modal-mens','modal-cal-note'].forEach(mid => {
     const m = document.getElementById(mid);
     if (m) m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open'); });
   });
