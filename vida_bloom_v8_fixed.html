@@ -61,8 +61,6 @@
   body.dark-mode .dream-card { background: #241e2e; }
   body.dark-mode .diary-write-card { background: linear-gradient(135deg,#241e2e,#2a1e30); }
   body.dark-mode .diary-entry-item { background: #241e2e; }
-  body.dark-mode .logro-card { background: #241e2e; }
-  body.dark-mode .logro-card.unlocked { background: linear-gradient(135deg,#2a2218,#2a1e30); }
   body.dark-mode .week-strip { background: #241e2e; }
   body.dark-mode .hoy-stat-card { background: #241e2e; }
   body.dark-mode .modal { background: #241e2e; }
@@ -620,23 +618,6 @@
   }
   .diary-entry-del:hover { background: #ffd6dc; color: #b04060; }
 
-  /* ── LOGROS ── */
-  .logros-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
-  .logro-card {
-    background: var(--white); border-radius: var(--r);
-    padding: 18px; text-align: center; box-shadow: 0 3px 14px var(--shadow);
-    transition: transform .18s;
-  }
-  .logro-card:hover { transform: translateY(-2px); }
-  .logro-card.unlocked {
-    background: linear-gradient(135deg,#fffbea,#fff5fc);
-    border: 2px solid var(--peach-d);
-  }
-  .logro-card.locked { opacity: .45; filter: grayscale(.7); }
-  .logro-icon { font-size: 2.2rem; margin-bottom: 8px; }
-  .logro-name { font-weight: 600; font-size: .88rem; margin-bottom: 4px; }
-  .logro-desc { font-size: .75rem; color: var(--text-l); line-height: 1.4; }
-  .logro-date { font-size: .7rem; color: var(--lav-d); margin-top: 6px; font-weight: 500; }
   .confetti-pop { animation: confettiPop .4s ease; }
   @keyframes confettiPop {
     0%   { transform: scale(1); }
@@ -845,7 +826,7 @@
     <button class="nav-tab" onclick="showPage('graficas',event)">📊 Gráficas</button>
     <button class="nav-tab" onclick="showPage('calendario',event)">📅 Calendario</button>
     <button class="nav-tab" onclick="showPage('suenos',event)">🌙 Metas & Sueños</button>
-    <button class="nav-tab" onclick="showPage('logros',event)">🏆 Logros</button>
+
     <button class="nav-tab" onclick="showPage('informes',event)">📊 Informes</button>
   </div>
 </nav>
@@ -900,6 +881,7 @@
 
   <!-- Panel Menstruación -->
   <div id="hoy-panel-menstruacion" style="display:none">
+    <div id="cycle-prediction-banner" style="margin-bottom:8px"></div>
     <div id="hoy-mens-status"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
       <button class="btn btn-rose" onclick="openMensModal('start')">🩸 Inicio del período</button>
@@ -927,14 +909,6 @@
       <div id="income-week-list"></div>
     </div>
   </div>
-</div>
-
-<!-- ══════════ LOGROS ══════════ -->
-<div class="page" id="page-logros">
-  <h2>🏆 Mis Logros</h2>
-  <div id="logros-unlocked" style="margin-bottom:28px"></div>
-  <h3 style="margin-bottom:14px;color:var(--text-l)">Por desbloquear</h3>
-  <div id="logros-locked"></div>
 </div>
 
 <!-- ══════════ TAREAS ══════════ -->
@@ -1497,7 +1471,7 @@ function requestNotifications() {
   });
 }
 function scheduleNotifications() {
-  if(Notification.permission !== 'granted') return;
+  if(!('Notification' in window) || Notification.permission !== 'granted') return;
   const tod = today();
   const now = new Date();
   tasks.filter(t => isTaskDueToday(t) && !isTaskDoneToday(t)).forEach(t => {
@@ -1515,7 +1489,7 @@ function scheduleNotifications() {
 
 // ══════════ EXPORT / IMPORT ══════════
 function exportData() {
-  const data = { tasks, habits, dreams, diary, moods, profile, logros: unlockedLogros, cycleLog, exportedAt: new Date().toISOString() };
+  const data = { tasks, habits, dreams, diary, moods, profile, cycleLog, exportedAt: new Date().toISOString() };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url  = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1535,7 +1509,6 @@ function importData(event) {
         if(data.dreams)  { dreams  = data.dreams;  localStorage.setItem('vb_dreams',  JSON.stringify(dreams)); }
         if(data.diary)   { diary   = data.diary;   localStorage.setItem('vb_diary',   JSON.stringify(diary)); }
         if(data.moods)   { moods   = data.moods;   localStorage.setItem('vb_moods',   JSON.stringify(moods)); }
-        if(data.logros)  { unlockedLogros = data.logros; localStorage.setItem('vb_logros', JSON.stringify(unlockedLogros)); }
         if(data.profile) { profile = data.profile; localStorage.setItem('vb_profile', JSON.stringify(profile)); applyProfile(); }
         showToast('✅ Datos importados exitosamente');
         renderHoy();
@@ -1573,14 +1546,11 @@ ${'═'.repeat(48)}
   • Entradas este mes: ${diaryThisMonth}
 
 😊 ESTADO DE ÁNIMO
-  • Promedio del mes: ${avgMood} / 5
+  • Promedio del mes: ${avgMood} / 11
 
 🌙 METAS & SUEÑOS
   • Activas: ${dreams.length}
   • Completadas: ${dreams.filter(d=>(d.progress||0)>=100).length}
-
-🏆 LOGROS
-  • Desbloqueados: ${Object.keys(unlockedLogros).length} / ${ALL_LOGROS.length}
 
 ${'─'.repeat(48)}
 Generado por Vida Bloom · ${new Date().toLocaleDateString('es-ES')}`;
@@ -1666,23 +1636,61 @@ function showCalDay(ds) {
   const titleEl = document.getElementById('cal-day-title');
   const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   titleEl.textContent = `${parseInt(d)} de ${months[parseInt(m)-1]} ${y}`;
-  const dayTasks = tasks.filter(t=>isTaskDueOnDate(t,ds));
-  if(dayTasks.length) {
-    dayTasksEl.innerHTML = '<div style="font-size:.78rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">📋 Tareas</div>' +
-      dayTasks.map(t=>`<div style="display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--warm);font-size:.85rem">
-        <span>${(t.doneLog||[]).includes(ds)||t.done?'✅':'⬜'}</span>
+
+  const todayStr = today();
+  const isPast   = ds < todayStr;
+  const isFuture = ds > todayStr;
+  const isToday  = ds === todayStr;
+
+  const dayTasks = tasks.filter(t => isTaskDueOnDate(t, ds));
+
+  // Filter tasks by day type
+  let shownTasks = dayTasks;
+  if (isPast) {
+    shownTasks = dayTasks.filter(t => (t.doneLog||[]).includes(ds) || t.done);
+  } else if (isFuture) {
+    shownTasks = dayTasks.filter(t => !t.done && !(t.doneLog||[]).includes(ds));
+  }
+
+  if (shownTasks.length) {
+    const label = isPast ? '📋 Completadas' : isFuture ? '📋 Pendientes' : '📋 Tareas';
+    dayTasksEl.innerHTML = `<div style="font-size:.78rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">${label}</div>` +
+      shownTasks.map(t => `<div style="display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--warm);font-size:.85rem">
+        <span>${isPast ? '✅' : isFuture ? '⬜' : ((t.doneLog||[]).includes(ds)||t.done?'✅':'⬜')}</span>
         <span>${t.name}</span>
         <span class="badge p-${t.priority||'media'}" style="margin-left:auto">${t.priority}</span>
       </div>`).join('');
-  } else { dayTasksEl.innerHTML = '<div style="font-size:.83rem;color:var(--text-l)">Sin tareas este día</div>'; }
-  const doneHabits = habits.filter(h=>(h.log||[]).includes(ds));
-  if(habits.length) {
-    dayHabitsEl.innerHTML = '<div style="font-size:.78rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 8px">🌱 Hábitos</div>' +
-      habits.map(h=>{
-        const done=(h.log||[]).includes(ds);
-        return `<div style="display:flex;gap:8px;align-items:center;padding:5px 0;font-size:.85rem"><span>${done?'✅':'⬜'}</span><span>${h.emoji||'🌿'} ${h.name}</span></div>`;
-      }).join('');
+  } else if (isPast) {
+    dayTasksEl.innerHTML = '<div style="font-size:.83rem;color:var(--text-l)">Sin tareas completadas este día</div>';
+  } else if (isFuture) {
+    dayTasksEl.innerHTML = '<div style="font-size:.83rem;color:var(--text-l)">Sin tareas pendientes para este día</div>';
+  } else {
+    dayTasksEl.innerHTML = '<div style="font-size:.83rem;color:var(--text-l)">Sin tareas este día</div>';
   }
+
+  // Filter habits by day type
+  if (habits.length) {
+    let shownHabits = habits;
+    let habitLabel = '🌱 Hábitos';
+    if (isPast) {
+      shownHabits = habits.filter(h => (h.log||[]).includes(ds));
+      habitLabel = '🌱 Hábitos completados';
+    } else if (isFuture) {
+      shownHabits = habits.filter(h => !(h.log||[]).includes(ds));
+      habitLabel = '🌱 Hábitos pendientes';
+    }
+
+    if (shownHabits.length) {
+      dayHabitsEl.innerHTML = `<div style="font-size:.78rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 8px">${habitLabel}</div>` +
+        shownHabits.map(h => {
+          const done = isPast ? true : isFuture ? false : (h.log||[]).includes(ds);
+          return `<div style="display:flex;gap:8px;align-items:center;padding:5px 0;font-size:.85rem"><span>${done?'✅':'⬜'}</span><span>${h.emoji||'🌿'} ${h.name}</span></div>`;
+        }).join('');
+    } else {
+      dayHabitsEl.innerHTML = '';
+    }
+  }
+
   const diaryEntry = diary.find(e=>e.date===ds);
   if(diaryEntry) {
     dayHabitsEl.innerHTML += `<div style="margin-top:12px;padding:10px;background:var(--warm);border-radius:10px;font-size:.83rem;border-left:3px solid var(--lav-d)">
@@ -1716,12 +1724,12 @@ function renderCorrelations() {
   const insights = [];
 
   // Avg habits on good mood days
-  const goodDays = Object.entries(moods).filter(([,v])=>v>=4).map(([d])=>d);
+  const goodDays = Object.entries(moods).filter(([,v])=>v>=8).map(([d])=>d);
   if(goodDays.length>0) {
     const avgHabitsGood = goodDays.reduce((acc,d)=>acc+habits.filter(h=>(h.log||[]).includes(d)).length,0)/goodDays.length;
     insights.push({ label:`Hábitos promedio en días con buen ánimo 😊`, val: avgHabitsGood.toFixed(1), max: habits.length||1 });
   }
-  const badDays = Object.entries(moods).filter(([,v])=>v<=2).map(([d])=>d);
+  const badDays = Object.entries(moods).filter(([,v])=>v<=4).map(([d])=>d);
   if(badDays.length>0) {
     const avgHabitsBad = badDays.reduce((acc,d)=>acc+habits.filter(h=>(h.log||[]).includes(d)).length,0)/badDays.length;
     insights.push({ label:`Hábitos promedio en días difíciles 😔`, val: avgHabitsBad.toFixed(1), max: habits.length||1 });
@@ -1772,7 +1780,7 @@ function renderMoodMonthChart() {
       fill:true, tension:.4, pointBackgroundColor:'#c3b8e8', pointRadius:3,
       spanGaps:true
     }]},
-    options:{ plugins:{legend:{display:false}}, scales:{ y:{min:1,max:5,ticks:{stepSize:1,callback:v=>['','😢','😔','😐','😊','🤩'][v]||v}}, x:{display:false} }, responsive:true }
+    options:{ plugins:{legend:{display:false}}, scales:{ y:{min:1,max:11,ticks:{stepSize:1,callback:v=>MOOD_EMOJIS[v]||''}}, x:{display:false} }, responsive:true }
   });
 }
 
@@ -1817,9 +1825,8 @@ function skipLogin() {
   driveEnabled = false;
   hideLogo();
   seedIfEmpty();
-  checkLogros();
   applyProfile();
-  if(Notification.permission === 'granted') {
+  if(('Notification' in window) && Notification.permission === 'granted') {
     document.getElementById('notif-dot').style.display = '';
     scheduleNotifications();
   }
@@ -1865,8 +1872,7 @@ async function driveLoadOrCreate() {
     const now = new Date().toLocaleTimeString('es-CO', {hour:'2-digit',minute:'2-digit'});
     showDriveBar('Último sync: ' + now, true);
   } catch(e) { showDriveBar('Sin conexión. Datos locales.', false, true); }
-  seedIfEmpty(); checkLogros(); applyProfile();
-  if(Notification.permission === 'granted') {
+  if(('Notification' in window) && Notification.permission === 'granted') {
     document.getElementById('notif-dot').style.display = '';
     scheduleNotifications();
   }
@@ -1882,7 +1888,6 @@ async function driveDownload() {
   if (data.diary)   { diary   = data.diary;   localStorage.setItem('vb_diary',   JSON.stringify(diary)); }
   if (data.moods)   { moods   = data.moods;   localStorage.setItem('vb_moods',   JSON.stringify(moods)); }
   if (data.profile)      { profile = data.profile; localStorage.setItem('vb_profile', JSON.stringify(profile)); }
-  if (data.logros)       { unlockedLogros = data.logros; localStorage.setItem('vb_logros', JSON.stringify(unlockedLogros)); }
   if (data.cycleLog)     { cycleLog = data.cycleLog; localStorage.setItem('vb_cycle', JSON.stringify(cycleLog)); }
   if (data.incomeLog)    { incomeLog = data.incomeLog; localStorage.setItem('vb_income', JSON.stringify(incomeLog)); }
 }
@@ -1890,7 +1895,7 @@ async function driveDownload() {
 async function driveUpload() {
   const payload = JSON.stringify({
     tasks, habits, dreams, diary, moods, profile,
-    logros: unlockedLogros, cycleLog, incomeLog,
+    cycleLog, incomeLog,
     lastSync: new Date().toISOString()
   });
   const boundary = 'vb_boundary_' + Date.now();
@@ -1952,6 +1957,13 @@ const save = () => {
   localStorage.setItem('vb_cycle',   JSON.stringify(cycleLog));
   localStorage.setItem('vb_income',  JSON.stringify(incomeLog));
   if (driveEnabled && driveToken) scheduleDriveSync();
+  const grafPage = document.getElementById('page-graficas');
+  if (grafPage && grafPage.classList.contains('active')) renderCharts();
+  const calPage = document.getElementById('page-calendario');
+  if (calPage && calPage.classList.contains('active')) {
+    renderCalendar();
+    if (calSelectedDay) showCalDay(calSelectedDay);
+  }
 };
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2);
@@ -2140,7 +2152,7 @@ function isTaskDueOnDate(t, dateStr) {
 function showPage(id, ev) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  const pageMap = { hoy:'hoy', tareas:'tareas', habitos:'habitos', graficas:'graficas', suenos:'suenos', diario:'diario', logros:'logros', calendario:'calendario', informes:'informes' };
+  const pageMap = { hoy:'hoy', tareas:'tareas', habitos:'habitos', graficas:'graficas', suenos:'suenos', calendario:'calendario', informes:'informes' };
   document.getElementById('page-' + (pageMap[id]||'hoy')).classList.add('active');
   if(ev) ev.currentTarget.classList.add('active');
 
@@ -2150,7 +2162,7 @@ function showPage(id, ev) {
   if(id === 'graficas')   renderCharts();
   if(id === 'suenos')     renderDreams();
   if(id === 'diario')     renderDiary();
-  if(id === 'logros')     renderLogros();
+  
   if(id === 'calendario') renderCalendar();
   if(id === 'informes')   renderInformes();
 }
@@ -2641,7 +2653,6 @@ function toggleHabitDay(id, dateStr) {
   h.log = h.log || [];
   if(h.log.includes(dateStr)) h.log = h.log.filter(d => d !== dateStr);
   else h.log.push(dateStr);
-  save(); renderHabits(); checkLogros();
 }
 function toggleHabitToday(id) { toggleHabitDay(id, today()); renderHoy(); }
 
@@ -3099,9 +3110,27 @@ function renderQuoteBanner() {
 }
 
 // ══════════ ESTADO DE ÁNIMO ══════════
-const MOOD_LABELS = { 5:'¡Increíble! 🤩', 4:'Bien 😊', 3:'Normal 😐', 2:'No tan bien 😔', 1:'Difícil 😢' };
-const MOOD_EMOJIS = { 5:'🤩', 4:'😊', 3:'😐', 2:'😔', 1:'😢' };
-const MOOD_COLORS = { 5:'#c8edd8', 4:'#c8e8f9', 3:'#ddd6f3', 2:'#fde5cc', 1:'#ffd6d6' };
+// Moods: 11=más positivo → 1=menos positivo
+const MOOD_LABELS = {
+  11:'Feliz', 10:'Amada', 9:'En calma',
+  8:'Orgullosa', 7:'Enfocada', 6:'Aburrida',
+  5:'Triste', 4:'Molesta', 3:'Asustada',
+  2:'Cansada', 1:'Sin energía'
+};
+const MOOD_EMOJIS = {
+  11:'😊', 10:'🥰', 9:'😌',
+  8:'💪', 7:'🎯', 6:'😑',
+  5:'😢', 4:'😤', 3:'😨',
+  2:'😴', 1:'🪫'
+};
+const MOOD_COLORS = {
+  11:'#c8edd8', 10:'#fde8ef', 9:'#ddf4f0',
+  8:'#e8f0fd', 7:'#e8f9e8', 6:'#f0eefd',
+  5:'#ddd6f3', 4:'#fde5cc', 3:'#ffd6e8',
+  2:'#f5e8cc', 1:'#ffd6d6'
+};
+// Orden de display solicitado
+const MOOD_DISPLAY_ORDER = [11,10,9,5,8,7,6,4,3,2,1];
 
 function pickDiaryMood(val) {
   diaryMoodToday = val;
@@ -3131,17 +3160,17 @@ function renderMoodPanel() {
 
   el.innerHTML = `
     <h3 style="margin-bottom:14px">¿Cómo te sientes hoy? 💭</h3>
-    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px">
-      ${[5,4,3,2,1].map(v => `
-        <div onclick="saveMood(${v})" style="cursor:pointer;text-align:center;padding:14px 18px;border-radius:14px;
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px">
+      ${MOOD_DISPLAY_ORDER.map(v => `
+        <div onclick="saveMood(${v})" style="cursor:pointer;text-align:center;padding:10px 6px;border-radius:12px;
           background:${current===v ? MOOD_COLORS[v] : 'var(--cream)'};
-          border:2px solid ${current===v ? '#ccc' : '#ede8f0'};
-          transition:all .18s;flex:1;min-width:70px">
-          <div style="font-size:1.8rem">${MOOD_EMOJIS[v]}</div>
-          <div style="font-size:.72rem;color:var(--text-l);margin-top:4px">${MOOD_LABELS[v].split(' ')[0]}</div>
+          border:2px solid ${current===v ? '#bbb' : '#ede8f0'};
+          transition:all .18s">
+          <div style="font-size:1.6rem">${MOOD_EMOJIS[v]}</div>
+          <div style="font-size:.68rem;color:var(--text-l);margin-top:3px;line-height:1.2">${MOOD_LABELS[v]}</div>
         </div>`).join('')}
     </div>
-    ${current ? `<div style="text-align:center;font-size:.9rem;color:var(--text-l);margin-bottom:16px">Registraste: <strong>${MOOD_LABELS[current]}</strong></div>` : ''}
+    ${current ? `<div style="text-align:center;font-size:.9rem;color:var(--text-l);margin-bottom:16px">Registraste: <strong>${MOOD_EMOJIS[current]} ${MOOD_LABELS[current]}</strong></div>` : ''}
     <div style="font-size:.78rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Últimas 2 semanas</div>
     <div style="display:flex;gap:4px;flex-wrap:wrap">${histHtml}</div>`;
 }
@@ -3150,7 +3179,6 @@ function saveMood(val) {
   moods[today()] = val;
   save();
   renderMoodPanel();
-  checkLogros();
 }
 
 // ══════════ DIARIO ══════════
@@ -3158,13 +3186,14 @@ function renderDiary() {
   const tod = today();
   const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const d = new Date();
-  document.getElementById('diary-today-label').textContent =
-    `${d.getDate()} de ${months[d.getMonth()]}`;
+  const labelEl = document.getElementById('diary-today-label');
+  if (labelEl) labelEl.textContent = `${d.getDate()} de ${months[d.getMonth()]}`;
 
   // Restore today's draft if exists
   const todayEntry = diary.find(e => e.date === tod);
-  if(todayEntry) {
-    document.getElementById('diary-text').value = todayEntry.text;
+  const textEl = document.getElementById('diary-text');
+  if(todayEntry && textEl) {
+    textEl.value = todayEntry.text;
     if(todayEntry.mood) {
       diaryMoodToday = todayEntry.mood;
       document.querySelectorAll('.mood-btn').forEach(b =>
@@ -3175,6 +3204,7 @@ function renderDiary() {
   // Past entries (excluding today if saved)
   const past = diary.filter(e => e.date !== tod).sort((a,b) => b.date.localeCompare(a.date));
   const el = document.getElementById('diary-entries-list');
+  if (!el) return;
   if(!past.length) {
     el.innerHTML = '<div class="empty"><div class="empty-icon">📖</div>Aún no hay entradas anteriores. ¡Este es tu espacio! 🌸</div>';
     return;
@@ -3193,24 +3223,24 @@ function renderDiary() {
 }
 
 function saveDiaryEntry() {
-  const text = document.getElementById('diary-text').value.trim();
+  const textEl = document.getElementById('diary-text');
+  const text = textEl ? textEl.value.trim() : '';
   if(!text) { alert('Escribe algo primero 🌸'); return; }
   const tod = today();
-  // Replace today's entry if exists
   diary = diary.filter(e => e.date !== tod);
   diary.unshift({ id: uid(), date: tod, text, mood: diaryMoodToday || null });
   if(diaryMoodToday) { moods[tod] = diaryMoodToday; }
   save();
   renderDiary();
-  checkLogros();
-  document.getElementById('diary-text').value = '';
+  if(textEl) textEl.value = '';
   diaryMoodToday = 0;
   document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
   alert('¡Entrada guardada! 💾🌸');
 }
 
 function clearDiaryDraft() {
-  document.getElementById('diary-text').value = '';
+  const textEl = document.getElementById('diary-text');
+  if(textEl) textEl.value = '';
   diaryMoodToday = 0;
   document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
 }
@@ -3222,82 +3252,6 @@ function deleteDiaryEntry(id) {
   }
 }
 
-// ══════════ LOGROS / BADGES ══════════
-const ALL_LOGROS = [
-  { id:'first_task',    icon:'🌱', name:'Primer paso',       desc:'Completa tu primera tarea',                  check: () => tasks.some(t => t.done || (t.doneLog||[]).length > 0) },
-  { id:'task_10',       icon:'📋', name:'Lista maestra',     desc:'Completa 10 tareas en total',                 check: () => tasks.filter(t=>t.done||(t.doneLog||[]).length>0).length >= 10 },
-  { id:'task_50',       icon:'🏅', name:'Súper productiva',  desc:'Completa 50 tareas',                          check: () => tasks.filter(t=>t.done||(t.doneLog||[]).length>0).length >= 50 },
-  { id:'first_habit',   icon:'🌿', name:'Semilla plantada',  desc:'Registra un hábito por primera vez',           check: () => habits.some(h=>(h.log||[]).length > 0) },
-  { id:'streak_3',      icon:'⚡', name:'3 en raya',         desc:'Mantén un hábito 3 días seguidos',             check: () => habits.some(h => calcHabitStreak(h) >= 3) },
-  { id:'streak_7',      icon:'🔥', name:'Semana de fuego',   desc:'Mantén un hábito 7 días seguidos',             check: () => habits.some(h => calcHabitStreak(h) >= 7) },
-  { id:'streak_30',     icon:'💎', name:'Hábito de por vida',desc:'30 días seguidos con un hábito',               check: () => habits.some(h => calcHabitStreak(h) >= 30) },
-  { id:'first_dream',   icon:'✨', name:'Soñadora',          desc:'Agrega tu primer sueño o meta',                check: () => dreams.length > 0 },
-  { id:'dream_50',      icon:'🌟', name:'Mitad del camino',  desc:'Llega al 50% en cualquier sueño',              check: () => dreams.some(d=>(d.progress||0)>=50) },
-  { id:'dream_100',     icon:'🎉', name:'¡Sueño cumplido!',  desc:'Completa un sueño al 100%',                    check: () => dreams.some(d=>(d.progress||0)>=100) },
-  { id:'first_diary',   icon:'📝', name:'Primera página',    desc:'Escribe tu primera entrada en el diario',      check: () => diary.length > 0 },
-  { id:'diary_7',       icon:'📖', name:'Semana de reflexión',desc:'Escribe en el diario 7 días distintos',       check: () => diary.length >= 7 },
-  { id:'mood_week',     icon:'😊', name:'En sintonía',       desc:'Registra tu estado de ánimo 7 días',           check: () => Object.keys(moods).length >= 7 },
-  { id:'savings_start', icon:'💰', name:'Ahorradora',        desc:'Registra tu primer ahorro en un sueño',        check: () => dreams.some(d=>(d.savedAmount||0)>0) },
-  { id:'all_habits_today',icon:'🌈',name:'Día perfecto',     desc:'Completa todos tus hábitos en un mismo día',   check: () => habits.length>0 && habits.every(h=>(h.log||[]).includes(today())) },
-  { id:'vision_board',  icon:'🖼️', name:'Visionaria',        desc:'Agrega una imagen de inspiración a un sueño',  check: () => dreams.some(d=>d.imageUrl) },
-];
-
-let unlockedLogros = JSON.parse(localStorage.getItem('vb_logros') || '{}');
-
-function checkLogros() {
-  let changed = false;
-  ALL_LOGROS.forEach(l => {
-    if(!unlockedLogros[l.id] && l.check()) {
-      unlockedLogros[l.id] = today();
-      changed = true;
-      showLogroToast(l);
-    }
-  });
-  if(changed) {
-    localStorage.setItem('vb_logros', JSON.stringify(unlockedLogros));
-  }
-}
-
-function showLogroToast(l) {
-  const toast = document.createElement('div');
-  toast.style.cssText = `position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
-    background:linear-gradient(120deg,var(--rose),var(--lavender));
-    color:var(--text);padding:14px 22px;border-radius:50px;
-    box-shadow:0 6px 24px rgba(180,100,180,.25);z-index:9999;
-    font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;
-    display:flex;align-items:center;gap:10px;
-    animation:slideUp .35s ease;white-space:nowrap`;
-  toast.innerHTML = `<span style="font-size:1.4rem">${l.icon}</span> ¡Logro desbloqueado! <strong>${l.name}</strong> 🎊`;
-  document.body.appendChild(toast);
-  const style = document.createElement('style');
-  style.textContent = `@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}`;
-  document.head.appendChild(style);
-  setTimeout(() => toast.remove(), 4000);
-}
-
-function renderLogros() {
-  const unlocked = ALL_LOGROS.filter(l => unlockedLogros[l.id]);
-  const locked   = ALL_LOGROS.filter(l => !unlockedLogros[l.id]);
-
-  const grid = (arr) => `<div class="logros-grid">${arr.map(l => `
-    <div class="logro-card ${unlockedLogros[l.id]?'unlocked':'locked'}">
-      <div class="logro-icon">${l.icon}</div>
-      <div class="logro-name">${l.name}</div>
-      <div class="logro-desc">${l.desc}</div>
-      ${unlockedLogros[l.id] ? `<div class="logro-date">🗓 ${fmtDate(unlockedLogros[l.id])}</div>` : ''}
-    </div>`).join('')}</div>`;
-
-  const unlockedEl = document.getElementById('logros-unlocked');
-  const lockedEl   = document.getElementById('logros-locked');
-
-  if(!unlocked.length) {
-    unlockedEl.innerHTML = '<div class="empty"><div class="empty-icon">🏆</div>Aún no has desbloqueado logros. ¡Empieza usando la app! ✨</div>';
-  } else {
-    unlockedEl.innerHTML = `<div style="margin-bottom:10px;font-size:.82rem;color:var(--text-l)">${unlocked.length} de ${ALL_LOGROS.length} desbloqueados</div>` + grid(unlocked);
-  }
-  lockedEl.innerHTML = grid(locked);
-}
-
 // ══════════ VISION BOARD (savings tracker ya en dreamCardHTML) ══════════
 function setVisionImage(dreamId) {
   const url = prompt('Pega la URL de tu imagen de inspiración 🖼️\n(Copia el enlace de cualquier imagen en internet)');
@@ -3305,7 +3259,6 @@ function setVisionImage(dreamId) {
   const d = dreams.find(x => x.id === dreamId);
   if(!d) return;
   d.imageUrl = url;
-  save(); renderDreams(); checkLogros();
 }
 
 function removeVisionImage(dreamId) {
@@ -3327,7 +3280,6 @@ function addSavingsAmount(dreamId) {
   d.journal = d.journal || [];
   d.journal.push({ id: uid(), text: `💰 Ahorré $${amount.toFixed(2)}`, date: today() });
   input.value = '';
-  save(); renderDreams(); checkLogros();
 }
 
 // ══════════ INGRESOS DIARIOS ══════════
@@ -3439,8 +3391,8 @@ function buildInformeData(dateRange) {
   // Correlaciones
   data.correlations = [];
   // Ánimo vs ingresos
-  const highMoodDays = dateRange.filter(d => (moods[d]||0) >= 4 && incomeLog[d] > 0);
-  const lowMoodDays  = dateRange.filter(d => (moods[d]||0) <= 2 && incomeLog[d] > 0);
+  const highMoodDays = dateRange.filter(d => (moods[d]||0) >= 8 && incomeLog[d] > 0);
+  const lowMoodDays  = dateRange.filter(d => (moods[d]||0) <= 4 && incomeLog[d] > 0);
   if (highMoodDays.length && lowMoodDays.length) {
     const avgHigh = highMoodDays.reduce((s,d)=>s+incomeLog[d],0)/highMoodDays.length;
     const avgLow  = lowMoodDays.reduce((s,d)=>s+incomeLog[d],0)/lowMoodDays.length;
@@ -3718,7 +3670,6 @@ function logCycleEvent(type) {
   if (!d || !/^\d{4}-\d{2}-\d{2}$/.test(d)) { if (d !== null) alert('Formato inválido. Usa YYYY-MM-DD'); return; }
   cycleLog.unshift({ id: uid(), date: d, type, notes: '' });
   cycleLog.sort((a,b) => b.date.localeCompare(a.date));
-  save(); renderCyclePanel(); checkLogros();
 }
 function openSymptomModal() {
   document.getElementById('sym-date').value  = today();
@@ -3797,13 +3748,6 @@ function renderCyclePanel() {
     </div>`;
   }).join('');
 }
-
-
-// ══════════ LOGROS — ADD CYCLE CHECKS ══════════
-ALL_LOGROS.push(
-  { id:'first_cycle', icon:'🌸', name:'Conócete a ti misma', desc:'Registra tu primer período', check: () => cycleLog.some(e=>e.type==='start') },
-  { id:'cycle_pred',  icon:'🔮', name:'Predecible', desc:'Obtén tu primera predicción de ciclo', check: () => predictNextPeriod() !== null }
-);
 
 
 // ══════════ NOTAS DE CALENDARIO ══════════
@@ -3913,7 +3857,6 @@ function saveMensEntry() {
   }
   cycleLog.unshift(entry);
   cycleLog.sort((a,b) => b.date.localeCompare(a.date));
-  save(); closeMensModal(); renderMensPanel(); checkLogros();
 }
 
 function deleteMensEntry(id) {
