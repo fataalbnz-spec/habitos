@@ -1052,56 +1052,70 @@
 <div class="page" id="page-trabajo">
   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:20px">
     <h2 style="margin-bottom:0">💼 Mi Jornada</h2>
-    <div style="display:flex;gap:8px;align-items:center">
-      <input type="date" id="trabajo-date-picker"
-        style="font-family:'DM Sans',sans-serif;font-size:.82rem;border:2px solid var(--lavender);
-          border-radius:10px;padding:6px 10px;outline:none;color:var(--text);background:var(--cream)"
-        onchange="loadTrabajoDay(this.value)">
-    </div>
+    <input type="date" id="trabajo-date-picker"
+      style="font-family:'DM Sans',sans-serif;font-size:.82rem;border:2px solid var(--lavender);
+        border-radius:10px;padding:6px 10px;outline:none;color:var(--text);background:var(--cream)"
+      onchange="loadTrabajoDay(this.value)">
   </div>
 
-  <!-- Plan del día -->
+  <!-- ── PLANTILLAS DE HORARIO ── -->
   <div class="card" style="margin-bottom:16px">
-    <div style="font-size:.75rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px">📋 Plan del día</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
-      <div>
-        <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:4px">Inicio planeado</label>
-        <input type="time" id="trab-plan-start" oninput="updatePlanSummary()"
-          style="width:100%;box-sizing:border-box;border:2px solid var(--lavender);border-radius:10px;
-            padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;color:var(--text);background:var(--cream)">
-      </div>
-      <div>
-        <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:4px">Fin planeado</label>
-        <input type="time" id="trab-plan-end" oninput="updatePlanSummary()"
-          style="width:100%;box-sizing:border-box;border:2px solid var(--lavender);border-radius:10px;
-            padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;color:var(--text);background:var(--cream)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.07em">📋 Mis horarios</div>
+      <button onclick="openHorarioModal()" class="btn btn-lav" style="font-size:.78rem;padding:5px 12px">+ Nuevo horario</button>
+    </div>
+    <div id="horarios-list"></div>
+  </div>
+
+  <!-- ── PLAN DEL DÍA (colapsable) ── -->
+  <div class="card" style="margin-bottom:16px">
+    <div onclick="togglePlanCard()" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none">
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.07em">📋 Plan del día</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div id="trab-plan-chip" style="font-size:.75rem;color:var(--lav-d);font-weight:600"></div>
+        <span id="plan-chevron" style="font-size:.9rem;color:var(--text-l);transition:transform .2s">▼</span>
       </div>
     </div>
-    <!-- Breaks planeados -->
-    <div style="margin-bottom:14px">
-      <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:8px">☕ Breaks planeados</label>
-      <div style="display:flex;gap:10px;align-items:center">
-        <div style="display:flex;align-items:center;gap:6px">
+    <div id="plan-card-body" style="margin-top:14px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div>
+          <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:4px">Inicio planeado</label>
+          <input type="time" id="trab-plan-start" oninput="updatePlanSummary()"
+            style="width:100%;box-sizing:border-box;border:2px solid var(--lavender);border-radius:10px;
+              padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;color:var(--text);background:var(--cream)">
+        </div>
+        <div>
+          <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:4px">Fin planeado</label>
+          <input type="time" id="trab-plan-end" oninput="updatePlanSummary()"
+            style="width:100%;box-sizing:border-box;border:2px solid var(--lavender);border-radius:10px;
+              padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;color:var(--text);background:var(--cream)">
+        </div>
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:8px">☕ Breaks planeados</label>
+        <div style="display:flex;gap:10px;align-items:center">
           <input type="number" id="trab-plan-break-qty" oninput="updatePlanSummary()" min="0" max="10" placeholder="0"
             style="width:56px;border:2px solid var(--mint);border-radius:10px;padding:7px 8px;
               font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;color:var(--text);background:var(--cream);text-align:center">
           <span style="font-size:.82rem;color:var(--text-l)">breaks de</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px">
           <input type="number" id="trab-plan-break-min" oninput="updatePlanSummary()" min="5" max="120" placeholder="15"
             style="width:60px;border:2px solid var(--mint);border-radius:10px;padding:7px 8px;
               font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;color:var(--text);background:var(--cream);text-align:center">
           <span style="font-size:.82rem;color:var(--text-l)">min c/u</span>
         </div>
       </div>
+      <div id="trab-plan-summary" style="font-size:.82rem;color:var(--text-l);background:var(--warm);border-radius:10px;padding:8px 12px;margin-bottom:14px;display:none"></div>
+      <button class="btn btn-lav" onclick="saveTrabajoPlan()" style="width:100%">💾 Guardar plan</button>
     </div>
-    <div id="trab-plan-summary" style="font-size:.82rem;color:var(--text-l);background:var(--warm);border-radius:10px;padding:8px 12px;margin-bottom:14px;display:none"></div>
-    <button class="btn btn-lav" onclick="saveTrabajoPlan()" style="width:100%">💾 Guardar plan</button>
   </div>
 
-  <!-- Realidad del día -->
+  <!-- ── CÓMO QUEDÓ EL DÍA ── -->
   <div class="card" style="margin-bottom:16px">
     <div style="font-size:.75rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px">✅ ¿Cómo quedó el día?</div>
+
+    <!-- Mini referencia del plan -->
+    <div id="trab-plan-ref" style="display:none;background:linear-gradient(135deg,var(--lavender),#f0eeff);border-radius:10px;padding:9px 14px;margin-bottom:14px;font-size:.75rem;color:var(--lav-d)"></div>
+
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
       <div>
         <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:4px">Inicio real</label>
@@ -1119,21 +1133,18 @@
     <div style="margin-bottom:14px">
       <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:8px">☕ Breaks tomados</label>
       <div style="display:flex;gap:10px;align-items:center">
-        <div style="display:flex;align-items:center;gap:6px">
-          <input type="number" id="trab-real-break-qty" oninput="updateRealSummary()" min="0" max="10" placeholder="0"
-            style="width:56px;border:2px solid var(--rose);border-radius:10px;padding:7px 8px;
-              font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;color:var(--text);background:var(--cream);text-align:center">
-          <span style="font-size:.82rem;color:var(--text-l)">breaks de</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px">
-          <input type="number" id="trab-real-break-min" oninput="updateRealSummary()" min="5" max="120" placeholder="15"
-            style="width:60px;border:2px solid var(--rose);border-radius:10px;padding:7px 8px;
-              font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;color:var(--text);background:var(--cream);text-align:center">
-          <span style="font-size:.82rem;color:var(--text-l)">min c/u</span>
-        </div>
+        <input type="number" id="trab-real-break-qty" oninput="updateRealSummary()" min="0" max="10" placeholder="0"
+          style="width:56px;border:2px solid var(--rose);border-radius:10px;padding:7px 8px;
+            font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;color:var(--text);background:var(--cream);text-align:center">
+        <span style="font-size:.82rem;color:var(--text-l)">breaks de</span>
+        <input type="number" id="trab-real-break-min" oninput="updateRealSummary()" min="5" max="120" placeholder="15"
+          style="width:60px;border:2px solid var(--rose);border-radius:10px;padding:7px 8px;
+            font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;color:var(--text);background:var(--cream);text-align:center">
+        <span style="font-size:.82rem;color:var(--text-l)">min c/u</span>
       </div>
     </div>
-    <!-- ¿Cumplí el plan? -->
+    <div id="trab-real-summary" style="font-size:.82rem;color:var(--text-l);background:var(--warm);border-radius:10px;padding:8px 12px;margin-bottom:14px;display:none"></div>
+
     <div style="margin-bottom:14px">
       <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:8px">🎯 ¿Cumplí el plan?</label>
       <div style="display:flex;gap:8px">
@@ -1148,18 +1159,17 @@
             font-family:'DM Sans',sans-serif;font-size:.88rem;cursor:pointer;transition:all .2s">❌ No</button>
       </div>
     </div>
-    <div>
+    <div style="margin-bottom:0">
       <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:4px">📝 Nota del día (opcional)</label>
       <textarea id="trab-nota" rows="2" placeholder="¿Cómo estuvo la jornada?"
         style="width:100%;box-sizing:border-box;border:2px solid var(--lavender);border-radius:10px;
           padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;
           color:var(--text);background:var(--cream);resize:none"></textarea>
     </div>
-    <div id="trab-real-summary" style="font-size:.82rem;color:var(--text-l);background:var(--warm);border-radius:10px;padding:8px 12px;margin-top:10px;display:none"></div>
     <button class="btn btn-mint" onclick="saveTrabajoReal()" style="width:100%;margin-top:14px">💾 Guardar jornada</button>
   </div>
 
-  <!-- Gráficas correlación -->
+  <!-- ── GRÁFICAS ── -->
   <div class="card">
     <div style="font-size:.75rem;font-weight:600;color:var(--text-l);text-transform:uppercase;letter-spacing:.07em;margin-bottom:16px">📊 Correlaciones — últimas 4 semanas</div>
     <div style="margin-bottom:20px">
@@ -1173,6 +1183,65 @@
     <div>
       <div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:8px">🎯 Plan vs Realidad (horas netas)</div>
       <div class="chart-wrap"><canvas id="chart-trab-plan" height="180"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: NUEVO HORARIO -->
+<div class="modal-bg" id="modal-horario">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <div class="modal-title" id="horario-modal-title">📋 Nuevo horario</div>
+      <button class="modal-close" onclick="closeHorarioModal()">✕</button>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:4px">Nombre del horario</label>
+      <input type="text" id="horario-nombre" placeholder="Ej: Días de semana, Fines de semana…"
+        style="width:100%;box-sizing:border-box;border:2px solid var(--lavender);border-radius:10px;
+          padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.92rem;outline:none;color:var(--text);background:var(--cream)">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      <div>
+        <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:4px">Inicio</label>
+        <input type="time" id="horario-start"
+          style="width:100%;box-sizing:border-box;border:2px solid var(--lavender);border-radius:10px;
+            padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:.92rem;outline:none;color:var(--text);background:var(--cream)">
+      </div>
+      <div>
+        <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:4px">Fin</label>
+        <input type="time" id="horario-end"
+          style="width:100%;box-sizing:border-box;border:2px solid var(--lavender);border-radius:10px;
+            padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:.92rem;outline:none;color:var(--text);background:var(--cream)">
+      </div>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:8px">☕ Breaks</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="number" id="horario-break-qty" min="0" max="10" placeholder="0"
+          style="width:52px;border:2px solid var(--mint);border-radius:10px;padding:7px 8px;
+            font-family:'DM Sans',sans-serif;font-size:.92rem;outline:none;color:var(--text);background:var(--cream);text-align:center">
+        <span style="font-size:.8rem;color:var(--text-l)">breaks de</span>
+        <input type="number" id="horario-break-min" min="5" max="120" placeholder="15"
+          style="width:56px;border:2px solid var(--mint);border-radius:10px;padding:7px 8px;
+            font-family:'DM Sans',sans-serif;font-size:.92rem;outline:none;color:var(--text);background:var(--cream);text-align:center">
+        <span style="font-size:.8rem;color:var(--text-l)">min</span>
+      </div>
+    </div>
+    <div style="margin-bottom:16px">
+      <label style="font-size:.78rem;color:var(--text-l);display:block;margin-bottom:8px">📅 Aplica los días</label>
+      <div style="display:flex;gap:6px;flex-wrap:wrap" id="horario-days-picker">
+        <button type="button" class="h-day-pill day-pill" data-hday="1" onclick="toggleHorarioDayPill(this)" style="min-width:42px">Lun</button>
+        <button type="button" class="h-day-pill day-pill" data-hday="2" onclick="toggleHorarioDayPill(this)" style="min-width:42px">Mar</button>
+        <button type="button" class="h-day-pill day-pill" data-hday="3" onclick="toggleHorarioDayPill(this)" style="min-width:42px">Mié</button>
+        <button type="button" class="h-day-pill day-pill" data-hday="4" onclick="toggleHorarioDayPill(this)" style="min-width:42px">Jue</button>
+        <button type="button" class="h-day-pill day-pill" data-hday="5" onclick="toggleHorarioDayPill(this)" style="min-width:42px">Vie</button>
+        <button type="button" class="h-day-pill day-pill" data-hday="6" onclick="toggleHorarioDayPill(this)" style="min-width:42px">Sáb</button>
+        <button type="button" class="h-day-pill day-pill" data-hday="0" onclick="toggleHorarioDayPill(this)" style="min-width:42px">Dom</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-lav" onclick="saveHorario()" style="flex:1">💾 Guardar</button>
+      <button class="btn" onclick="closeHorarioModal()" style="color:var(--text-l)">Cancelar</button>
     </div>
   </div>
 </div>
@@ -2128,6 +2197,7 @@ const save = () => {
   localStorage.setItem('vb_cycle',   JSON.stringify(cycleLog));
   localStorage.setItem('vb_income',  JSON.stringify(incomeLog));
   localStorage.setItem('vb_work',    JSON.stringify(workLog));
+  localStorage.setItem('vb_horarios', JSON.stringify(horarios));
   if (driveEnabled && driveToken) scheduleDriveSync();
   const grafPage = document.getElementById('page-graficas');
   if (grafPage && grafPage.classList.contains('active')) renderCharts();
@@ -3857,12 +3927,23 @@ function renderDoneTasksSection(monthDays) {
 
 // ══════════ TRABAJO ══════════
 let trabajoCumplido = null;
+let editHorarioId   = null;
+let horarios        = JSON.parse(localStorage.getItem('vb_horarios') || '[]');
+// horario: { id, nombre, start, end, breakQty, breakMin, days:[0-6] }
 
 function minsToHHMM(mins) {
   if (!mins || mins <= 0) return '0h 0min';
   const h = Math.floor(mins / 60);
   const m = mins % 60;
   return h > 0 ? (m > 0 ? `${h}h ${m}min` : `${h}h`) : `${m}min`;
+}
+
+function fmt12(t) {
+  if (!t) return '';
+  const [h, m] = t.split(':').map(Number);
+  const ampm = h >= 12 ? 'p.m.' : 'a.m.';
+  const h12  = h % 12 || 12;
+  return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
 }
 
 function calcNetMins(start, end, breakQty, breakMin) {
@@ -3875,74 +3956,122 @@ function calcNetMins(start, end, breakQty, breakMin) {
   return Math.max(0, total - breakTotal);
 }
 
+function getHorarioForDate(ds) {
+  const dow = new Date(ds + 'T12:00:00').getDay(); // 0=Dom
+  return horarios.find(h => (h.days || []).includes(dow)) || null;
+}
+
+// ── Plan card collapse ───────────────────────────────────────
+let planCardOpen = true;
+function togglePlanCard() {
+  planCardOpen = !planCardOpen;
+  document.getElementById('plan-card-body').style.display = planCardOpen ? '' : 'none';
+  document.getElementById('plan-chevron').style.transform  = planCardOpen ? '' : 'rotate(-90deg)';
+}
+
+// ── Main render ──────────────────────────────────────────────
 function renderTrabajo() {
-  const tod = today();
+  const tod    = today();
   const picker = document.getElementById('trabajo-date-picker');
   if (!picker.value) picker.value = tod;
+  renderHorariosList();
   loadTrabajoDay(picker.value);
 }
 
 function loadTrabajoDay(ds) {
-  const entry = workLog[ds] || {};
+  const entry   = workLog[ds] || {};
+  const horario = getHorarioForDate(ds);
 
-  // Plan
-  document.getElementById('trab-plan-start').value     = entry.planStart || '';
-  document.getElementById('trab-plan-end').value       = entry.planEnd || '';
-  document.getElementById('trab-plan-break-qty').value = entry.planBreakQty || '';
-  document.getElementById('trab-plan-break-min').value = entry.planBreakMin || '';
+  // ── Plan fields: prefer saved data, else prefill from matching horario ──
+  document.getElementById('trab-plan-start').value     = entry.planStart    || horario?.start    || '';
+  document.getElementById('trab-plan-end').value       = entry.planEnd      || horario?.end      || '';
+  document.getElementById('trab-plan-break-qty').value = entry.planBreakQty || horario?.breakQty || '';
+  document.getElementById('trab-plan-break-min').value = entry.planBreakMin || horario?.breakMin || '';
 
-  // Real
-  document.getElementById('trab-real-start').value     = entry.realStart || '';
-  document.getElementById('trab-real-end').value       = entry.realEnd || '';
+  // ── Real fields ──
+  document.getElementById('trab-real-start').value     = entry.realStart    || '';
+  document.getElementById('trab-real-end').value       = entry.realEnd      || '';
   document.getElementById('trab-real-break-qty').value = entry.realBreakQty || '';
   document.getElementById('trab-real-break-min').value = entry.realBreakMin || '';
-  document.getElementById('trab-nota').value            = entry.nota || '';
+  document.getElementById('trab-nota').value            = entry.nota         || '';
 
-  // Cumplido
   trabajoCumplido = entry.cumplido || null;
   updateCumplidoBtns();
-
-  // Summaries
   updatePlanSummary();
   updateRealSummary();
+  updatePlanRef(ds);
   renderTrabajoCharts();
+
+  // Auto-collapse plan card if already saved
+  const hasPlan = entry.planStart && entry.planEnd;
+  if (hasPlan && planCardOpen) togglePlanCard();
+  else if (!hasPlan && !planCardOpen) togglePlanCard();
 }
 
+// ── Plan summary (live) ──────────────────────────────────────
 function updatePlanSummary() {
-  const s = document.getElementById('trab-plan-start').value;
-  const e = document.getElementById('trab-plan-end').value;
+  const s  = document.getElementById('trab-plan-start').value;
+  const e  = document.getElementById('trab-plan-end').value;
   const bq = document.getElementById('trab-plan-break-qty').value;
   const bm = document.getElementById('trab-plan-break-min').value;
   const el = document.getElementById('trab-plan-summary');
   const net = calcNetMins(s, e, bq, bm);
   if (net !== null) {
-    const gross = calcNetMins(s, e, 0, 0);
+    const gross      = calcNetMins(s, e, 0, 0);
     const breakTotal = (parseInt(bq)||0) * (parseInt(bm)||0);
-    el.innerHTML = `🕐 Jornada bruta: <strong>${minsToHHMM(gross)}</strong> — Breaks: <strong>${minsToHHMM(breakTotal)}</strong> — <strong style="color:var(--lav-d)">Neto: ${minsToHHMM(net)}</strong>`;
+    el.innerHTML = `🕐 Bruta: <strong>${minsToHHMM(gross)}</strong> — Breaks: <strong>${minsToHHMM(breakTotal)}</strong> — <strong style="color:var(--lav-d)">Neto: ${minsToHHMM(net)}</strong>`;
     el.style.display = '';
-  } else { el.style.display = 'none'; }
+    // Update chip in header
+    document.getElementById('trab-plan-chip').textContent = `${fmt12(s)} → ${fmt12(e)} · ${minsToHHMM(net)}`;
+  } else {
+    el.style.display = 'none';
+    document.getElementById('trab-plan-chip').textContent = '';
+  }
 }
 
+// ── Plan reference banner inside "real" card ─────────────────
+function updatePlanRef(ds) {
+  const entry   = workLog[ds] || {};
+  const pS      = entry.planStart    || document.getElementById('trab-plan-start').value;
+  const pE      = entry.planEnd      || document.getElementById('trab-plan-end').value;
+  const pBq     = entry.planBreakQty || document.getElementById('trab-plan-break-qty').value;
+  const pBm     = entry.planBreakMin || document.getElementById('trab-plan-break-min').value;
+  const el      = document.getElementById('trab-plan-ref');
+  const net     = calcNetMins(pS, pE, pBq, pBm);
+  if (net !== null) {
+    const bqn = parseInt(pBq)||0;
+    const bmn = parseInt(pBm)||0;
+    el.innerHTML =
+      `<span style="font-weight:700">📋 Plan:</span> &nbsp;${fmt12(pS)} → ${fmt12(pE)}` +
+      (bqn > 0 ? `&nbsp; · &nbsp;${bqn} break${bqn>1?'s':''} de ${bmn} min` : '') +
+      `&nbsp; · &nbsp;<strong style="color:var(--lav-d)">${minsToHHMM(net)} neto</strong>`;
+    el.style.display = '';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+// ── Real summary (live) ──────────────────────────────────────
 function updateRealSummary() {
-  const s = document.getElementById('trab-real-start').value;
-  const e = document.getElementById('trab-real-end').value;
+  const s  = document.getElementById('trab-real-start').value;
+  const e  = document.getElementById('trab-real-end').value;
   const bq = document.getElementById('trab-real-break-qty').value;
   const bm = document.getElementById('trab-real-break-min').value;
   const el = document.getElementById('trab-real-summary');
   const net = calcNetMins(s, e, bq, bm);
   if (net !== null) {
-    const gross = calcNetMins(s, e, 0, 0);
+    const gross      = calcNetMins(s, e, 0, 0);
     const breakTotal = (parseInt(bq)||0) * (parseInt(bm)||0);
-    el.innerHTML = `🕐 Jornada bruta: <strong>${minsToHHMM(gross)}</strong> — Breaks: <strong>${minsToHHMM(breakTotal)}</strong> — <strong style="color:var(--mint-d)">Neto: ${minsToHHMM(net)}</strong>`;
+    el.innerHTML = `🕐 Bruta: <strong>${minsToHHMM(gross)}</strong> — Breaks: <strong>${minsToHHMM(breakTotal)}</strong> — <strong style="color:var(--mint-d)">Neto: ${minsToHHMM(net)}</strong>`;
     el.style.display = '';
   } else { el.style.display = 'none'; }
 }
 
+// ── Cumplido buttons ──────────────────────────────────────────
 function setTrabajoCumplido(val) {
   trabajoCumplido = trabajoCumplido === val ? null : val;
   updateCumplidoBtns();
 }
-
 function updateCumplidoBtns() {
   const map = {
     si:      { id: 'trab-cumpl-si',      bg: '#c8edd8', border: 'var(--mint-d)' },
@@ -3952,18 +4081,13 @@ function updateCumplidoBtns() {
   Object.entries(map).forEach(([k, v]) => {
     const btn = document.getElementById(v.id);
     if (!btn) return;
-    if (trabajoCumplido === k) {
-      btn.style.background = v.bg;
-      btn.style.borderColor = v.border;
-      btn.style.fontWeight = '700';
-    } else {
-      btn.style.background = 'var(--cream)';
-      btn.style.borderColor = v.bg;
-      btn.style.fontWeight = '400';
-    }
+    btn.style.background   = trabajoCumplido === k ? v.bg      : 'var(--cream)';
+    btn.style.borderColor  = trabajoCumplido === k ? v.border  : v.bg;
+    btn.style.fontWeight   = trabajoCumplido === k ? '700'     : '400';
   });
 }
 
+// ── Save plan ────────────────────────────────────────────────
 function saveTrabajoPlan() {
   const ds = document.getElementById('trabajo-date-picker').value || today();
   if (!workLog[ds]) workLog[ds] = {};
@@ -3973,9 +4097,12 @@ function saveTrabajoPlan() {
   workLog[ds].planBreakMin = document.getElementById('trab-plan-break-min').value;
   save();
   updatePlanSummary();
+  updatePlanRef(ds);
+  if (planCardOpen) togglePlanCard(); // colapsa al guardar
   showToast('✅ Plan guardado 🌸');
 }
 
+// ── Save real ────────────────────────────────────────────────
 function saveTrabajoReal() {
   const ds = document.getElementById('trabajo-date-picker').value || today();
   if (!workLog[ds]) workLog[ds] = {};
@@ -3991,14 +4118,101 @@ function saveTrabajoReal() {
   showToast('✅ Jornada guardada 🌸');
 }
 
+// ── Horarios (schedule templates) ────────────────────────────
+const DAY_NAMES = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+
+function renderHorariosList() {
+  const el = document.getElementById('horarios-list');
+  if (!horarios.length) {
+    el.innerHTML = '<p style="font-size:.82rem;color:var(--text-l);margin:0">Sin horarios guardados. Crea uno y se autocompletará el plan según el día.</p>';
+    return;
+  }
+  el.innerHTML = horarios.map(h => {
+    const net     = calcNetMins(h.start, h.end, h.breakQty, h.breakMin);
+    const bqn     = parseInt(h.breakQty)||0;
+    const dayTags = (h.days||[]).sort().map(d => `<span style="background:var(--lavender);border-radius:50px;padding:2px 7px;font-size:.7rem;color:var(--lav-d);font-weight:600">${DAY_NAMES[d]}</span>`).join(' ');
+    return `<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--warm);gap:8px">
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:.88rem;margin-bottom:4px">${h.nombre}</div>
+        <div style="font-size:.78rem;color:var(--text-l);margin-bottom:6px">${fmt12(h.start)} → ${fmt12(h.end)}${bqn>0?` · ${bqn} break${bqn>1?'s':''} de ${h.breakMin}min`:''} · <strong style="color:var(--lav-d)">${net?minsToHHMM(net):''}</strong></div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">${dayTags}</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        <button onclick="editHorario('${h.id}')" style="background:none;border:none;cursor:pointer;font-size:1rem;padding:4px" title="Editar">✏️</button>
+        <button onclick="deleteHorario('${h.id}')" style="background:none;border:none;cursor:pointer;font-size:1rem;padding:4px" title="Eliminar">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openHorarioModal(id) {
+  editHorarioId = id || null;
+  document.getElementById('horario-modal-title').textContent = id ? '✏️ Editar horario' : '📋 Nuevo horario';
+  document.querySelectorAll('#horario-days-picker .h-day-pill').forEach(p => p.classList.remove('active'));
+  if (id) {
+    const h = horarios.find(x => x.id === id);
+    document.getElementById('horario-nombre').value    = h.nombre;
+    document.getElementById('horario-start').value     = h.start;
+    document.getElementById('horario-end').value       = h.end;
+    document.getElementById('horario-break-qty').value = h.breakQty || '';
+    document.getElementById('horario-break-min').value = h.breakMin || '';
+    (h.days||[]).forEach(d => {
+      const pill = document.querySelector(`#horario-days-picker [data-hday="${d}"]`);
+      if (pill) pill.classList.add('active');
+    });
+  } else {
+    document.getElementById('horario-nombre').value    = '';
+    document.getElementById('horario-start').value     = '';
+    document.getElementById('horario-end').value       = '';
+    document.getElementById('horario-break-qty').value = '';
+    document.getElementById('horario-break-min').value = '';
+  }
+  document.getElementById('modal-horario').classList.add('open');
+}
+
+function closeHorarioModal() {
+  document.getElementById('modal-horario').classList.remove('open');
+}
+
+function editHorario(id) { openHorarioModal(id); }
+
+function deleteHorario(id) {
+  if (!confirm('¿Eliminar este horario?')) return;
+  horarios = horarios.filter(h => h.id !== id);
+  localStorage.setItem('vb_horarios', JSON.stringify(horarios));
+  renderHorariosList();
+}
+
+function toggleHorarioDayPill(btn) { btn.classList.toggle('active'); }
+
+function saveHorario() {
+  const nombre = document.getElementById('horario-nombre').value.trim();
+  const start  = document.getElementById('horario-start').value;
+  const end    = document.getElementById('horario-end').value;
+  if (!nombre || !start || !end) { showToast('⚠️ Completa nombre, inicio y fin'); return; }
+  const days = [...document.querySelectorAll('#horario-days-picker .h-day-pill.active')]
+    .map(p => parseInt(p.getAttribute('data-hday')));
+  const breakQty = document.getElementById('horario-break-qty').value;
+  const breakMin = document.getElementById('horario-break-min').value;
+  if (editHorarioId) {
+    const idx = horarios.findIndex(h => h.id === editHorarioId);
+    if (idx >= 0) horarios[idx] = { ...horarios[idx], nombre, start, end, breakQty, breakMin, days };
+  } else {
+    horarios.push({ id: uid(), nombre, start, end, breakQty, breakMin, days });
+  }
+  localStorage.setItem('vb_horarios', JSON.stringify(horarios));
+  closeHorarioModal();
+  renderHorariosList();
+  showToast('✅ Horario guardado 🌸');
+}
+
+// ── Charts ────────────────────────────────────────────────────
 function renderTrabajoCharts() {
-  // Build last 28 days dataset
   const days = [];
   for (let i = 27; i >= 0; i--) {
     const d = new Date(); d.setDate(d.getDate() - i);
     days.push(localDateStr(d));
   }
-
   const labels    = days.map(ds => { const [,m,d] = ds.split('-'); return `${parseInt(d)}/${parseInt(m)}`; });
   const netHours  = days.map(ds => {
     const w = workLog[ds];
@@ -4015,83 +4229,63 @@ function renderTrabajoCharts() {
     return net !== null ? Math.round(net / 60 * 10) / 10 : null;
   });
 
-  // Chart: horas vs ánimo
   destroyChart('tw-mood');
   const ctxMood = document.getElementById('chart-trab-mood');
-  if (ctxMood) {
-    chartInstances['tw-mood'] = new Chart(ctxMood.getContext('2d'), {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          { label: 'Horas (real)', data: netHours, borderColor: '#c3b8e8', backgroundColor: 'rgba(195,184,232,.12)',
-            fill: true, tension: .4, pointRadius: 3, pointBackgroundColor: '#c3b8e8', spanGaps: true, yAxisID: 'yH' },
-          { label: 'Ánimo', data: moodVals, borderColor: '#f0a0b8', backgroundColor: 'rgba(240,160,184,.08)',
-            fill: false, tension: .4, pointRadius: 3, pointBackgroundColor: '#f0a0b8', spanGaps: true, yAxisID: 'yM' }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { labels: { font: { family: 'DM Sans', size: 11 } } } },
-        scales: {
-          x: { grid: { display: false }, ticks: { maxTicksLimit: 10, font: { size: 10 } } },
-          yH: { position: 'left',  title: { display: true, text: 'Horas', font: { size: 10 } }, beginAtZero: true, ticks: { precision: 1 } },
-          yM: { position: 'right', title: { display: true, text: 'Ánimo', font: { size: 10 } }, min: 1, max: 11, grid: { drawOnChartArea: false }, ticks: { stepSize: 1, callback: v => MOOD_EMOJIS[v] || '' } }
-        }
+  if (ctxMood) chartInstances['tw-mood'] = new Chart(ctxMood.getContext('2d'), {
+    type: 'line',
+    data: { labels, datasets: [
+      { label: 'Horas (real)', data: netHours, borderColor: '#c3b8e8', backgroundColor: 'rgba(195,184,232,.12)',
+        fill: true, tension: .4, pointRadius: 3, pointBackgroundColor: '#c3b8e8', spanGaps: true, yAxisID: 'yH' },
+      { label: 'Ánimo', data: moodVals, borderColor: '#f0a0b8', backgroundColor: 'rgba(240,160,184,.08)',
+        fill: false, tension: .4, pointRadius: 3, pointBackgroundColor: '#f0a0b8', spanGaps: true, yAxisID: 'yM' }
+    ]},
+    options: { responsive: true,
+      plugins: { legend: { labels: { font: { family: 'DM Sans', size: 11 } } } },
+      scales: {
+        x:  { grid: { display: false }, ticks: { maxTicksLimit: 10, font: { size: 10 } } },
+        yH: { position: 'left',  title: { display: true, text: 'Horas', font: { size: 10 } }, beginAtZero: true, ticks: { precision: 1 } },
+        yM: { position: 'right', title: { display: true, text: 'Ánimo', font: { size: 10 } }, min: 1, max: 11, grid: { drawOnChartArea: false }, ticks: { stepSize: 1, callback: v => MOOD_EMOJIS[v] || '' } }
       }
-    });
-  }
+    }
+  });
 
-  // Chart: horas vs ingresos
   destroyChart('tw-inc');
   const ctxInc = document.getElementById('chart-trab-income');
-  if (ctxInc) {
-    chartInstances['tw-inc'] = new Chart(ctxInc.getContext('2d'), {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          { label: 'Horas (real)', data: netHours, borderColor: '#c3b8e8', backgroundColor: 'rgba(195,184,232,.12)',
-            fill: true, tension: .4, pointRadius: 3, pointBackgroundColor: '#c3b8e8', spanGaps: true, yAxisID: 'yH' },
-          { label: 'Ingresos $', data: incVals, borderColor: '#9fd4bb', backgroundColor: 'rgba(159,212,187,.1)',
-            fill: false, tension: .4, pointRadius: 3, pointBackgroundColor: '#9fd4bb', spanGaps: true, yAxisID: 'yI' }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { labels: { font: { family: 'DM Sans', size: 11 } } } },
-        scales: {
-          x: { grid: { display: false }, ticks: { maxTicksLimit: 10, font: { size: 10 } } },
-          yH: { position: 'left',  title: { display: true, text: 'Horas', font: { size: 10 } }, beginAtZero: true, ticks: { precision: 1 } },
-          yI: { position: 'right', title: { display: true, text: '$', font: { size: 10 } }, beginAtZero: true, grid: { drawOnChartArea: false } }
-        }
+  if (ctxInc) chartInstances['tw-inc'] = new Chart(ctxInc.getContext('2d'), {
+    type: 'line',
+    data: { labels, datasets: [
+      { label: 'Horas (real)', data: netHours, borderColor: '#c3b8e8', backgroundColor: 'rgba(195,184,232,.12)',
+        fill: true, tension: .4, pointRadius: 3, pointBackgroundColor: '#c3b8e8', spanGaps: true, yAxisID: 'yH' },
+      { label: 'Ingresos $', data: incVals, borderColor: '#9fd4bb', backgroundColor: 'rgba(159,212,187,.1)',
+        fill: false, tension: .4, pointRadius: 3, pointBackgroundColor: '#9fd4bb', spanGaps: true, yAxisID: 'yI' }
+    ]},
+    options: { responsive: true,
+      plugins: { legend: { labels: { font: { family: 'DM Sans', size: 11 } } } },
+      scales: {
+        x:  { grid: { display: false }, ticks: { maxTicksLimit: 10, font: { size: 10 } } },
+        yH: { position: 'left',  title: { display: true, text: 'Horas', font: { size: 10 } }, beginAtZero: true, ticks: { precision: 1 } },
+        yI: { position: 'right', title: { display: true, text: '$', font: { size: 10 } }, beginAtZero: true, grid: { drawOnChartArea: false } }
       }
-    });
-  }
+    }
+  });
 
-  // Chart: plan vs realidad
   destroyChart('tw-plan');
   const ctxPlan = document.getElementById('chart-trab-plan');
   if (ctxPlan) {
     const cumplColors = days.map(ds => {
       const c = workLog[ds]?.cumplido;
-      return c === 'si' ? 'rgba(159,212,187,.85)' : c === 'parcial' ? 'rgba(249,200,154,.85)' : c === 'no' ? 'rgba(240,160,184,.85)' : 'rgba(195,184,232,.5)';
+      return c === 'si' ? 'rgba(159,212,187,.85)' : c === 'parcial' ? 'rgba(249,200,154,.85)' : c === 'no' ? 'rgba(240,160,184,.85)' : 'rgba(195,184,232,.45)';
     });
     chartInstances['tw-plan'] = new Chart(ctxPlan.getContext('2d'), {
       type: 'bar',
-      data: {
-        labels,
-        datasets: [
-          { label: 'Planeado', data: planHours, backgroundColor: 'rgba(195,184,232,.35)', borderColor: '#c3b8e8', borderWidth: 1, borderRadius: 4 },
-          { label: 'Real', data: netHours, backgroundColor: cumplColors, borderColor: 'transparent', borderRadius: 4 }
-        ]
-      },
-      options: {
-        responsive: true,
+      data: { labels, datasets: [
+        { label: 'Planeado', data: planHours, backgroundColor: 'rgba(195,184,232,.3)', borderColor: '#c3b8e8', borderWidth: 1, borderRadius: 4 },
+        { label: 'Real',     data: netHours,  backgroundColor: cumplColors, borderColor: 'transparent', borderRadius: 4 }
+      ]},
+      options: { responsive: true,
         plugins: { legend: { labels: { font: { family: 'DM Sans', size: 11 } } },
-          tooltip: { callbacks: { afterBody: (items) => {
-            const ds = days[items[0]?.dataIndex];
-            const c = workLog[ds]?.cumplido;
+          tooltip: { callbacks: { afterBody: items => {
+            const c = workLog[days[items[0]?.dataIndex]]?.cumplido;
             return c ? ['', c === 'si' ? '✅ Cumplido' : c === 'parcial' ? '⚡ Parcial' : '❌ No cumplido'] : [];
           }}}
         },
@@ -4630,7 +4824,7 @@ function saveRetroDay() {
 
 
 // Close modals on background click
-['modal-symptom','modal-mens','modal-cal-note','modal-done-task','modal-retroedit'].forEach(mid => {
+['modal-symptom','modal-mens','modal-cal-note','modal-done-task','modal-retroedit','modal-horario'].forEach(mid => {
   const m = document.getElementById(mid);
   if (m) m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open'); });
 });
