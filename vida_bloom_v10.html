@@ -2668,6 +2668,7 @@ function toggleHabitDay(id, dateStr) {
   h.log = h.log || [];
   if(h.log.includes(dateStr)) h.log = h.log.filter(d => d !== dateStr);
   else h.log.push(dateStr);
+  save();
 }
 function toggleHabitToday(id) { toggleHabitDay(id, today()); renderHoy(); }
 
@@ -2778,38 +2779,67 @@ function renderTaskMonthChart() {
     const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
     monthData[key] = 0;
   }
-  tasks.filter(t => t.done && t.date).forEach(t => {
-    const key = t.date.slice(0,7);
-    if(key in monthData) monthData[key]++;
+  tasks.forEach(t => {
+    const isRecur = t.recurrence && t.recurrence !== 'none';
+    if (isRecur) {
+      (t.doneLog || []).forEach(dateStr => {
+        const key = dateStr.slice(0,7);
+        if (key in monthData) monthData[key]++;
+      });
+    } else {
+      if (t.done) {
+        // Usar completedAt si existe, si no usar date (tarea completada el día que era)
+        const dateStr = t.completedAt || t.date || '';
+        if (dateStr) {
+          const key = dateStr.slice(0,7);
+          if (key in monthData) monthData[key]++;
+        }
+      }
+    }
   });
   const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const labels = Object.keys(monthData).map(k => months[parseInt(k.split('-')[1])-1]);
+  const values = Object.values(monthData);
   const ctx = document.getElementById('chart-tasks-month').getContext('2d');
   chartInstances['tm'] = new Chart(ctx, {
-    type:'line',
+    type:'bar',
     data:{ labels, datasets:[{
-      label:'Completadas', data: Object.values(monthData),
-      borderColor:'#f0a0b8', backgroundColor:'rgba(240,160,184,.15)',
-      fill:true, tension:.4, pointBackgroundColor:'#f0a0b8', pointRadius:5
+      label:'Completadas', data: values,
+      backgroundColor: values.map(v => v > 0 ? 'rgba(240,160,184,.8)' : 'rgba(240,160,184,.25)'),
+      borderColor:'#f0a0b8', borderWidth:1, borderRadius:6
     }]},
-    options:{ plugins:{legend:{display:false}}, scales:{ y:{ticks:{precision:0}}, x:{grid:{display:false}} }, responsive:true }
+    options:{ plugins:{legend:{display:false}}, scales:{ y:{ticks:{precision:0}, beginAtZero:true}, x:{grid:{display:false}} }, responsive:true }
   });
 }
 
 function renderPriorityChart() {
   destroyChart('pp');
-  const pending = tasks.filter(t => !isTaskDoneToday(t));
   const counts = { alta:0, media:0, baja:0 };
-  pending.forEach(t => { counts[t.priority||'media']++; });
+  tasks.forEach(t => {
+    const isRecur = t.recurrence && t.recurrence !== 'none';
+    const isPending = isRecur ? true : !t.done; // recurrentes siempre cuentan como activas
+    if (isPending) counts[t.priority || 'media']++;
+  });
+  const total = counts.alta + counts.media + counts.baja;
   const ctx = document.getElementById('chart-priority').getContext('2d');
   chartInstances['pp'] = new Chart(ctx, {
     type:'doughnut',
     data:{
       labels:['Alta 🔴','Media 🟡','Baja 🟢'],
-      datasets:[{ data:[counts.alta,counts.media,counts.baja],
+      datasets:[{ data:[counts.alta, counts.media, counts.baja],
         backgroundColor:['#ffd6d6','#fde5cc','#c8edd8'], borderWidth:0, hoverOffset:6 }]
     },
-    options:{ plugins:{legend:{labels:{font:{family:'DM Sans',size:12}}}}, cutout:'62%', responsive:true }
+    options:{
+      plugins:{
+        legend:{labels:{font:{family:'DM Sans',size:12}}},
+        tooltip:{ callbacks:{ label: ctx => {
+          const val = ctx.raw;
+          const pct = total > 0 ? Math.round(val/total*100) : 0;
+          return ` ${val} tarea${val!==1?'s':''} (${pct}%)`;
+        }}}
+      },
+      cutout:'62%', responsive:true
+    }
   });
 }
 
