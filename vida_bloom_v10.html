@@ -999,8 +999,15 @@
 
 <!-- ══════════ CALENDARIO ══════════ -->
 <div class="page" id="page-calendario">
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:20px">
     <h2 style="margin-bottom:0">📅 Calendario</h2>
+    <button onclick="openRetroModal()"
+      style="background:none;border:none;font-size:.78rem;color:var(--text-l);cursor:pointer;
+        display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:8px;
+        transition:background .15s;font-family:'DM Sans',sans-serif"
+      onmouseover="this.style.background='var(--warm)'" onmouseout="this.style.background='none'">
+      ✏️ Editar día pasado
+    </button>
   </div>
   <div class="card">
     <div class="cal-nav">
@@ -1012,6 +1019,15 @@
     <div style="height:8px"></div>
     <div class="cal-grid" id="cal-body"></div>
   </div>
+  <div style="text-align:right;margin-top:8px">
+    <button onclick="openRetroModal()"
+      style="background:none;border:none;font-size:.78rem;color:var(--text-l);cursor:pointer;
+        display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:8px;
+        transition:background .15s;font-family:'DM Sans',sans-serif"
+      onmouseover="this.style.background='var(--warm)'" onmouseout="this.style.background='none'">
+      ✏️ Editar un día pasado
+    </button>
+  </div>
   <div class="card" id="cal-day-detail" style="display:none">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
       <h3 id="cal-day-title" style="margin:0"></h3>
@@ -1020,6 +1036,15 @@
     <div id="cal-day-tasks"></div>
     <div id="cal-day-habits" style="margin-top:10px"></div>
     <div id="cal-day-notes" style="margin-top:10px"></div>
+    <div style="text-align:right;margin-top:14px;padding-top:10px;border-top:1px solid var(--warm)">
+      <button onclick="openRetroModal()"
+        style="background:none;border:none;font-size:.78rem;color:var(--text-l);cursor:pointer;
+          display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:8px;
+          transition:background .15s;font-family:'DM Sans',sans-serif"
+        onmouseover="this.style.background='var(--warm)'" onmouseout="this.style.background='none'">
+        ✏️ Editar un día pasado
+      </button>
+    </div>
   </div>
 </div>
 
